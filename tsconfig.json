@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "target": "es2017",
+        "module":"commonjs"
+    }
+}
