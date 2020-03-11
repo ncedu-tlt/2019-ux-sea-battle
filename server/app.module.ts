@@ -1,18 +1,16 @@
 import { Module } from "@nestjs/common";
-import {ServeStaticModule} from "@nestjs/serve-static";
+import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
 import { PlayersModule } from "./modules/players/players.module";
-import {ConfigModule, ConfigService} from "@nestjs/config";
-import {mainConfig} from "server/config/main.config";
-import {TypeOrmModule} from "@nestjs/typeorm";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { mainConfig } from "server/config/main.config";
+import { TypeOrmModule } from "@nestjs/typeorm";
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            load: [
-                mainConfig
-            ]
+            load: [mainConfig]
         }),
         TypeOrmModule.forRootAsync({
             inject: [ConfigService],
@@ -25,9 +23,7 @@ import {TypeOrmModule} from "@nestjs/typeorm";
         }),
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, "../../client"),
-            exclude: [
-                "/api/.*"
-            ]
+            exclude: ["/api/.*"]
         }),
         PlayersModule
     ]

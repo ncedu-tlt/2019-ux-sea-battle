@@ -11,9 +11,11 @@ module.exports = {
       'eslint:recommended',
       'plugin:@typescript-eslint/eslint-recommended',
       'plugin:@typescript-eslint/recommended',
-      'plugin:@typescript-eslint/recommended-requiring-type-checking'
+      'plugin:@typescript-eslint/recommended-requiring-type-checking',
+      'plugin:prettier/recommended'
   ],
   rules: {
+      '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/generator-star-spacing': 'off',
       'no-console': ['warn', {

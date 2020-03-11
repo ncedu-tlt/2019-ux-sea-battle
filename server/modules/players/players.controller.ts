@@ -1,12 +1,11 @@
-import {Controller, Get, Post, Body} from "@nestjs/common";
-import {PlayerDTO} from "common/dto/player.dto";
+import { Body, Controller, Get, Post } from "@nestjs/common";
+import { PlayerDTO } from "common/dto/player.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { UserDAO } from "../db/domain/user.dao";
 
 @Controller("/api/players")
 export class PlayersController {
-
     constructor(
         @InjectRepository(UserDAO)
         private usersRepository: Repository<UserDAO>

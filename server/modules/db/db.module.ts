@@ -3,13 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserDAO } from "./domain/user.dao";
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([
-            UserDAO
-        ])
-    ],
-    exports: [
-        TypeOrmModule
-    ]
+    imports: [TypeOrmModule.forFeature([UserDAO])],
+    exports: [TypeOrmModule]
 })
 export class DbModule {}
