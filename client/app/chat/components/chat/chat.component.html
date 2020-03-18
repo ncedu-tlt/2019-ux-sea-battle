@@ -1,0 +1,22 @@
+<div>
+    <h2>Chat</h2>
+
+    <form *ngIf="!entered" #enterForm="ngForm" (ngSubmit)="enter(name)">
+        <label>
+            Имя
+            <input name="name" type="text" [(ngModel)]="name" required>
+        </label>
+        <button type="submit" [disabled]="enterForm.invalid">Войти</button>
+    </form>
+
+    <div *ngIf="entered">
+        <div *ngFor="let message of messages">
+            {{ message }}
+        </div>
+        <div>
+            <input type="text" [(ngModel)]="message" (keyup.enter)="sendMessage()">
+            <button type="button" (click)="sendMessage()">Send</button>
+        </div>
+    </div>
+
+</div>

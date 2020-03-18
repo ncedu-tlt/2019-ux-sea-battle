@@ -6,7 +6,8 @@ import { PlayerDTO } from "common/dto/player.dto";
 @Component({
     selector: "sb-root",
     template: `
-        {{ players$ | async | json }}
+        <div>{{ players$ | async | json }}</div>
+        <sb-chat></sb-chat>
     `
 })
 export class AppComponent implements OnInit {
