@@ -1,4 +1,5 @@
 {
     "name": "sea-battle",
-    "description": "Sea Battle game"
+    "description": "Sea Battle game",
+    "addons": ["heroku-postgresql:hobby-dev"]
 }
