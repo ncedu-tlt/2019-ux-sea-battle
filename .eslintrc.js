@@ -21,9 +21,7 @@ module.exports = {
       'no-console': ['warn', {
           allow: ['warn', 'error']
       }],
-      '@typescript-eslint/indent': ['error', 4, {
-          SwitchCase: 1
-      }],
+      '@typescript-eslint/indent': 'off',
       '@typescript-eslint/space-before-function-paren': ['error', {
           anonymous: 'always',
           named: 'never',
