@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert } from "typeorm";
+import * as crypto from "crypto";
 
 @Entity()
 export class UserDAO {
@@ -6,5 +7,26 @@ export class UserDAO {
     id: number;
 
     @Column()
-    name: string;
+    email: string;
+
+    @Column({ default: "" })
+    nickname: string;
+
+    @BeforeInsert()
+    hashPassword(): void {
+        this.password = crypto
+            .createHmac("sha256", this.password)
+            .digest("hex");
+    }
+    @Column()
+    password: string;
+
+    @Column({ default: "" })
+    avatar_url: string;
+
+    @Column({ default: 0 })
+    balance: number;
+
+    @Column({ default: false })
+    is_dnd: boolean;
 }
