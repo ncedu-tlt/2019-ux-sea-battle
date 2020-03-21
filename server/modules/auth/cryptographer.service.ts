@@ -16,10 +16,7 @@ export class CryptographerService {
         return [salt, hash].join("$");
     }
 
-    public checkPassword(
-        saltedPasswordHash,
-        candidatePassword
-    ): boolean {
+    public checkPassword(saltedPasswordHash, candidatePassword): boolean {
         const originalHash = saltedPasswordHash.split("$")[1];
         const salt = saltedPasswordHash.split("$")[0];
         const hash = CryptographerService.getHash(candidatePassword, salt);
