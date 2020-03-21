@@ -20,7 +20,11 @@ export class AuthService {
 
     public async login(loginDTO: LoginDTO): Promise<IToken> {
         return this.validate(loginDTO.email).then(user => {
-            if (user && user.password === loginDTO.password) {
+            const isValidPass = this.cryptoService.checkPassword(
+                user.password,
+                loginDTO.password
+            );
+            if (user && isValidPass) {
                 const payload = {
                     nickname: user.nickname,
                     email: user.email,
@@ -50,7 +54,11 @@ export class AuthService {
                 HttpStatus.BAD_REQUEST
             );
         }
-        await this.usersService.create(registerDTO);
+        const candidateUser = {
+            ...registerDTO,
+            password: this.cryptoService.hashPassword(registerDTO.password)
+        };
+        await this.usersService.create(candidateUser);
         return {
             message: "User created"
         };
