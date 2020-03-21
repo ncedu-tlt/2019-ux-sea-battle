@@ -5,12 +5,15 @@ import { ExtractJwt, Strategy, VerifiedCallback } from "passport-jwt";
 import { AuthService } from "../auth.service";
 import { Payload } from "../../../../common/interfaces/payload.interface";
 
+const SECRET_KEY = process.env.SECRET_KEY || "secret";
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(private authService: AuthService) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            secretOrKey: process.env.SECRET_KEY
+            ignoreExpiration: false,
+            secretOrKey: SECRET_KEY
         });
     }
 

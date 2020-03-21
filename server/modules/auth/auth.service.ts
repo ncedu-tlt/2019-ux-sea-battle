@@ -5,7 +5,7 @@ import { JwtService } from "@nestjs/jwt";
 import { UserDAO } from "../db/domain/user.dao";
 import { IToken } from "../../../common/interfaces/token.interface";
 import { CryptographerService } from "./cryptographer.service";
-import {Payload} from "../../../common/interfaces/payload.interface";
+import { Payload } from "../../../common/interfaces/payload.interface";
 
 @Injectable()
 export class AuthService {
@@ -35,9 +35,8 @@ export class AuthService {
                 iat: Number(Date.now())
             };
             const accessToken = this.jwtService.sign(payload, {
-                expiresIn: process.env.SECRET_KEY || "1h"
+                expiresIn: "1h"
             });
-
             return {
                 accessToken: accessToken,
                 ...payload
