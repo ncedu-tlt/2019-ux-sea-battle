@@ -6,5 +6,11 @@ export class UserDAO {
     id: number;
 
     @Column()
-    name: string;
+    email: string;
+
+    @Column()
+    password: string;
+
+    @Column()
+    nickname: string;
 }

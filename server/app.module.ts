@@ -5,6 +5,8 @@ import { PlayersModule } from "./modules/players/players.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { mainConfig } from "server/config/main.config";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { AuthModule } from "./modules/auth/auth.module";
+import { UsersModule } from "./modules/users/users.module";
 
 @Module({
     imports: [
@@ -25,7 +27,9 @@ import { TypeOrmModule } from "@nestjs/typeorm";
             rootPath: join(__dirname, "../../client"),
             exclude: ["/api/.*"]
         }),
-        PlayersModule
+        PlayersModule,
+        AuthModule,
+        UsersModule
     ]
 })
 export class AppModule {}
