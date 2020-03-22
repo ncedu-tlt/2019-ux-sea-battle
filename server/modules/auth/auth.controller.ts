@@ -6,9 +6,10 @@ import {
     UseGuards,
     Request
 } from "@nestjs/common";
-import { LoginDTO, RegisterDTO } from "../../../common/dto/auth.dto";
+import { LoginRequestDTO } from "../../../common/dto/login-request.dto";
+import { RegisterRequestDTO } from "../../../common/dto/register-request.dto";
 import { AuthService } from "./auth.service";
-import { IToken } from "../../../common/interfaces/token.interface";
+import { LoginResponseDTO } from "../../../common/dto/login-response.dto";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 
 @Controller("/api/auth")
@@ -16,12 +17,12 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post("/login")
-    async login(@Body() loginDTO: LoginDTO): Promise<IToken> {
+    async login(@Body() loginDTO: LoginRequestDTO): Promise<LoginResponseDTO> {
         return this.authService.login(loginDTO);
     }
 
     @Post("/register")
-    async register(@Body() registerDTO: RegisterDTO): Promise<any> {
+    async register(@Body() registerDTO: RegisterRequestDTO): Promise<any> {
         return this.authService.register(registerDTO);
     }
 

@@ -1,7 +1,6 @@
 import { Module } from "@nestjs/common";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
-import { PlayersModule } from "./modules/players/players.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { mainConfig } from "server/config/main.config";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -27,7 +26,6 @@ import { UsersModule } from "./modules/users/users.module";
             rootPath: join(__dirname, "../../client"),
             exclude: ["/api/.*"]
         }),
-        PlayersModule,
         AuthModule,
         UsersModule
     ]

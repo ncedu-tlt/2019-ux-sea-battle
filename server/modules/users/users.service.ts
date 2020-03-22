@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserDAO } from "../db/domain/user.dao";
 import { Repository } from "typeorm";
-import { RegisterDTO } from "../../../common/dto/auth.dto";
+import { RegisterRequestDTO } from "../../../common/dto/register-request.dto";
 
 @Injectable()
 export class UsersService {
@@ -11,23 +11,31 @@ export class UsersService {
         private usersRepository: Repository<UserDAO>
     ) {}
 
-    async findByEmail(email: string): Promise<UserDAO> {
-        return await this.usersRepository.findOne({
+    getAll(): Promise<UserDAO[]> {
+        return this.usersRepository.find();
+    }
+
+    findByEmail(email: string): Promise<UserDAO> {
+        return this.usersRepository.findOne({
             where: {
                 email: email
             }
         });
     }
 
-    async findById(id: number): Promise<UserDAO> {
-        return await this.usersRepository.findOne({
+    findByNickname(nickname: string): Promise<UserDAO> {
+        return this.usersRepository.findOne({
             where: {
-                id: id
+                nickname: nickname
             }
         });
     }
 
-    async create(user: RegisterDTO): Promise<UserDAO> {
+    findById(id: number): Promise<UserDAO> {
+        return this.usersRepository.findOne(id);
+    }
+
+    async create(user: RegisterRequestDTO): Promise<UserDAO> {
         return await this.usersRepository.save(user);
     }
 }

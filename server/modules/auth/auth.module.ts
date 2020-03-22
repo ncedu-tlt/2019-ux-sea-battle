@@ -8,14 +8,14 @@ import { UsersService } from "../users/users.service";
 import { JwtStrategy } from "./passport/jwt.strategy";
 import { PassportModule } from "@nestjs/passport";
 
-const SECRET_KEY = process.env.SECRET_KEY || "secret";
+const TOKEN_SECRET_KEY = process.env.TOKEN_SECRET_KEY || "secret";
 
 @Module({
     imports: [
         DbModule,
         PassportModule,
         JwtModule.register({
-            secret: SECRET_KEY
+            secret: TOKEN_SECRET_KEY
         })
     ],
     providers: [CryptographerService, UsersService, AuthService, JwtStrategy],

@@ -5,7 +5,7 @@ export class UserDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ default: "" })
     email: string;
 
     @Column()

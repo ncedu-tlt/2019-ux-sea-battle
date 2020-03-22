@@ -1,11 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { UsersService } from "../users/users.service";
-import { LoginDTO, RegisterDTO } from "../../../common/dto/auth.dto";
 import { JwtService } from "@nestjs/jwt";
 import { UserDAO } from "../db/domain/user.dao";
-import { IToken } from "../../../common/interfaces/token.interface";
+import { LoginResponseDTO } from "../../../common/dto/login-response.dto";
 import { CryptographerService } from "./cryptographer.service";
-import { Payload } from "../../../common/interfaces/payload.interface";
+import { PayloadModel } from "../../../common/models/payload.model";
+import { LoginRequestDTO } from "common/dto/login-request.dto";
+import { RegisterRequestDTO } from "common/dto/register-request.dto";
 
 @Injectable()
 export class AuthService {
@@ -15,11 +16,11 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) {}
 
-    public async validate(payload: Payload): Promise<UserDAO> {
-        return await this.usersService.findByEmail(payload.email);
+    public async validate(payload: PayloadModel): Promise<UserDAO> {
+        return await this.usersService.findById(payload.sub);
     }
 
-    public async login(loginDTO: LoginDTO): Promise<IToken> {
+    public async login(loginDTO: LoginRequestDTO): Promise<LoginResponseDTO> {
         const user = await this.usersService.findByEmail(loginDTO.email);
         if (!user) {
             throw new HttpException("Invalid email", HttpStatus.UNAUTHORIZED);
@@ -30,8 +31,8 @@ export class AuthService {
         );
         if (isPassValid) {
             const payload = {
+                sub: user.id,
                 nickname: user.nickname,
-                email: user.email,
                 iat: Number(Date.now())
             };
             const accessToken = this.jwtService.sign(payload, {
@@ -45,7 +46,7 @@ export class AuthService {
         throw new HttpException("Invalid password", HttpStatus.UNAUTHORIZED);
     }
 
-    public async register(registerDTO: RegisterDTO): Promise<any> {
+    public async register(registerDTO: RegisterRequestDTO): Promise<any> {
         const user = await this.usersService.findByEmail(registerDTO.email);
         if (user) {
             throw new HttpException(
@@ -53,7 +54,7 @@ export class AuthService {
                 HttpStatus.BAD_REQUEST
             );
         }
-        const candidateUser = {
+        const candidateUser: RegisterRequestDTO = {
             ...registerDTO,
             password: this.cryptoService.hashPassword(registerDTO.password)
         };
