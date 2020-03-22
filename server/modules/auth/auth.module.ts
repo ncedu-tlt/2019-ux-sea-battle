@@ -7,15 +7,19 @@ import { JwtModule } from "@nestjs/jwt";
 import { UsersService } from "../users/users.service";
 import { JwtStrategy } from "./passport/jwt.strategy";
 import { PassportModule } from "@nestjs/passport";
-
-const TOKEN_SECRET_KEY = process.env.TOKEN_SECRET_KEY || "secret";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Module({
     imports: [
+        ConfigModule,
         DbModule,
         PassportModule,
-        JwtModule.register({
-            secret: TOKEN_SECRET_KEY
+        JwtModule.registerAsync({
+            imports: [ConfigModule],
+            useFactory: (configService: ConfigService) => ({
+                secret: configService.get<string>("secretOrKey")
+            }),
+            inject: [ConfigService]
         })
     ],
     providers: [CryptographerService, UsersService, AuthService, JwtStrategy],

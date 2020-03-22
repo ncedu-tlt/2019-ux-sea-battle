@@ -1,3 +1,5 @@
 export const mainConfig = (): any => ({
-    dbUrl: process.env.DATABASE_URL
+    port: process.env.PORT_SERVER,
+    dbUrl: process.env.DATABASE_URL,
+    secretOrKey: process.env.TOKEN_SECRET_KEY
 });
