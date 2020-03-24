@@ -12,7 +12,7 @@ export class UsersController {
         return users.map(user => ({
             id: user.id,
             nickname: user.nickname,
-            email: user.email || ""
+            email: user.email
         }));
     }
 }

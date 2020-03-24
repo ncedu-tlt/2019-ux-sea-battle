@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { PlayersApiService } from "client/app/services/api/players.api.service";
 import { Observable } from "rxjs";
-import { PlayerDTO } from "common/dto/player.dto";
+import { UserDTO } from "common/dto/user.dto";
 
 @Component({
     selector: "sb-root",
@@ -10,7 +10,7 @@ import { PlayerDTO } from "common/dto/player.dto";
     `
 })
 export class AppComponent implements OnInit {
-    players$: Observable<PlayerDTO[]>;
+    players$: Observable<UserDTO[]>;
 
     constructor(private playersApiService: PlayersApiService) {}
 

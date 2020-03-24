@@ -1,5 +1,5 @@
-import { PayloadModel } from "../models/payload.model";
+import { TokenPayloadModel } from "../models/token-payload.model";
 
-export interface LoginResponseDTO extends PayloadModel {
+export interface LoginResponseDTO extends TokenPayloadModel {
     accessToken: string;
 }

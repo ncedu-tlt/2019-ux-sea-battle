@@ -3,12 +3,6 @@
     "description": "Sea Battle game",
     "addons": ["heroku-postgresql:hobby-dev"],
     "env": {
-        "PORT_SERVER": {
-            "required": true
-        },
-        "DATABASE_URL": {
-            "required": true
-        },
         "TOKEN_SECRET_KEY": {
             "required": true
         }

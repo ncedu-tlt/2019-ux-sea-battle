@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy, VerifiedCallback } from "passport-jwt";
 import { AuthService } from "../auth.service";
-import { PayloadModel } from "../../../../common/models/payload.model";
+import { TokenPayloadModel } from "../../../../common/models/token-payload.model";
 import { ConfigService } from "@nestjs/config";
 
 @Injectable()
@@ -14,12 +14,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: configService.get<string>("secretOrKey")
+            tokenSecretKey: configService.get<string>("secretOrKey")
         });
     }
 
     async validate(
-        payload: PayloadModel,
+        payload: TokenPayloadModel,
         done: VerifiedCallback
     ): Promise<any> {
         const user = await this.authService.validate(payload);
