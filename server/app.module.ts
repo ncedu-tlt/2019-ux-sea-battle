@@ -17,7 +17,7 @@ import { UsersModule } from "./modules/users/users.module";
             inject: [ConfigService],
             useFactory: (configService: ConfigService) => ({
                 type: "postgres",
-                url: configService.get("dbUrl"),
+                url: configService.get<string>("dbUrl"),
                 synchronize: true,
                 autoLoadEntities: true
             })
