@@ -7,13 +7,15 @@ import { CryptographerService } from "./cryptographer.service";
 import { TokenPayloadModel } from "../../../common/models/token-payload.model";
 import { LoginRequestDTO } from "common/dto/login-request.dto";
 import { RegisterRequestDTO } from "common/dto/register-request.dto";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class AuthService {
     constructor(
+        private configService: ConfigService,
         private usersService: UsersService,
         private cryptoService: CryptographerService,
-        private readonly jwtService: JwtService
+        private jwtService: JwtService
     ) {}
 
     public async validate(payload: TokenPayloadModel): Promise<UserDAO> {
@@ -22,27 +24,26 @@ export class AuthService {
 
     public async login(loginDTO: LoginRequestDTO): Promise<LoginResponseDTO> {
         const user = await this.usersService.findByEmail(loginDTO.email);
-        if (!user) {
-            throw new HttpException("Invalid email", HttpStatus.UNAUTHORIZED);
+        if (user) {
+            const isPassValid = this.cryptoService.checkPassword(
+                user.password,
+                loginDTO.password
+            );
+            if (isPassValid) {
+                const payload = {
+                    sub: user.id,
+                    nickname: user.nickname
+                };
+                const accessToken = this.jwtService.sign(payload, {
+                    expiresIn: this.configService.get("tokenExpiresIn")
+                });
+                return {
+                    accessToken: accessToken,
+                    ...payload
+                };
+            }
         }
-        const isPassValid = this.cryptoService.checkPassword(
-            user.password,
-            loginDTO.password
-        );
-        if (isPassValid) {
-            const payload = {
-                sub: user.id,
-                nickname: user.nickname
-            };
-            const accessToken = this.jwtService.sign(payload, {
-                expiresIn: "1h"
-            });
-            return {
-                accessToken: accessToken,
-                ...payload
-            };
-        }
-        throw new HttpException("Invalid password", HttpStatus.UNAUTHORIZED);
+        throw new HttpException("Invalid credentials", HttpStatus.UNAUTHORIZED);
     }
 
     public async register(registerDTO: RegisterRequestDTO): Promise<any> {
@@ -59,7 +60,7 @@ export class AuthService {
         };
         await this.usersService.create(candidateUser);
         return {
-            message: "User created"
+            code: "user/created"
         };
     }
 }

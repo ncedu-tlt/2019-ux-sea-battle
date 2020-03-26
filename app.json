@@ -5,6 +5,9 @@
     "env": {
         "TOKEN_SECRET_KEY": {
             "required": true
+        },
+        "TOKEN_EXPIRES_IN": {
+            "required": true
         }
     }
 }
