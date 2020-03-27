@@ -15,7 +15,11 @@ export class ShipPresetsDao {
     @Column({ nullable: false })
     field: string;
 
-    @ManyToOne(() => UsersDao, { nullable: false, cascade: true })
+    @ManyToOne(() => UsersDao, {
+        nullable: false,
+        cascade: true,
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "user_id" })
     user: Promise<UsersDao>;
 

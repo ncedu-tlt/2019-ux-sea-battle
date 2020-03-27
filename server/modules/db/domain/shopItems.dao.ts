@@ -12,7 +12,11 @@ export class ShopItemsDao {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(() => ShopCategoriesDao, { nullable: false, cascade: true })
+    @OneToOne(() => ShopCategoriesDao, {
+        nullable: false,
+        cascade: true,
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "category_id" })
     category: Promise<ShopCategoriesDao>;
 
