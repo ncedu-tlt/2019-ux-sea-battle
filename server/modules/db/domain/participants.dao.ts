@@ -14,19 +14,19 @@ export class ParticipantsDao {
 
     @OneToOne(() => UsersDao, { nullable: false })
     @JoinColumn({ name: "user_id" })
-    userId: UsersDao;
+    user: Promise<UsersDao>;
 
     @OneToOne(() => GamesDao, { nullable: false })
     @JoinColumn({ name: "game_id" })
-    gameId: GamesDao;
+    game: Promise<GamesDao>;
 
     @Column({ name: "is_host", default: false }) isHost: boolean;
 
     @Column({ name: "is_winner", default: false }) isWinner: boolean;
 
-    @Column() score: number;
+    @Column({ default: 0 }) score: number;
 
-    @Column() shots: number;
+    @Column({ default: 0 }) shots: number;
 
-    @Column() hits: number;
+    @Column({ default: 0 }) hits: number;
 }

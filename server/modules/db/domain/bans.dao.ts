@@ -15,12 +15,17 @@ export class BansDao {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => UsersDao, { nullable: false })
+    @ManyToOne(() => UsersDao, { nullable: false, eager: true })
     @JoinColumn({ name: "user_id" })
     user: UsersDao;
 
     @Column({ name: "created_at", type: "timestamp" })
     createdAt: Date;
+
+    @BeforeInsert()
+    updateDate(): void {
+        this.createdAt = new Date();
+    }
 
     @Column({ name: "end_at", type: "timestamp", nullable: false })
     endAt: Date;
@@ -31,20 +36,15 @@ export class BansDao {
     @Column({ name: "is_active", default: true })
     isActive: boolean;
 
-    @OneToOne(() => UsersDao, { nullable: false })
+    @OneToOne(() => UsersDao, { nullable: false, eager: true })
     @JoinColumn({ name: "banned_by" })
     bannedBy: UsersDao;
 
-    @OneToOne(() => UsersDao, { nullable: false })
+    @OneToOne(() => UsersDao, { nullable: false, eager: true })
     @JoinColumn({ name: "removed_by" })
     removedBy: UsersDao;
 
-    @OneToOne(() => BanTypes)
+    @OneToOne(() => BanTypes, { nullable: false, eager: true })
     @JoinColumn({ name: "type_id" })
-    typeId: number;
-
-    @BeforeInsert()
-    updateDate(): void {
-        this.createdAt = new Date();
-    }
+    typeId: BanTypes;
 }

@@ -14,7 +14,7 @@ export class ShopItemsDao {
 
     @OneToOne(() => ShopCategoriesDao, { nullable: false })
     @JoinColumn({ name: "category_id" })
-    categoryId: ShopCategoriesDao;
+    category: Promise<ShopCategoriesDao>;
 
     @Column({ nullable: false })
     name: string;
@@ -25,6 +25,6 @@ export class ShopItemsDao {
     @Column({ type: "float", nullable: false })
     price: number;
 
-    @Column({ name: "image_url" })
+    @Column({ name: "image_url", nullable: true })
     imageUrl: string;
 }

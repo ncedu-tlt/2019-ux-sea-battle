@@ -17,7 +17,7 @@ export class ShipPresetsDao {
 
     @ManyToOne(() => UsersDao, { nullable: false })
     @JoinColumn({ name: "user_id" })
-    userId: UsersDao;
+    user: Promise<UsersDao>;
 
     @Column({ name: "field_size", nullable: false })
     fieldSize: number;
