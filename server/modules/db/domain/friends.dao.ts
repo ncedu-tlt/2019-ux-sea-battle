@@ -6,11 +6,11 @@ export class FriendsDao {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => UsersDao, { nullable: false })
+    @ManyToOne(() => UsersDao, { nullable: false, cascade: true })
     @JoinColumn({ name: "user_id" })
     user: Promise<UsersDao>;
 
-    @ManyToOne(() => UsersDao, { nullable: false })
+    @ManyToOne(() => UsersDao, { nullable: false, cascade: true })
     @JoinColumn({ name: "friend_id" })
     friend: Promise<UsersDao>;
 }

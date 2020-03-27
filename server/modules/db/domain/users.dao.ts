@@ -29,7 +29,7 @@ export class UsersDao {
     @Column({ name: "avatar_url", nullable: true })
     avatarUrl: string;
 
-    @ManyToOne(() => RolesDao, { nullable: false, eager: true })
+    @ManyToOne(() => RolesDao, { nullable: false, eager: true, cascade: true })
     @JoinColumn({ name: "role_id" })
     role: RolesDao;
 
@@ -43,16 +43,16 @@ export class UsersDao {
 
     @Column({ name: "is_dnd", default: false }) isDnd: boolean;
 
-    @OneToOne(() => UserStatusesDao, { nullable: true })
+    @OneToOne(() => UserStatusesDao, { nullable: true, cascade: true })
     @JoinColumn({ name: "status_id" })
     status: Promise<UserStatusesDao>;
 
-    @ManyToMany(() => ShopItemsDao, { nullable: true })
+    @ManyToMany(() => ShopItemsDao, { nullable: true, cascade: true })
     @JoinTable()
     @JoinColumn({ name: "bought_items" })
     boughtItems: Promise<ShopItemsDao[]>;
 
-    @ManyToMany(() => AchievementsDao, { nullable: true })
+    @ManyToMany(() => AchievementsDao, { nullable: true, cascade: true })
     @JoinTable()
     achievements: Promise<AchievementsDao[]>;
 }

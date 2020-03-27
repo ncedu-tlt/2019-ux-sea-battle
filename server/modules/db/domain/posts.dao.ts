@@ -33,11 +33,11 @@ export class PostsDao {
         this.createdAt = new Date();
     }
 
-    @ManyToMany(() => TagsDao, { nullable: true })
+    @ManyToMany(() => TagsDao, { nullable: true, cascade: true })
     @JoinTable()
     tags: Promise<TagsDao[]>;
 
-    @ManyToOne(() => UsersDao, { nullable: false })
+    @ManyToOne(() => UsersDao, { nullable: false, cascade: true })
     @JoinColumn({ name: "author_id" })
     authorId: Promise<UsersDao>;
 }
