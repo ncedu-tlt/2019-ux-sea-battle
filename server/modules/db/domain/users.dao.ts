@@ -23,13 +23,18 @@ export class UsersDao {
     @Column({ unique: true, nullable: false })
     nickname: string;
 
-    @Column({ nullable: false })
+    @Column({ nullable: true })
     password: string;
 
     @Column({ name: "avatar_url", nullable: true })
     avatarUrl: string;
 
-    @ManyToOne(() => RolesDao, { nullable: false, eager: true, cascade: true })
+    @ManyToOne(() => RolesDao, {
+        nullable: false,
+        eager: true,
+        cascade: true,
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "role_id" })
     role: RolesDao;
 
@@ -43,16 +48,28 @@ export class UsersDao {
 
     @Column({ name: "is_dnd", default: false }) isDnd: boolean;
 
-    @OneToOne(() => UserStatusesDao, { nullable: true, cascade: true })
+    @OneToOne(() => UserStatusesDao, {
+        nullable: true,
+        cascade: true,
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "status_id" })
     status: Promise<UserStatusesDao>;
 
-    @ManyToMany(() => ShopItemsDao, { nullable: true, cascade: true })
+    @ManyToMany(() => ShopItemsDao, {
+        nullable: true,
+        cascade: true,
+        onDelete: "CASCADE"
+    })
     @JoinTable()
     @JoinColumn({ name: "bought_items" })
     boughtItems: Promise<ShopItemsDao[]>;
 
-    @ManyToMany(() => AchievementsDao, { nullable: true, cascade: true })
+    @ManyToMany(() => AchievementsDao, {
+        nullable: true,
+        cascade: true,
+        onDelete: "CASCADE"
+    })
     @JoinTable()
     achievements: Promise<AchievementsDao[]>;
 }

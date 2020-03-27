@@ -15,7 +15,12 @@ export class BansDao {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => UsersDao, { nullable: false, eager: true, cascade: true })
+    @ManyToOne(() => UsersDao, {
+        nullable: false,
+        eager: true,
+        cascade: true,
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "user_id" })
     user: UsersDao;
 
@@ -36,15 +41,30 @@ export class BansDao {
     @Column({ name: "is_active", default: true })
     isActive: boolean;
 
-    @OneToOne(() => UsersDao, { nullable: false, eager: true, cascade: true })
+    @OneToOne(() => UsersDao, {
+        nullable: false,
+        eager: true,
+        cascade: true,
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "banned_by" })
     bannedBy: UsersDao;
 
-    @OneToOne(() => UsersDao, { nullable: false, eager: true, cascade: true })
+    @OneToOne(() => UsersDao, {
+        nullable: false,
+        eager: true,
+        cascade: true,
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "removed_by" })
     removedBy: UsersDao;
 
-    @OneToOne(() => BanTypes, { nullable: false, eager: true, cascade: true })
+    @OneToOne(() => BanTypes, {
+        nullable: false,
+        eager: true,
+        cascade: true,
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "type_id" })
     type: BanTypes;
 }
