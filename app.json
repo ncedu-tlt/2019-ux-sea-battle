@@ -1,5 +1,10 @@
 {
     "name": "sea-battle",
     "description": "Sea Battle game",
-    "addons": ["heroku-postgresql:hobby-dev"]
+    "addons": ["heroku-postgresql:hobby-dev"],
+    "env": {
+        "TOKEN_SECRET_KEY": {
+            "required": true
+        }
+    }
 }

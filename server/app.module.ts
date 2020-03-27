@@ -1,10 +1,11 @@
 import { Module } from "@nestjs/common";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
-import { PlayersModule } from "./modules/players/players.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { mainConfig } from "server/config/main.config";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { AuthModule } from "./modules/auth/auth.module";
+import { UsersModule } from "./modules/users/users.module";
 
 @Module({
     imports: [
@@ -16,7 +17,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
             inject: [ConfigService],
             useFactory: (configService: ConfigService) => ({
                 type: "postgres",
-                url: configService.get("dbUrl"),
+                url: configService.get<string>("dbUrl"),
                 synchronize: true,
                 autoLoadEntities: true
             })
@@ -25,7 +26,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
             rootPath: join(__dirname, "../../client"),
             exclude: ["/api/.*"]
         }),
-        PlayersModule
+        AuthModule,
+        UsersModule
     ]
 })
 export class AppModule {}

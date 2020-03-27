@@ -5,6 +5,12 @@ export class UserDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({ nullable: true })
+    email: string;
+
+    @Column({ nullable: true })
+    password: string;
+
     @Column()
-    name: string;
+    nickname: string;
 }
