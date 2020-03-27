@@ -1,20 +1,20 @@
 import { Component, OnInit } from "@angular/core";
-import { PlayersApiService } from "client/app/services/api/players.api.service";
+import { UsersApiService } from "client/app/services/api/users.api.service";
 import { Observable } from "rxjs";
 import { UserDTO } from "common/dto/user.dto";
 
 @Component({
     selector: "sb-root",
     template: `
-        {{ players$ | async | json }}
+        {{ users | async | json }}
     `
 })
 export class AppComponent implements OnInit {
-    players$: Observable<UserDTO[]>;
+    users: Observable<UserDTO[]>;
 
-    constructor(private playersApiService: PlayersApiService) {}
+    constructor(private usersApiService: UsersApiService) {}
 
     ngOnInit(): void {
-        this.players$ = this.playersApiService.getAll();
+        this.users = this.usersApiService.getAll();
     }
 }

@@ -35,7 +35,7 @@ export class UsersService {
         return this.usersRepository.findOne(id);
     }
 
-    async create(user: RegisterRequestDTO): Promise<UserDAO> {
-        return await this.usersRepository.save(user);
+    create(user: RegisterRequestDTO): Promise<UserDAO> {
+        return this.usersRepository.save(user);
     }
 }

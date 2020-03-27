@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
 @Injectable({
     providedIn: "root"
 })
-export class PlayersApiService {
+export class UsersApiService {
     constructor(private httpClient: HttpClient) {}
 
     getAll(): Observable<UserDTO[]> {
