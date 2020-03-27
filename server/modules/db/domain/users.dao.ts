@@ -5,6 +5,7 @@ import {
     JoinTable,
     ManyToMany,
     ManyToOne,
+    OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
 import { RolesDao } from "./roles.dao";
@@ -28,7 +29,7 @@ export class UsersDao {
     @Column({ name: "avatar_url", nullable: true })
     avatarUrl: string;
 
-    @ManyToOne(() => RolesDao, { nullable: false })
+    @ManyToOne(() => RolesDao, { nullable: false, eager: true })
     @JoinColumn({ name: "role_id" })
     role: RolesDao;
 
@@ -42,16 +43,16 @@ export class UsersDao {
 
     @Column({ name: "is_dnd", default: false }) isDnd: boolean;
 
-    @ManyToOne(() => UserStatusesDao, { nullable: false })
+    @OneToOne(() => UserStatusesDao, { nullable: true })
     @JoinColumn({ name: "status_id" })
-    status: UserStatusesDao;
+    status: Promise<UserStatusesDao>;
 
-    @ManyToMany(() => ShopItemsDao)
+    @ManyToMany(() => ShopItemsDao, { nullable: true })
     @JoinTable()
     @JoinColumn({ name: "bought_items" })
-    boughtItems: ShopItemsDao[];
+    boughtItems: Promise<ShopItemsDao[]>;
 
-    @ManyToMany(() => AchievementsDao)
+    @ManyToMany(() => AchievementsDao, { nullable: true })
     @JoinTable()
-    achievements: AchievementsDao[];
+    achievements: Promise<AchievementsDao[]>;
 }

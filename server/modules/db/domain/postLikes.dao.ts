@@ -9,9 +9,9 @@ export class PostLikesDao {
 
     @ManyToOne(() => UsersDao, { nullable: false })
     @JoinColumn({ name: "user_id" })
-    userId: UsersDao;
+    user: Promise<UsersDao>;
 
     @ManyToOne(() => PostsDao, { nullable: false })
     @JoinColumn({ name: "post_id" })
-    postId: PostsDao;
+    post: Promise<PostsDao>;
 }

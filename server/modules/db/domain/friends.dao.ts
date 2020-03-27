@@ -8,9 +8,9 @@ export class FriendsDao {
 
     @ManyToOne(() => UsersDao, { nullable: false })
     @JoinColumn({ name: "user_id" })
-    user: number;
+    user: Promise<UsersDao>;
 
     @ManyToOne(() => UsersDao, { nullable: false })
     @JoinColumn({ name: "friend_id" })
-    friend: number;
+    friend: Promise<UsersDao>;
 }

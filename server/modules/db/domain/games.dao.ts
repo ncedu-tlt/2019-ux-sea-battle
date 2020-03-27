@@ -15,11 +15,11 @@ export class GamesDao {
 
     @OneToOne(() => GameModesDao, { nullable: false })
     @JoinColumn({ name: "game_mode_id" })
-    gameModeId: number;
+    gameMode: Promise<GameModesDao>;
 
     @OneToOne(() => GameStatusesDao, { nullable: false })
     @JoinColumn({ name: "game_status_id" })
-    gameStatusId: number;
+    gameStatus: Promise<GameStatusesDao>;
 
     @Column({ name: "room_name", nullable: false }) roomName: string;
 

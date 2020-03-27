@@ -16,11 +16,11 @@ export class ReportsDao {
 
     @OneToOne(() => UsersDao, { nullable: false })
     @JoinColumn({ name: "target_id" })
-    targetId: UsersDao;
+    targetId: Promise<UsersDao>;
 
     @OneToOne(() => UsersDao, { nullable: false })
     @JoinColumn({ name: "created_by" })
-    createdBy: UsersDao;
+    createdBy: Promise<UsersDao>;
 
     @Column({ nullable: false })
     reason: string;
@@ -35,9 +35,9 @@ export class ReportsDao {
 
     @OneToOne(() => UsersDao, { nullable: false })
     @JoinColumn({ name: "processed_by" })
-    processedBy: UsersDao;
+    processedBy: Promise<UsersDao>;
 
     @OneToOne(() => ReportStatusesDao, { nullable: false })
     @JoinColumn({ name: "status_id" })
-    statusId: ReportsDao;
+    status: Promise<ReportsDao>;
 }
