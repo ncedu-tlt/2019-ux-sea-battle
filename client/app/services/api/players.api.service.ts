@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { PlayerDTO } from "common/dto/player.dto";
+import { UsersDto } from "common/dto/users.dto";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 
@@ -9,7 +9,7 @@ import { Observable } from "rxjs";
 export class PlayersApiService {
     constructor(private httpClient: HttpClient) {}
 
-    getAll(): Observable<PlayerDTO[]> {
-        return this.httpClient.get<PlayerDTO[]>("/api/players");
+    getAll(): Observable<UsersDto[]> {
+        return this.httpClient.get<UsersDto[]>("/api/players");
     }
 }
