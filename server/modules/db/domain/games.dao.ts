@@ -13,11 +13,11 @@ import { GameStatusesDao } from "./gameStatuses.dao";
 export class GamesDao {
     @PrimaryGeneratedColumn() id: number;
 
-    @OneToOne(() => GameModesDao, { nullable: false })
+    @OneToOne(() => GameModesDao, { nullable: false, cascade: true })
     @JoinColumn({ name: "game_mode_id" })
     gameMode: Promise<GameModesDao>;
 
-    @OneToOne(() => GameStatusesDao, { nullable: false })
+    @OneToOne(() => GameStatusesDao, { nullable: false, cascade: true })
     @JoinColumn({ name: "game_status_id" })
     gameStatus: Promise<GameStatusesDao>;
 

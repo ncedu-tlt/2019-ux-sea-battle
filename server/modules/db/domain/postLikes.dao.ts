@@ -7,11 +7,11 @@ export class PostLikesDao {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => UsersDao, { nullable: false })
+    @ManyToOne(() => UsersDao, { nullable: false, cascade: true })
     @JoinColumn({ name: "user_id" })
     user: Promise<UsersDao>;
 
-    @ManyToOne(() => PostsDao, { nullable: false })
+    @ManyToOne(() => PostsDao, { nullable: false, cascade: true })
     @JoinColumn({ name: "post_id" })
     post: Promise<PostsDao>;
 }

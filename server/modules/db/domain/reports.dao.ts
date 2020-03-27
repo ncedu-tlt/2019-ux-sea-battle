@@ -14,11 +14,11 @@ export class ReportsDao {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(() => UsersDao, { nullable: false })
+    @OneToOne(() => UsersDao, { nullable: false, cascade: true })
     @JoinColumn({ name: "target_id" })
-    targetId: Promise<UsersDao>;
+    target: Promise<UsersDao>;
 
-    @OneToOne(() => UsersDao, { nullable: false })
+    @OneToOne(() => UsersDao, { nullable: false, cascade: true })
     @JoinColumn({ name: "created_by" })
     createdBy: Promise<UsersDao>;
 
@@ -33,11 +33,11 @@ export class ReportsDao {
         this.createdAt = new Date();
     }
 
-    @OneToOne(() => UsersDao, { nullable: false })
+    @OneToOne(() => UsersDao, { nullable: false, cascade: true })
     @JoinColumn({ name: "processed_by" })
     processedBy: Promise<UsersDao>;
 
-    @OneToOne(() => ReportStatusesDao, { nullable: false })
+    @OneToOne(() => ReportStatusesDao, { nullable: false, cascade: true })
     @JoinColumn({ name: "status_id" })
     status: Promise<ReportsDao>;
 }
