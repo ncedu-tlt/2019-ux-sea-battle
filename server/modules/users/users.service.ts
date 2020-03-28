@@ -31,6 +31,12 @@ export class UsersService {
         });
     }
 
+    findByEmailOrNickname(email: string, nickname: string): Promise<UserDAO> {
+        return this.usersRepository.findOne({
+            where: [{ email }, { nickname }]
+        });
+    }
+
     findById(id: number): Promise<UserDAO> {
         return this.usersRepository.findOne(id);
     }
