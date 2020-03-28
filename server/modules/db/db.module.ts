@@ -5,7 +5,7 @@ import { RoleDAO } from "./domain/role.dao";
 import { AchievementDAO } from "./domain/achievement.dao";
 import { BanDAO } from "./domain/ban.dao";
 import { BanTypeDAO } from "./domain/banType";
-import { FriendsDAO } from "./domain/friends.dao";
+import { FriendDAO } from "./domain/friend.dao";
 import { FriendStatusDAO } from "./domain/friendStatus.dao";
 import { GameModeDAO } from "./domain/gameMode.dao";
 import { GameStatuseDAO } from "./domain/gameStatuse.dao";
@@ -29,7 +29,7 @@ import { GameDAO } from "./domain/game.dao";
             AchievementDAO,
             BanDAO,
             BanTypeDAO,
-            FriendsDAO,
+            FriendDAO,
             FriendStatusDAO,
             GameModeDAO,
             GameStatuseDAO,
