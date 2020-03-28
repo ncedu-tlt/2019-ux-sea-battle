@@ -7,7 +7,7 @@ import {
     PrimaryGeneratedColumn
 } from "typeorm";
 import { UserDAO } from "./user.dao";
-import { ReportStatuseDAO } from "./reportStatuse.dao";
+import { ReportStatusDao } from "./reportStatus.dao";
 
 @Entity()
 export class ReportDAO {
@@ -49,7 +49,7 @@ export class ReportDAO {
     @JoinColumn({ name: "processed_by" })
     processedBy: Promise<UserDAO>;
 
-    @OneToOne(() => ReportStatuseDAO, {
+    @OneToOne(() => ReportStatusDao, {
         nullable: false,
         cascade: true,
         onDelete: "CASCADE"

@@ -9,7 +9,7 @@ import {
     PrimaryGeneratedColumn
 } from "typeorm";
 import { RoleDAO } from "./role.dao";
-import { UserStatuseDAO } from "./userStatuse.dao";
+import { UserStatusDao } from "./userStatus.dao";
 import { ShopItemDAO } from "./shopItem.dao";
 import { AchievementDAO } from "./achievement.dao";
 
@@ -48,13 +48,13 @@ export class UserDAO {
 
     @Column({ name: "is_dnd", default: false }) isDnd: boolean;
 
-    @OneToOne(() => UserStatuseDAO, {
+    @OneToOne(() => UserStatusDao, {
         nullable: true,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "status_id" })
-    status: Promise<UserStatuseDAO>;
+    status: Promise<UserStatusDao>;
 
     @ManyToMany(() => ShopItemDAO, {
         nullable: true,
