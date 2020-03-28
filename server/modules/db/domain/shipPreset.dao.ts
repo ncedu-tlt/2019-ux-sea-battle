@@ -5,23 +5,23 @@ import {
     ManyToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
-import { UsersDao } from "./users.dao";
+import { UserDAO } from "./user.dao";
 
 @Entity()
-export class ShipPresetsDao {
+export class ShipPresetDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column({ nullable: false })
     field: string;
 
-    @ManyToOne(() => UsersDao, {
+    @ManyToOne(() => UserDAO, {
         nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "user_id" })
-    user: Promise<UsersDao>;
+    user: Promise<UserDAO>;
 
     @Column({ name: "field_size", nullable: false })
     fieldSize: number;

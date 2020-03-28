@@ -1,7 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class FriendStatusesDao {
+export class ReportStatuseDAO {
     @PrimaryGeneratedColumn()
     id: number;
 

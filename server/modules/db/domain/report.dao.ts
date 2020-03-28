@@ -6,29 +6,29 @@ import {
     OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
-import { UsersDao } from "./users.dao";
-import { ReportStatusesDao } from "./reportStatuses.dao";
+import { UserDAO } from "./user.dao";
+import { ReportStatuseDAO } from "./reportStatuse.dao";
 
 @Entity()
-export class ReportsDao {
+export class ReportDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(() => UsersDao, {
+    @OneToOne(() => UserDAO, {
         nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "target_id" })
-    target: Promise<UsersDao>;
+    target: Promise<UserDAO>;
 
-    @OneToOne(() => UsersDao, {
+    @OneToOne(() => UserDAO, {
         nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "created_by" })
-    createdBy: Promise<UsersDao>;
+    createdBy: Promise<UserDAO>;
 
     @Column({ nullable: false })
     reason: string;
@@ -41,19 +41,19 @@ export class ReportsDao {
         this.createdAt = new Date();
     }
 
-    @OneToOne(() => UsersDao, {
+    @OneToOne(() => UserDAO, {
         nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "processed_by" })
-    processedBy: Promise<UsersDao>;
+    processedBy: Promise<UserDAO>;
 
-    @OneToOne(() => ReportStatusesDao, {
+    @OneToOne(() => ReportStatuseDAO, {
         nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "status_id" })
-    status: Promise<ReportsDao>;
+    status: Promise<ReportDAO>;
 }

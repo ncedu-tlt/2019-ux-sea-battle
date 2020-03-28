@@ -5,28 +5,28 @@ import {
     OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
-import { UsersDao } from "./users.dao";
-import { GamesDao } from "./games.dao";
+import { UserDAO } from "./user.dao";
+import { GameDAO } from "./game.dao";
 
 @Entity()
-export class ParticipantsDao {
+export class ParticipantDAO {
     @PrimaryGeneratedColumn() id: number;
 
-    @OneToOne(() => UsersDao, {
+    @OneToOne(() => UserDAO, {
         nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "user_id" })
-    user: Promise<UsersDao>;
+    user: Promise<UserDAO>;
 
-    @OneToOne(() => GamesDao, {
+    @OneToOne(() => GameDAO, {
         nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "game_id" })
-    game: Promise<GamesDao>;
+    game: Promise<GameDAO>;
 
     @Column({ name: "is_host", default: false }) isHost: boolean;
 

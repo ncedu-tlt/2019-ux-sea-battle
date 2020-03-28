@@ -7,22 +7,22 @@ import {
     OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
-import { BanTypes } from "./banTypes";
-import { UsersDao } from "./users.dao";
+import { BanTypeDAO } from "./banType";
+import { UserDAO } from "./user.dao";
 
 @Entity()
-export class BansDao {
+export class BanDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => UsersDao, {
+    @ManyToOne(() => UserDAO, {
         nullable: false,
         eager: true,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "user_id" })
-    user: UsersDao;
+    user: UserDAO;
 
     @Column({ name: "created_at", type: "timestamp" })
     createdAt: Date;
@@ -41,30 +41,30 @@ export class BansDao {
     @Column({ name: "is_active", default: true })
     isActive: boolean;
 
-    @OneToOne(() => UsersDao, {
+    @OneToOne(() => UserDAO, {
         nullable: false,
         eager: true,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "banned_by" })
-    bannedBy: UsersDao;
+    bannedBy: UserDAO;
 
-    @OneToOne(() => UsersDao, {
+    @OneToOne(() => UserDAO, {
         nullable: false,
         eager: true,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "removed_by" })
-    removedBy: UsersDao;
+    removedBy: UserDAO;
 
-    @OneToOne(() => BanTypes, {
+    @OneToOne(() => BanTypeDAO, {
         nullable: false,
         eager: true,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "type_id" })
-    type: BanTypes;
+    type: BanTypeDAO;
 }

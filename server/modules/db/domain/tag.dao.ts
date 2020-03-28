@@ -1,10 +1,13 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class RolesDao {
+export class TagDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column({ nullable: false })
-    name: string;
+    tag: string;
+
+    @Column({ nullable: false })
+    slug: string;
 }

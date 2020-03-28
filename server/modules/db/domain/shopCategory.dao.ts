@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class ShopCategoriesDao {
+export class ShopCategoryDAO {
     @PrimaryGeneratedColumn()
     id: number;
     @Column({ nullable: false })

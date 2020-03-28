@@ -1,24 +1,24 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { UsersDao } from "./users.dao";
+import { UserDAO } from "./user.dao";
 
 @Entity()
-export class FriendsDao {
+export class FriendsDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => UsersDao, {
+    @ManyToOne(() => UserDAO, {
         nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "user_id" })
-    user: Promise<UsersDao>;
+    user: Promise<UserDAO>;
 
-    @ManyToOne(() => UsersDao, {
+    @ManyToOne(() => UserDAO, {
         nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "friend_id" })
-    friend: Promise<UsersDao>;
+    friend: Promise<UserDAO>;
 }

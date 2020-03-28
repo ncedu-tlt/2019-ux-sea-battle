@@ -1,49 +1,49 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { UsersDao } from "./domain/users.dao";
-import { RolesDao } from "./domain/roles.dao";
-import { AchievementsDao } from "./domain/achievements.dao";
-import { BansDao } from "./domain/bans.dao";
-import { BanTypes } from "./domain/banTypes";
-import { FriendsDao } from "./domain/friends.dao";
-import { FriendStatusesDao } from "./domain/friendStatuses.dao";
-import { GameModesDao } from "./domain/gameModes.dao";
-import { GameStatusesDao } from "./domain/gameStatuses.dao";
-import { ParticipantsDao } from "./domain/participants.dao";
-import { PostLikesDao } from "./domain/postLikes.dao";
-import { PostsDao } from "./domain/posts.dao";
-import { ReportsDao } from "./domain/reports.dao";
-import { ReportStatusesDao } from "./domain/reportStatuses.dao";
-import { ShipPresetsDao } from "./domain/shipPresets.dao";
-import { ShopCategoriesDao } from "./domain/shopCategories.dao";
-import { ShopItemsDao } from "./domain/shopItems.dao";
-import { TagsDao } from "./domain/tags.dao";
-import { UserStatusesDao } from "./domain/userStatuses.dao";
-import { GamesDao } from "./domain/games.dao";
+import { UserDAO } from "./domain/user.dao";
+import { RoleDAO } from "./domain/role.dao";
+import { AchievementDAO } from "./domain/achievement.dao";
+import { BanDAO } from "./domain/ban.dao";
+import { BanTypeDAO } from "./domain/banType";
+import { FriendsDAO } from "./domain/friends.dao";
+import { FriendStatusDAO } from "./domain/friendStatus.dao";
+import { GameModeDAO } from "./domain/gameMode.dao";
+import { GameStatuseDAO } from "./domain/gameStatuse.dao";
+import { ParticipantDAO } from "./domain/participant.dao";
+import { PostLikeDAO } from "./domain/postLike.dao";
+import { PostDAO } from "./domain/post.dao";
+import { ReportDAO } from "./domain/report.dao";
+import { ReportStatuseDAO } from "./domain/reportStatuse.dao";
+import { ShipPresetDAO } from "./domain/shipPreset.dao";
+import { ShopCategoryDAO } from "./domain/shopCategory.dao";
+import { ShopItemDAO } from "./domain/shopItem.dao";
+import { TagDAO } from "./domain/tag.dao";
+import { UserStatuseDAO } from "./domain/userStatuse.dao";
+import { GameDAO } from "./domain/game.dao";
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([
-            UsersDao,
-            GamesDao,
-            AchievementsDao,
-            BansDao,
-            BanTypes,
-            FriendsDao,
-            FriendStatusesDao,
-            GameModesDao,
-            GameStatusesDao,
-            ParticipantsDao,
-            PostLikesDao,
-            PostsDao,
-            ReportsDao,
-            ReportStatusesDao,
-            RolesDao,
-            ShipPresetsDao,
-            ShopCategoriesDao,
-            ShopItemsDao,
-            TagsDao,
-            UserStatusesDao
+            UserDAO,
+            GameDAO,
+            AchievementDAO,
+            BanDAO,
+            BanTypeDAO,
+            FriendsDAO,
+            FriendStatusDAO,
+            GameModeDAO,
+            GameStatuseDAO,
+            ParticipantDAO,
+            PostLikeDAO,
+            PostDAO,
+            ReportDAO,
+            ReportStatuseDAO,
+            RoleDAO,
+            ShipPresetDAO,
+            ShopCategoryDAO,
+            ShopItemDAO,
+            TagDAO,
+            UserStatuseDAO
         ])
     ],
     exports: [TypeOrmModule]

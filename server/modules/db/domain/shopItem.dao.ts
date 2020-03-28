@@ -5,20 +5,20 @@ import {
     OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
-import { ShopCategoriesDao } from "./shopCategories.dao";
+import { ShopCategoryDAO } from "./shopCategory.dao";
 
 @Entity()
-export class ShopItemsDao {
+export class ShopItemDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(() => ShopCategoriesDao, {
+    @OneToOne(() => ShopCategoryDAO, {
         nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "category_id" })
-    category: Promise<ShopCategoriesDao>;
+    category: Promise<ShopCategoryDAO>;
 
     @Column({ nullable: false })
     name: string;

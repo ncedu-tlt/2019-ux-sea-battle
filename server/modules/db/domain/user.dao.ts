@@ -8,13 +8,13 @@ import {
     OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
-import { RolesDao } from "./roles.dao";
-import { UserStatusesDao } from "./userStatuses.dao";
-import { ShopItemsDao } from "./shopItems.dao";
-import { AchievementsDao } from "./achievements.dao";
+import { RoleDAO } from "./role.dao";
+import { UserStatuseDAO } from "./userStatuse.dao";
+import { ShopItemDAO } from "./shopItem.dao";
+import { AchievementDAO } from "./achievement.dao";
 
 @Entity()
-export class UsersDao {
+export class UserDAO {
     @PrimaryGeneratedColumn() id: number;
 
     @Column({ nullable: true })
@@ -29,14 +29,14 @@ export class UsersDao {
     @Column({ name: "avatar_url", nullable: true })
     avatarUrl: string;
 
-    @ManyToOne(() => RolesDao, {
+    @ManyToOne(() => RoleDAO, {
         nullable: false,
         eager: true,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "role_id" })
-    role: RolesDao;
+    role: RoleDAO;
 
     @Column({ type: "float", default: 0 })
     balance: number;
@@ -48,28 +48,28 @@ export class UsersDao {
 
     @Column({ name: "is_dnd", default: false }) isDnd: boolean;
 
-    @OneToOne(() => UserStatusesDao, {
+    @OneToOne(() => UserStatuseDAO, {
         nullable: true,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "status_id" })
-    status: Promise<UserStatusesDao>;
+    status: Promise<UserStatuseDAO>;
 
-    @ManyToMany(() => ShopItemsDao, {
+    @ManyToMany(() => ShopItemDAO, {
         nullable: true,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinTable()
     @JoinColumn({ name: "bought_items" })
-    boughtItems: Promise<ShopItemsDao[]>;
+    boughtItems: Promise<ShopItemDAO[]>;
 
-    @ManyToMany(() => AchievementsDao, {
+    @ManyToMany(() => AchievementDAO, {
         nullable: true,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinTable()
-    achievements: Promise<AchievementsDao[]>;
+    achievements: Promise<AchievementDAO[]>;
 }

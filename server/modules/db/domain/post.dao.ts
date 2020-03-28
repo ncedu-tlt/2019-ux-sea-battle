@@ -8,11 +8,11 @@ import {
     PrimaryGeneratedColumn,
     BeforeInsert
 } from "typeorm";
-import { UsersDao } from "./users.dao";
-import { TagsDao } from "./tags.dao";
+import { UserDAO } from "./user.dao";
+import { TagDAO } from "./tag.dao";
 
 @Entity()
-export class PostsDao {
+export class PostDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -33,19 +33,19 @@ export class PostsDao {
         this.createdAt = new Date();
     }
 
-    @ManyToMany(() => TagsDao, {
+    @ManyToMany(() => TagDAO, {
         nullable: true,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinTable()
-    tags: Promise<TagsDao[]>;
+    tags: Promise<TagDAO[]>;
 
-    @ManyToOne(() => UsersDao, {
+    @ManyToOne(() => UserDAO, {
         nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "author_id" })
-    authorId: Promise<UsersDao>;
+    authorId: Promise<UserDAO>;
 }

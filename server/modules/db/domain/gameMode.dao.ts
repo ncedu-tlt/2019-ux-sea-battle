@@ -1,10 +1,13 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class GameStatusesDao {
+export class GameModeDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column({ nullable: false })
-    status: string;
+    name: string;
+
+    @Column({ nullable: false })
+    description: string;
 }
