@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class UserStatusDao {
+export class UserStatusDAO {
     @PrimaryGeneratedColumn() id: number;
 
     @Column({ nullable: false }) name: string;
