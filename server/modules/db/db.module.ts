@@ -8,17 +8,17 @@ import { BanTypeDAO } from "./domain/banType";
 import { FriendDAO } from "./domain/friend.dao";
 import { FriendStatusDAO } from "./domain/friendStatus.dao";
 import { GameModeDAO } from "./domain/gameMode.dao";
-import { GameStatusDao } from "./domain/gameStatus.dao";
+import { GameStatusDAO } from "./domain/gameStatus.dao";
 import { ParticipantDAO } from "./domain/participant.dao";
 import { PostLikeDAO } from "./domain/postLike.dao";
 import { PostDAO } from "./domain/post.dao";
 import { ReportDAO } from "./domain/report.dao";
-import { ReportStatusDao } from "./domain/reportStatus.dao";
+import { ReportStatusDAO } from "./domain/reportStatus.dao";
 import { ShipPresetDAO } from "./domain/shipPreset.dao";
 import { ShopCategoryDAO } from "./domain/shopCategory.dao";
 import { ShopItemDAO } from "./domain/shopItem.dao";
 import { TagDAO } from "./domain/tag.dao";
-import { UserStatusDao } from "./domain/userStatus.dao";
+import { UserStatusDAO } from "./domain/userStatus.dao";
 import { GameDAO } from "./domain/game.dao";
 
 @Module({
@@ -32,18 +32,18 @@ import { GameDAO } from "./domain/game.dao";
             FriendDAO,
             FriendStatusDAO,
             GameModeDAO,
-            GameStatusDao,
+            GameStatusDAO,
             ParticipantDAO,
             PostLikeDAO,
             PostDAO,
             ReportDAO,
-            ReportStatusDao,
+            ReportStatusDAO,
             RoleDAO,
             ShipPresetDAO,
             ShopCategoryDAO,
             ShopItemDAO,
             TagDAO,
-            UserStatusDao
+            UserStatusDAO
         ])
     ],
     exports: [TypeOrmModule]
