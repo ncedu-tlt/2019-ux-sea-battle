@@ -47,5 +47,5 @@ export class PostDAO {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "author_id" })
-    authorId: Promise<UserDAO>;
+    author: Promise<UserDAO>;
 }
