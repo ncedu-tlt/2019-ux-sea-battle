@@ -2,6 +2,7 @@ import {
     Column,
     Entity,
     JoinColumn,
+    ManyToOne,
     OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
@@ -12,7 +13,7 @@ import { GameDAO } from "./game.dao";
 export class ParticipantDAO {
     @PrimaryGeneratedColumn() id: number;
 
-    @OneToOne(() => UserDAO, {
+    @ManyToOne(() => UserDAO, {
         nullable: false,
         cascade: true,
         onDelete: "CASCADE"
