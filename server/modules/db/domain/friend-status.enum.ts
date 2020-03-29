@@ -1,5 +1,5 @@
 export enum FriendStatusEnum {
     WAITING = "waiting",
-    RESOLVE = "resolve",
-    REJECT = "reject"
+    RESOLVED = "resolved",
+    REJECTED = "rejected"
 }

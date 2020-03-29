@@ -9,7 +9,6 @@ import { ParticipantDAO } from "./domain/participant.dao";
 import { PostLikeDAO } from "./domain/post-like.dao";
 import { PostDAO } from "./domain/post.dao";
 import { ReportDAO } from "./domain/report.dao";
-import { ReportStatusDAO } from "./domain/report-status.dao";
 import { ShipPresetDAO } from "./domain/ship-preset.dao";
 import { ShopCategoryDAO } from "./domain/shop-category.dao";
 import { ShopItemDAO } from "./domain/shop-item.dao";
@@ -29,7 +28,6 @@ import { GameDAO } from "./domain/game.dao";
             PostLikeDAO,
             PostDAO,
             ReportDAO,
-            ReportStatusDAO,
             ShipPresetDAO,
             ShopCategoryDAO,
             ShopItemDAO,

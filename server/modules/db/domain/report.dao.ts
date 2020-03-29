@@ -7,7 +7,7 @@ import {
     PrimaryGeneratedColumn
 } from "typeorm";
 import { UserDAO } from "./user.dao";
-import { ReportStatusDAO } from "./report-status.dao";
+import { ReportStatusEnum } from "./report-status.enum";
 
 @Entity()
 export class ReportDAO {
@@ -46,10 +46,10 @@ export class ReportDAO {
     @JoinColumn({ name: "processed_by" })
     processedBy: Promise<UserDAO>;
 
-    @OneToOne(() => ReportStatusDAO, {
-        cascade: true,
-        onDelete: "CASCADE"
+    @Column({
+        type: "enum",
+        enum: ReportStatusEnum,
+        default: ReportStatusEnum.IN_PROCESSING
     })
-    @JoinColumn({ name: "status_id" })
-    status: Promise<ReportDAO>;
+    status: ReportStatusEnum;
 }
