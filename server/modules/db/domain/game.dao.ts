@@ -7,7 +7,7 @@ import {
     PrimaryGeneratedColumn
 } from "typeorm";
 import { GameModeDAO } from "./game-mode.dao";
-import { GameStatusDAO } from "./game-status.dao";
+import { GameStatusEnum } from "./game-status.dao";
 
 @Entity()
 export class GameDAO {
@@ -20,12 +20,11 @@ export class GameDAO {
     @JoinColumn({ name: "game_mode_id" })
     gameMode: Promise<GameModeDAO>;
 
-    @OneToOne(() => GameStatusDAO, {
-        cascade: true,
-        onDelete: "CASCADE"
+    @Column({
+        type: "enum",
+        enum: GameStatusEnum
     })
-    @JoinColumn({ name: "game_status_id" })
-    gameStatus: Promise<GameStatusDAO>;
+    status: GameStatusEnum;
 
     @Column({ name: "room_name" }) roomName: string;
 

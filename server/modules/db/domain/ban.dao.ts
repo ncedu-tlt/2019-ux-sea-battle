@@ -7,7 +7,7 @@ import {
     OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
-import { BanTypeDAO } from "./ban-type";
+import { BanTypeEnum } from "./ban-type.enum";
 import { UserDAO } from "./user.dao";
 
 @Entity()
@@ -54,11 +54,9 @@ export class BanDAO {
     @JoinColumn({ name: "removed_by" })
     removedBy: Promise<UserDAO>;
 
-    @OneToOne(() => BanTypeDAO, {
-        eager: true,
-        cascade: true,
-        onDelete: "CASCADE"
+    @Column({
+        type: "enum",
+        enum: BanTypeEnum
     })
-    @JoinColumn({ name: "type_id" })
-    type: BanTypeDAO;
+    type: BanTypeEnum;
 }

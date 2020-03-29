@@ -4,14 +4,12 @@ import {
     JoinColumn,
     JoinTable,
     ManyToMany,
-    ManyToOne,
-    OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
-import { RoleDAO } from "./role.dao";
-import { UserStatusDAO } from "./user-status.dao";
 import { ShopItemDAO } from "./shop-item.dao";
 import { AchievementDAO } from "./achievement.dao";
+import { UserRoleEnum } from "./role.enum";
+import { UserStatusEnum } from "./user-status.enum";
 
 @Entity()
 export class UserDAO {
@@ -29,13 +27,12 @@ export class UserDAO {
     @Column({ name: "avatar_url", nullable: true })
     avatarUrl: string;
 
-    @ManyToOne(() => RoleDAO, {
-        eager: true,
-        cascade: true,
-        onDelete: "CASCADE"
+    @Column({
+        type: "enum",
+        enum: UserRoleEnum,
+        default: UserRoleEnum.USER
     })
-    @JoinColumn({ name: "role_id" })
-    role: RoleDAO;
+    role: UserRoleEnum;
 
     @Column({ type: "float", default: 0 })
     balance: number;
@@ -47,13 +44,11 @@ export class UserDAO {
 
     @Column({ name: "is_dnd", default: false }) isDnd: boolean;
 
-    @OneToOne(() => UserStatusDAO, {
-        nullable: true,
-        cascade: true,
-        onDelete: "CASCADE"
+    @Column({
+        type: "enum",
+        enum: UserStatusEnum
     })
-    @JoinColumn({ name: "status_id" })
-    status: Promise<UserStatusDAO>;
+    status: UserStatusEnum;
 
     @ManyToMany(() => ShopItemDAO, {
         nullable: true,
