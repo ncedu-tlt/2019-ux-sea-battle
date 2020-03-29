@@ -33,9 +33,12 @@ export class ParticipantDAO {
     @Column({ name: "is_winner", default: false })
     isWinner: boolean;
 
-    @Column({ default: 0 }) score: number;
+    @Column({ default: 0 })
+    score: number;
 
-    @Column({ default: 0 }) shots: number;
+    @Column({ default: 0 })
+    shots: number;
 
-    @Column({ default: 0 }) hits: number;
+    @Column({ default: 0 })
+    hits: number;
 }

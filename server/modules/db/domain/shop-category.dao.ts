@@ -4,6 +4,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 export class ShopCategoryDAO {
     @PrimaryGeneratedColumn()
     id: number;
+
     @Column()
     name: string;
 }
