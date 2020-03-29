@@ -26,11 +26,14 @@ export class GameDAO {
     })
     status: GameStatusEnum;
 
-    @Column({ name: "room_name" }) roomName: string;
+    @Column({ name: "room_name" })
+    roomName: string;
 
-    @Column({ name: "is_private" }) isPrivate: boolean;
+    @Column({ name: "is_private" })
+    isPrivate: boolean;
 
-    @Column({ name: "created_at", type: "timestamp" }) createdAt: Date;
+    @Column({ name: "created_at", type: "timestamp" })
+    createdAt: Date;
 
     @BeforeInsert()
     updateDate(): void {

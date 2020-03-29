@@ -27,9 +27,11 @@ export class ParticipantDAO {
     @JoinColumn({ name: "game_id" })
     game: Promise<GameDAO>;
 
-    @Column({ name: "is_host", default: false }) isHost: boolean;
+    @Column({ name: "is_host", default: false })
+    isHost: boolean;
 
-    @Column({ name: "is_winner", default: false }) isWinner: boolean;
+    @Column({ name: "is_winner", default: false })
+    isWinner: boolean;
 
     @Column({ default: 0 }) score: number;
 
