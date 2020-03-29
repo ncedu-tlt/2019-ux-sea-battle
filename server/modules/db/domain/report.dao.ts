@@ -7,7 +7,7 @@ import {
     PrimaryGeneratedColumn
 } from "typeorm";
 import { UserDAO } from "./user.dao";
-import { ReportStatusDAO } from "./reportStatus.dao";
+import { ReportStatusDAO } from "./report-status.dao";
 
 @Entity()
 export class ReportDAO {

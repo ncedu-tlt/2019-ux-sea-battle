@@ -5,7 +5,7 @@ import {
     OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
-import { ShopCategoryDAO } from "./shopCategory.dao";
+import { ShopCategoryDAO } from "./shop-category.dao";
 
 @Entity()
 export class ShopItemDAO {

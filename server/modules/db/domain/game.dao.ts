@@ -6,8 +6,8 @@ import {
     OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
-import { GameModeDAO } from "./gameMode.dao";
-import { GameStatusDAO } from "./gameStatus.dao";
+import { GameModeDAO } from "./game-mode.dao";
+import { GameStatusDAO } from "./game-status.dao";
 
 @Entity()
 export class GameDAO {

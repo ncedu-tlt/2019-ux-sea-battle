@@ -9,8 +9,8 @@ import {
     PrimaryGeneratedColumn
 } from "typeorm";
 import { RoleDAO } from "./role.dao";
-import { UserStatusDAO } from "./userStatus.dao";
-import { ShopItemDAO } from "./shopItem.dao";
+import { UserStatusDAO } from "./user-status.dao";
+import { ShopItemDAO } from "./shop-item.dao";
 import { AchievementDAO } from "./achievement.dao";
 
 @Entity()

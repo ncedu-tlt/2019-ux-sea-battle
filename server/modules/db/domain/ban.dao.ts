@@ -7,7 +7,7 @@ import {
     OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
-import { BanTypeDAO } from "./banType";
+import { BanTypeDAO } from "./ban-type";
 import { UserDAO } from "./user.dao";
 
 @Entity()
