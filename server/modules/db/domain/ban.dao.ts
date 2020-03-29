@@ -41,20 +41,18 @@ export class BanDAO {
     isActive: boolean;
 
     @OneToOne(() => UserDAO, {
-        eager: true,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "banned_by" })
-    bannedBy: UserDAO;
+    bannedBy: Promise<UserDAO>;
 
     @OneToOne(() => UserDAO, {
-        eager: true,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "removed_by" })
-    removedBy: UserDAO;
+    removedBy: Promise<UserDAO>;
 
     @OneToOne(() => BanTypeDAO, {
         eager: true,
