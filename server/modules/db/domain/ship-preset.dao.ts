@@ -15,6 +15,9 @@ export class ShipPresetDAO {
     @Column()
     field: string;
 
+    @Column()
+    name: string;
+
     @ManyToOne(() => UserDAO, {
         cascade: true,
         onDelete: "CASCADE"
