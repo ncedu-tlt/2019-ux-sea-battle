@@ -11,7 +11,8 @@ import { GameStatusEnum } from "./game-status.dao";
 
 @Entity()
 export class GameDAO {
-    @PrimaryGeneratedColumn() id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
     @OneToOne(() => GameModeDAO, {
         cascade: true,

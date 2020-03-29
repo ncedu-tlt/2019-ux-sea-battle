@@ -13,7 +13,8 @@ import { UserStatusEnum } from "./user-status.enum";
 
 @Entity()
 export class UserDAO {
-    @PrimaryGeneratedColumn() id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
     @Column({ nullable: true })
     email: string;
@@ -40,9 +41,11 @@ export class UserDAO {
     @Column({ type: "float", default: 0 })
     experience: number;
 
-    @Column({ name: "is_anon", default: true }) isAnon: boolean;
+    @Column({ name: "is_anon", default: true })
+    isAnon: boolean;
 
-    @Column({ name: "is_dnd", default: false }) isDnd: boolean;
+    @Column({ name: "is_dnd", default: false })
+    isDnd: boolean;
 
     @Column({
         type: "enum",
