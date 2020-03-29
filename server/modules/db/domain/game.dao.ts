@@ -14,7 +14,6 @@ export class GameDAO {
     @PrimaryGeneratedColumn() id: number;
 
     @OneToOne(() => GameModeDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
@@ -22,16 +21,15 @@ export class GameDAO {
     gameMode: Promise<GameModeDAO>;
 
     @OneToOne(() => GameStatusDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "game_status_id" })
     gameStatus: Promise<GameStatusDAO>;
 
-    @Column({ name: "room_name", nullable: false }) roomName: string;
+    @Column({ name: "room_name" }) roomName: string;
 
-    @Column({ name: "is_private", nullable: false }) isPrivate: boolean;
+    @Column({ name: "is_private" }) isPrivate: boolean;
 
     @Column({ name: "created_at", type: "timestamp" }) createdAt: Date;
 

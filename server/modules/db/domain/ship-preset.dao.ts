@@ -12,17 +12,16 @@ export class ShipPresetDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ nullable: false })
+    @Column()
     field: string;
 
     @ManyToOne(() => UserDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "user_id" })
     user: Promise<UserDAO>;
 
-    @Column({ name: "field_size", nullable: false })
+    @Column({ name: "field_size" })
     fieldSize: number;
 }

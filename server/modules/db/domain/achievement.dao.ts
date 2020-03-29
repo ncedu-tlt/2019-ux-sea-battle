@@ -5,12 +5,12 @@ export class AchievementDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ nullable: false })
+    @Column()
     title: string;
 
-    @Column({ nullable: false })
+    @Column()
     description: string;
 
-    @Column({ nullable: false })
+    @Column()
     reward: number;
 }

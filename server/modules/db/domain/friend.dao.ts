@@ -7,7 +7,6 @@ export class FriendDAO {
     id: number;
 
     @ManyToOne(() => UserDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
@@ -15,7 +14,6 @@ export class FriendDAO {
     user: Promise<UserDAO>;
 
     @ManyToOne(() => UserDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })

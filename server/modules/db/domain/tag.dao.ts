@@ -5,9 +5,9 @@ export class TagDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ nullable: false })
+    @Column()
     tag: string;
 
-    @Column({ nullable: false })
+    @Column()
     slug: string;
 }

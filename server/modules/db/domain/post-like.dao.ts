@@ -8,7 +8,6 @@ export class PostLikeDAO {
     id: number;
 
     @ManyToOne(() => UserDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
@@ -16,7 +15,6 @@ export class PostLikeDAO {
     user: Promise<UserDAO>;
 
     @ManyToOne(() => PostDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })

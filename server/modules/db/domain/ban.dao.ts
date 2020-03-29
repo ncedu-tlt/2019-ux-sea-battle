@@ -16,7 +16,6 @@ export class BanDAO {
     id: number;
 
     @ManyToOne(() => UserDAO, {
-        nullable: false,
         eager: true,
         cascade: true,
         onDelete: "CASCADE"
@@ -32,17 +31,16 @@ export class BanDAO {
         this.createdAt = new Date();
     }
 
-    @Column({ name: "end_at", type: "timestamp", nullable: false })
+    @Column({ name: "end_at", type: "timestamp" })
     endAt: Date;
 
-    @Column({ nullable: false })
+    @Column()
     reason: string;
 
     @Column({ name: "is_active", default: true })
     isActive: boolean;
 
     @OneToOne(() => UserDAO, {
-        nullable: false,
         eager: true,
         cascade: true,
         onDelete: "CASCADE"
@@ -51,7 +49,6 @@ export class BanDAO {
     bannedBy: UserDAO;
 
     @OneToOne(() => UserDAO, {
-        nullable: false,
         eager: true,
         cascade: true,
         onDelete: "CASCADE"
@@ -60,7 +57,6 @@ export class BanDAO {
     removedBy: UserDAO;
 
     @OneToOne(() => BanTypeDAO, {
-        nullable: false,
         eager: true,
         cascade: true,
         onDelete: "CASCADE"

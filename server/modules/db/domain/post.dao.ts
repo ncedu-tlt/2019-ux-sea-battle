@@ -16,13 +16,13 @@ export class PostDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ nullable: false })
+    @Column()
     title: string;
 
-    @Column({ name: "short_text", nullable: false })
+    @Column({ name: "short_text" })
     shortText: string;
 
-    @Column({ name: "full_text", nullable: false })
+    @Column({ name: "full_text" })
     fullText: string;
 
     @Column({ name: "created_at", type: "timestamp" })
@@ -42,7 +42,6 @@ export class PostDAO {
     tags: Promise<TagDAO[]>;
 
     @ManyToOne(() => UserDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })

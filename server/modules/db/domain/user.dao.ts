@@ -20,7 +20,7 @@ export class UserDAO {
     @Column({ nullable: true })
     email: string;
 
-    @Column({ unique: true, nullable: false })
+    @Column({ unique: true })
     nickname: string;
 
     @Column({ nullable: true })
@@ -30,7 +30,6 @@ export class UserDAO {
     avatarUrl: string;
 
     @ManyToOne(() => RoleDAO, {
-        nullable: false,
         eager: true,
         cascade: true,
         onDelete: "CASCADE"

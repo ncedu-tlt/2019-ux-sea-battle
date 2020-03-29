@@ -14,7 +14,6 @@ export class ParticipantDAO {
     @PrimaryGeneratedColumn() id: number;
 
     @ManyToOne(() => UserDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
@@ -22,7 +21,6 @@ export class ParticipantDAO {
     user: Promise<UserDAO>;
 
     @OneToOne(() => GameDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })

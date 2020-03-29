@@ -15,7 +15,6 @@ export class ReportDAO {
     id: number;
 
     @OneToOne(() => UserDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
@@ -23,14 +22,13 @@ export class ReportDAO {
     target: Promise<UserDAO>;
 
     @OneToOne(() => UserDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "created_by" })
     createdBy: Promise<UserDAO>;
 
-    @Column({ nullable: false })
+    @Column()
     reason: string;
 
     @Column({ name: "created_at", type: "timestamp" })
@@ -42,7 +40,6 @@ export class ReportDAO {
     }
 
     @OneToOne(() => UserDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
@@ -50,7 +47,6 @@ export class ReportDAO {
     processedBy: Promise<UserDAO>;
 
     @OneToOne(() => ReportStatusDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })

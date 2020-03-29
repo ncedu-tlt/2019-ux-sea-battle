@@ -13,20 +13,19 @@ export class ShopItemDAO {
     id: number;
 
     @OneToOne(() => ShopCategoryDAO, {
-        nullable: false,
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "category_id" })
     category: Promise<ShopCategoryDAO>;
 
-    @Column({ nullable: false })
+    @Column()
     name: string;
 
-    @Column({ nullable: false })
+    @Column()
     description: string;
 
-    @Column({ type: "float", nullable: false })
+    @Column({ type: "float" })
     price: number;
 
     @Column({ name: "image_url", nullable: true })

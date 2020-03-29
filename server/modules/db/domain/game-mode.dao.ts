@@ -5,9 +5,9 @@ export class GameModeDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ nullable: false })
+    @Column()
     name: string;
 
-    @Column({ nullable: false })
+    @Column()
     description: string;
 }

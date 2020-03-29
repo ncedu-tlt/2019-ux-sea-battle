@@ -5,6 +5,6 @@ export class BanTypeDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ nullable: false })
+    @Column()
     type: string;
 }
