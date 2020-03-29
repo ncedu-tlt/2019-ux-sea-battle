@@ -1,5 +1,4 @@
 import {
-    BeforeInsert,
     Column,
     Entity,
     JoinColumn,
@@ -35,9 +34,4 @@ export class GameDAO {
 
     @Column({ name: "created_at", type: "timestamp" })
     createdAt: Date;
-
-    @BeforeInsert()
-    updateDate(): void {
-        this.createdAt = new Date();
-    }
 }

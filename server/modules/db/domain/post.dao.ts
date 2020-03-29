@@ -5,8 +5,7 @@ import {
     JoinTable,
     ManyToOne,
     ManyToMany,
-    PrimaryGeneratedColumn,
-    BeforeInsert
+    PrimaryGeneratedColumn
 } from "typeorm";
 import { UserDAO } from "./user.dao";
 import { TagDAO } from "./tag.dao";
@@ -27,11 +26,6 @@ export class PostDAO {
 
     @Column({ name: "created_at", type: "timestamp" })
     createdAt: Date;
-
-    @BeforeInsert()
-    updateDates(): void {
-        this.createdAt = new Date();
-    }
 
     @ManyToMany(() => TagDAO, {
         nullable: true,

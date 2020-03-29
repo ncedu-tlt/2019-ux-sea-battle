@@ -1,5 +1,4 @@
 import {
-    BeforeInsert,
     Column,
     Entity,
     JoinColumn,
@@ -34,14 +33,10 @@ export class ReportDAO {
     @Column({ name: "created_at", type: "timestamp" })
     createdAt: Date;
 
-    @BeforeInsert()
-    updateDates(): void {
-        this.createdAt = new Date();
-    }
-
     @OneToOne(() => UserDAO, {
         cascade: true,
-        onDelete: "CASCADE"
+        onDelete: "CASCADE",
+        nullable: true
     })
     @JoinColumn({ name: "processed_by" })
     processedBy: Promise<UserDAO>;

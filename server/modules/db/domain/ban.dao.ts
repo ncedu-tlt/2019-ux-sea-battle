@@ -1,5 +1,4 @@
 import {
-    BeforeInsert,
     Column,
     Entity,
     JoinColumn,
@@ -25,11 +24,6 @@ export class BanDAO {
 
     @Column({ name: "created_at", type: "timestamp" })
     createdAt: Date;
-
-    @BeforeInsert()
-    updateDate(): void {
-        this.createdAt = new Date();
-    }
 
     @Column({ name: "end_at", type: "timestamp" })
     endAt: Date;
