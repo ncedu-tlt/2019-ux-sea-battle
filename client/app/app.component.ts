@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { UsersApiService } from "client/app/services/api/users.api.service";
 import { Observable } from "rxjs";
-import { UsersDto } from "common/dto/users.dto";
+import { UserDTO } from "common/dto/user.dto";
 
 @Component({
     selector: "sb-root",
@@ -10,7 +10,7 @@ import { UsersDto } from "common/dto/users.dto";
     `
 })
 export class AppComponent implements OnInit {
-    users: Observable<UsersDto[]>;
+    users: Observable<UserDTO[]>;
 
     constructor(private usersApiService: UsersApiService) {}
 
