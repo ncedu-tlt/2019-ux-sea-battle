@@ -3,7 +3,6 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
-    OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
 import { BanTypeEnum } from "./ban-type.enum";
@@ -34,14 +33,14 @@ export class BanDAO {
     @Column({ name: "is_active", default: true })
     isActive: boolean;
 
-    @OneToOne(() => UserDAO, {
+    @ManyToOne(() => UserDAO, {
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "banned_by" })
     bannedBy: Promise<UserDAO>;
 
-    @OneToOne(() => UserDAO, {
+    @ManyToOne(() => UserDAO, {
         cascade: true,
         onDelete: "CASCADE"
     })

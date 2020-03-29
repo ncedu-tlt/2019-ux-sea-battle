@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 import { ShopItemDAO } from "./shop-item.dao";
 import { AchievementDAO } from "./achievement.dao";
-import { UserRoleEnum } from "./role.enum";
+import { RoleEnum } from "./role.enum";
 import { UserStatusEnum } from "./user-status.enum";
 
 @Entity()
@@ -30,10 +30,10 @@ export class UserDAO {
 
     @Column({
         type: "enum",
-        enum: UserRoleEnum,
-        default: UserRoleEnum.USER
+        enum: RoleEnum,
+        default: RoleEnum.USER
     })
-    role: UserRoleEnum;
+    role: RoleEnum;
 
     @Column({ type: "float", default: 0 })
     balance: number;

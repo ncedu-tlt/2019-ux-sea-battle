@@ -3,7 +3,6 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
-    OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
 import { UserDAO } from "./user.dao";
@@ -20,7 +19,7 @@ export class ParticipantDAO {
     @JoinColumn({ name: "user_id" })
     user: Promise<UserDAO>;
 
-    @OneToOne(() => GameDAO, {
+    @ManyToOne(() => GameDAO, {
         cascade: true,
         onDelete: "CASCADE"
     })

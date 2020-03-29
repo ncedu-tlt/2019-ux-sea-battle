@@ -2,7 +2,7 @@ import {
     Column,
     Entity,
     JoinColumn,
-    OneToOne,
+    ManyToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
 import { UserDAO } from "./user.dao";
@@ -13,14 +13,14 @@ export class ReportDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(() => UserDAO, {
+    @ManyToOne(() => UserDAO, {
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "target_id" })
     target: Promise<UserDAO>;
 
-    @OneToOne(() => UserDAO, {
+    @ManyToOne(() => UserDAO, {
         cascade: true,
         onDelete: "CASCADE"
     })
@@ -33,7 +33,7 @@ export class ReportDAO {
     @Column({ name: "created_at", type: "timestamp" })
     createdAt: Date;
 
-    @OneToOne(() => UserDAO, {
+    @ManyToOne(() => UserDAO, {
         cascade: true,
         onDelete: "CASCADE",
         nullable: true

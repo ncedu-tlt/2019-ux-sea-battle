@@ -2,7 +2,7 @@ import {
     Column,
     Entity,
     JoinColumn,
-    OneToOne,
+    ManyToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
 import { ShopCategoryDAO } from "./shop-category.dao";
@@ -12,7 +12,7 @@ export class ShopItemDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(() => ShopCategoryDAO, {
+    @ManyToOne(() => ShopCategoryDAO, {
         cascade: true,
         onDelete: "CASCADE"
     })
