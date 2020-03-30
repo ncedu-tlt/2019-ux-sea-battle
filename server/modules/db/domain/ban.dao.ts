@@ -41,6 +41,7 @@ export class BanDAO {
     bannedBy: Promise<UserDAO>;
 
     @ManyToOne(() => UserDAO, {
+        nullable: true,
         cascade: true,
         onDelete: "CASCADE"
     })

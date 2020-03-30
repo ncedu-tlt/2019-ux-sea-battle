@@ -26,7 +26,7 @@ export class GameDAO {
     })
     status: GameStatusEnum;
 
-    @Column({ name: "room_name" })
+    @Column({ name: "room_name", nullable: true })
     roomName: string;
 
     @Column({ name: "is_private" })
