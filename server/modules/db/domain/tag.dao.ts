@@ -6,7 +6,7 @@ export class TagDAO {
     id: number;
 
     @Column()
-    tag: string;
+    name: string;
 
     @Column()
     slug: string;
