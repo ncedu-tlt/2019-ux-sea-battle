@@ -17,7 +17,7 @@ export class UserDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, unique: true })
     email: string;
 
     @Column({ unique: true })
