@@ -45,9 +45,6 @@ export class UserDAO {
     @Column({ name: "is_anon", default: true })
     isAnon: boolean;
 
-    @Column({ name: "is_dnd", default: false })
-    isDnd: boolean;
-
     @Column({
         type: "enum",
         enum: UserStatusEnum
