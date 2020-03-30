@@ -6,7 +6,6 @@ import { BanDAO } from "./domain/ban.dao";
 import { FriendDAO } from "./domain/friend.dao";
 import { GameModeDAO } from "./domain/game-mode.dao";
 import { ParticipantDAO } from "./domain/participant.dao";
-import { PostLikeDAO } from "./domain/post-like.dao";
 import { PostDAO } from "./domain/post.dao";
 import { ReportDAO } from "./domain/report.dao";
 import { ShipPresetDAO } from "./domain/ship-preset.dao";
@@ -25,7 +24,6 @@ import { GameDAO } from "./domain/game.dao";
             FriendDAO,
             GameModeDAO,
             ParticipantDAO,
-            PostLikeDAO,
             PostDAO,
             ReportDAO,
             ShipPresetDAO,

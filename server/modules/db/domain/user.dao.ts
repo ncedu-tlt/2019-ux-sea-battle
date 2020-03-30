@@ -10,6 +10,7 @@ import { ShopItemDAO } from "./shop-item.dao";
 import { AchievementDAO } from "./achievement.dao";
 import { RoleEnum } from "./role.enum";
 import { UserStatusEnum } from "./user-status.enum";
+import { PostDAO } from "./post.dao";
 
 @Entity("users")
 export class UserDAO {
@@ -69,4 +70,12 @@ export class UserDAO {
     })
     @JoinTable()
     achievements: Promise<AchievementDAO[]>;
+
+    @ManyToMany(() => PostDAO, {
+        nullable: true,
+        cascade: true,
+        onDelete: "CASCADE"
+    })
+    @JoinTable()
+    posts: Promise<PostDAO[]>;
 }
