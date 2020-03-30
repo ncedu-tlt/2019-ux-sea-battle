@@ -11,7 +11,7 @@ import { AchievementDAO } from "./achievement.dao";
 import { RoleEnum } from "./role.enum";
 import { UserStatusEnum } from "./user-status.enum";
 
-@Entity()
+@Entity("users")
 export class UserDAO {
     @PrimaryGeneratedColumn()
     id: number;

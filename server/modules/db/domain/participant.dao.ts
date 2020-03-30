@@ -8,7 +8,7 @@ import {
 import { UserDAO } from "./user.dao";
 import { GameDAO } from "./game.dao";
 
-@Entity()
+@Entity("participants")
 export class ParticipantDAO {
     @PrimaryGeneratedColumn() id: number;
 

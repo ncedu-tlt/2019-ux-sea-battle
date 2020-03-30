@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { ShopCategoryDAO } from "./shop-category.dao";
 
-@Entity()
+@Entity("shop_items")
 export class ShopItemDAO {
     @PrimaryGeneratedColumn()
     id: number;

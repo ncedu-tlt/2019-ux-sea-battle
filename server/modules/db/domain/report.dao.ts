@@ -8,7 +8,7 @@ import {
 import { UserDAO } from "./user.dao";
 import { ReportStatusEnum } from "./report-status.enum";
 
-@Entity()
+@Entity("reports")
 export class ReportDAO {
     @PrimaryGeneratedColumn()
     id: number;

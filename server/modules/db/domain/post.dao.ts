@@ -10,7 +10,7 @@ import {
 import { UserDAO } from "./user.dao";
 import { TagDAO } from "./tag.dao";
 
-@Entity()
+@Entity("posts")
 export class PostDAO {
     @PrimaryGeneratedColumn()
     id: number;

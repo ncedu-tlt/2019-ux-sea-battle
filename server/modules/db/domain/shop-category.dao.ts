@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity("shop_categories")
 export class ShopCategoryDAO {
     @PrimaryGeneratedColumn()
     id: number;

@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { UserDAO } from "./user.dao";
 
-@Entity()
+@Entity("ship_presets")
 export class ShipPresetDAO {
     @PrimaryGeneratedColumn()
     id: number;

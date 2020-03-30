@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity("achievements")
 export class AchievementDAO {
     @PrimaryGeneratedColumn()
     id: number;

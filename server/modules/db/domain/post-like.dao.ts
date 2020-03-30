@@ -2,7 +2,7 @@ import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { UserDAO } from "./user.dao";
 import { PostDAO } from "./post.dao";
 
-@Entity()
+@Entity("post_likes")
 export class PostLikeDAO {
     @PrimaryGeneratedColumn()
     id: number;

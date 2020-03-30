@@ -8,7 +8,7 @@ import {
 import { BanTypeEnum } from "./ban-type.enum";
 import { UserDAO } from "./user.dao";
 
-@Entity()
+@Entity("bans")
 export class BanDAO {
     @PrimaryGeneratedColumn()
     id: number;

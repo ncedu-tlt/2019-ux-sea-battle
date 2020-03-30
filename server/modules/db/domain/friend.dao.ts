@@ -8,7 +8,7 @@ import {
 import { UserDAO } from "./user.dao";
 import { FriendStatusEnum } from "./friend-status.enum";
 
-@Entity()
+@Entity("friends")
 export class FriendDAO {
     @PrimaryGeneratedColumn()
     id: number;

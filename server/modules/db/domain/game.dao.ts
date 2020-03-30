@@ -6,9 +6,9 @@ import {
     PrimaryGeneratedColumn
 } from "typeorm";
 import { GameModeDAO } from "./game-mode.dao";
-import { GameStatusEnum } from "./game-status.dao";
+import { GameStatusEnum } from "./game-status.enum";
 
-@Entity()
+@Entity("games")
 export class GameDAO {
     @PrimaryGeneratedColumn()
     id: number;
