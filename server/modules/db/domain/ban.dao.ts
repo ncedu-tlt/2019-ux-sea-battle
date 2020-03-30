@@ -21,16 +21,25 @@ export class BanDAO {
     @JoinColumn({ name: "user_id" })
     user: UserDAO;
 
-    @Column({ name: "created_at", type: "timestamp" })
+    @Column({
+        name: "created_at",
+        type: "timestamp"
+    })
     createdAt: Date;
 
-    @Column({ name: "end_at", type: "timestamp" })
+    @Column({
+        name: "end_at",
+        type: "timestamp"
+    })
     endAt: Date;
 
     @Column()
     reason: string;
 
-    @Column({ name: "is_active", default: true })
+    @Column({
+        name: "is_active",
+        default: true
+    })
     isActive: boolean;
 
     @ManyToOne(() => UserDAO, {

@@ -30,7 +30,10 @@ export class ReportDAO {
     @Column()
     reason: string;
 
-    @Column({ name: "created_at", type: "timestamp" })
+    @Column({
+        name: "created_at",
+        type: "timestamp"
+    })
     createdAt: Date;
 
     @ManyToOne(() => UserDAO, {

@@ -24,7 +24,10 @@ export class PostDAO {
     @Column({ name: "full_text" })
     fullText: string;
 
-    @Column({ name: "created_at", type: "timestamp" })
+    @Column({
+        name: "created_at",
+        type: "timestamp"
+    })
     createdAt: Date;
 
     @ManyToMany(() => TagDAO, {

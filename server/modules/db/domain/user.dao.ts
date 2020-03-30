@@ -17,7 +17,10 @@ export class UserDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ nullable: true, unique: true })
+    @Column({
+        nullable: true,
+        unique: true
+    })
     email: string;
 
     @Column({ unique: true })
@@ -26,7 +29,10 @@ export class UserDAO {
     @Column({ nullable: true })
     password: string;
 
-    @Column({ name: "avatar_url", nullable: true })
+    @Column({
+        name: "avatar_url",
+        nullable: true
+    })
     avatarUrl: string;
 
     @Column({
@@ -36,13 +42,22 @@ export class UserDAO {
     })
     role: RoleEnum;
 
-    @Column({ type: "float", default: 0 })
+    @Column({
+        type: "float",
+        default: 0
+    })
     balance: number;
 
-    @Column({ type: "float", default: 0 })
+    @Column({
+        type: "float",
+        default: 0
+    })
     experience: number;
 
-    @Column({ name: "is_anon", default: true })
+    @Column({
+        name: "is_anon",
+        default: true
+    })
     isAnon: boolean;
 
     @Column({

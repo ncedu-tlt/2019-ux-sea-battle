@@ -28,6 +28,9 @@ export class ShopItemDAO {
     @Column({ type: "float" })
     price: number;
 
-    @Column({ name: "image_url", nullable: true })
+    @Column({
+        name: "image_url",
+        nullable: true
+    })
     imageUrl: string;
 }
