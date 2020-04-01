@@ -43,14 +43,20 @@ export class AuthService {
                 };
             }
         }
-        throw new HttpException("Invalid credentials", HttpStatus.UNAUTHORIZED);
+        throw new HttpException(
+            "auth/invalidCredentials",
+            HttpStatus.UNAUTHORIZED
+        );
     }
 
-    public async register(registerDTO: RegisterRequestDTO): Promise<any> {
-        const user = await this.usersService.findByEmail(registerDTO.email);
+    public async register(registerDTO: RegisterRequestDTO): Promise<void> {
+        const user = await this.usersService.findByEmailOrNickname(
+            registerDTO.email,
+            registerDTO.nickname
+        );
         if (user) {
             throw new HttpException(
-                "User is already exist",
+                "auth/userAlreadyExist",
                 HttpStatus.BAD_REQUEST
             );
         }
@@ -59,8 +65,5 @@ export class AuthService {
             password: this.cryptoService.hashPassword(registerDTO.password)
         };
         await this.usersService.create(candidateUser);
-        return {
-            code: "user/created"
-        };
     }
 }

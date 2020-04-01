@@ -62,7 +62,8 @@ export class UserDAO {
 
     @Column({
         type: "enum",
-        enum: UserStatusEnum
+        enum: UserStatusEnum,
+        default: UserStatusEnum.OFFLINE
     })
     status: UserStatusEnum;
 
