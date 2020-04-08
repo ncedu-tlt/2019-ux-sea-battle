@@ -1,26 +1,22 @@
 import { RoleEnum } from "../../server/modules/db/domain/role.enum";
 import { UserStatusEnum } from "../../server/modules/db/domain/user-status.enum";
 import {
+    IsBoolean,
     IsEmail,
-    Length,
+    IsEnum,
     IsNumber,
     IsOptional,
-    IsBoolean,
     IsString,
-    IsEnum
+    Length
 } from "class-validator";
 
-export class UserUpdateDto {
-    @IsNumber()
-    id: number;
-
+export class CreateUserDto {
     @IsOptional()
     @IsEmail()
     email?: string;
 
-    @IsOptional()
     @Length(3, 20)
-    nickname?: string;
+    nickname: string;
 
     @IsOptional()
     @Length(5, 20)
