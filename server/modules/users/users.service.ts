@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserDAO } from "../db/domain/user.dao";
-import { DeleteResult, Repository, UpdateResult } from "typeorm";
+import { DeleteResult, Repository } from "typeorm";
 import { RegisterRequestDTO } from "../../../common/dto/register-request.dto";
 import { UserDTO } from "../../../common/dto/user.dto";
-import { UserUpdateDto } from "../../../common/dto/user-update.dto";
-import { UserCreateDto } from "../../../common/dto/user-create.dto";
+import { UpdateUserDto } from "../../../common/dto/update-user.dto";
+import { CreateUserDto } from "../../../common/dto/create-user.dto";
 import { CryptographerService } from "../auth/cryptographer.service";
 
 @Injectable()
@@ -52,11 +52,12 @@ export class UsersService {
 
     async getUser(id: number): Promise<UserDTO> {
         const user = await this.usersRepository.findOne(id);
-        if (!user)
+        if (!user) {
             throw new HttpException(
-                "users/userNotExist",
-                HttpStatus.BAD_REQUEST
+                "users/userDoesNotExist",
+                HttpStatus.NOT_FOUND
             );
+        }
         return {
             id: user.id,
             email: user.email,
@@ -70,47 +71,49 @@ export class UsersService {
         };
     }
 
-    async createUser(createDTO: UserCreateDto): Promise<void> {
+    async createUser(createDTO: CreateUserDto): Promise<UserDTO> {
         const user = await this.findByEmailOrNickname(
             createDTO.email,
             createDTO.nickname
         );
-        if (user)
+        if (user) {
             throw new HttpException(
                 "users/userAlreadyExist",
-                HttpStatus.BAD_REQUEST
+                HttpStatus.CONFLICT
             );
-        const candidateUser = {
-            ...createDTO,
-            password: this.cryptoService.hashPassword(createDTO)
-        };
-        await this.usersRepository.save(candidateUser);
+        }
+        if (!createDTO.password) {
+            return await this.usersRepository.save(createDTO);
+        } else {
+            const candidateUser = {
+                ...createDTO,
+                password: this.cryptoService.hashPassword(createDTO.password)
+            };
+            return await this.usersRepository.save(candidateUser);
+        }
     }
 
-    async update(updateDTO: UserUpdateDto): Promise<UpdateResult> {
-        const user = await this.findByEmailOrNickname(
-            updateDTO.email,
-            updateDTO.nickname
-        );
-        if (user)
-            throw new HttpException(
-                "users/userAlreadyExist",
-                HttpStatus.BAD_REQUEST
-            );
-        const candidateUser = {
-            ...updateDTO,
-            password: this.cryptoService.hashPassword(updateDTO)
-        };
-        return await this.usersRepository.update(updateDTO.id, candidateUser);
+    async update(updateDTO: UpdateUserDto): Promise<UserDTO> {
+        if (!updateDTO.password) {
+            await this.usersRepository.update(updateDTO.id, updateDTO);
+        } else {
+            const candidateUser = {
+                ...updateDTO,
+                password: this.cryptoService.hashPassword(updateDTO.password)
+            };
+            await this.usersRepository.update(updateDTO.id, candidateUser);
+        }
+        return await this.findById(updateDTO.id);
     }
 
     async delete(id: number): Promise<DeleteResult> {
         const user = await this.usersRepository.findOne(id);
-        if (!user)
+        if (!user) {
             throw new HttpException(
-                "users/userNotExist",
-                HttpStatus.BAD_REQUEST
+                "users/userDoesNotExist",
+                HttpStatus.NOT_FOUND
             );
+        }
         return this.usersRepository.delete(id);
     }
 }
