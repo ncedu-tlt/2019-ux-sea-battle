@@ -14,11 +14,11 @@ import { CreateUserDto } from "../../../common/dto/create-user.dto";
 import { Roles } from "../../decorators/role.decorator";
 import { RoleEnum } from "../db/domain/role.enum";
 
-@Controller("/api/users")
-export class UsersController {
+@Controller("/api/management/users")
+export class UsersManagementController {
     constructor(private usersService: UsersService) {}
 
-    @Get("admin")
+    @Get()
     @Roles(RoleEnum.ADMIN)
     async getAll(): Promise<UserDTO[]> {
         const users = await this.usersService.getAll();
@@ -35,13 +35,13 @@ export class UsersController {
         }));
     }
 
-    @Get("admin/:id")
+    @Get(":id")
     @Roles(RoleEnum.ADMIN)
     async getUser(@Param("id") id): Promise<UserDTO> {
         return await this.usersService.getUser(id);
     }
 
-    @Post("admin")
+    @Post()
     @Roles(RoleEnum.ADMIN)
     async create(@Body() user: CreateUserDto): Promise<UserDTO> {
         const created = await this.usersService.createUser(user);
@@ -58,7 +58,7 @@ export class UsersController {
         };
     }
 
-    @Patch("admin/:id")
+    @Patch(":id")
     @Roles(RoleEnum.ADMIN)
     async update(
         @Param("id") id,
@@ -79,7 +79,7 @@ export class UsersController {
         };
     }
 
-    @Delete("admin/:id")
+    @Delete(":id")
     @Roles(RoleEnum.ADMIN)
     async delete(@Param("id") id): Promise<void> {
         await this.usersService.delete(id);
