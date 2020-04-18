@@ -1,0 +1,43 @@
+<div class="registration">
+    <form [formGroup]="registrationForm" class="registration__form" (ngSubmit)="submitHandler()">
+        <label for="email" class="registration__label">Адрес электронной почты</label>
+        <input type="email" id="email" formControlName="email">
+
+        <label for="nickname" class="registration__label">Никнейм</label>
+        <input type="text" id="nickname" formControlName="nickname">
+
+        <label for="password" class="registration__label">Пароль</label>
+        <input type="password" id="password" formControlName="password">
+
+        <label for="confirmPassword" class="registration__label">Подвердите пароль</label>
+        <input type="password" id="confirmPassword" formControlName="confirmPassword">
+
+        <label for="acceptTerms" class="registration__label">Согласие с правилами</label>
+        <input type="checkbox" id="acceptTerms" formControlName="acceptTerms">
+
+        <button
+                type="submit"
+                class="registration__button"
+                *ngIf="registrationForm.enabled"
+                [disabled]="registrationForm.invalid"
+        >
+            Зарегистрироваться
+        </button>
+
+        <div class="registration__errors" *ngIf="registrationForm.invalid && registrationForm.touched">
+            <span *ngIf="_email.errors?.required">Это поле обязательное (почта)</span>
+            <span *ngIf="_email.errors?.pattern">Введен некорректный адрес электронной почты</span>
+            <span *ngIf="_nickname.errors?.required">Это поле обязательное (никнейм)</span>
+            <span *ngIf="_nickname.errors?.minlength">Никнейм должен быть от 3 до 20 смиволов</span>
+            <span *ngIf="_nickname.errors?.maxlength">Никнейм должен быть от 3 до 20 смиволов</span>
+            <span *ngIf="_password.errors?.required">Это поле обязательное (пароль)</span>
+            <span *ngIf="_password.errors?.maxlength">Пароль должен быть от 5 до 20 смиволов</span>
+            <span *ngIf="_password.errors?.maxlength">Пароль должен быть от 5 до 20 смиволов</span>
+            <span *ngIf="_confirmPassword.errors?.mustMatch">Пароли должны совпадать</span>
+            <span *ngIf="acceptTerms.errors">Согласие с правилами</span>
+        </div>
+        <div class="registration__server-errors" *ngIf="serverErrors">
+            <span>Такой пользователь уже существует</span>
+        </div>
+    </form>
+</div>

@@ -5,9 +5,7 @@ import { UserDTO } from "common/dto/user.dto";
 
 @Component({
     selector: "sb-root",
-    template: `
-        {{ users | async | json }}
-    `
+    templateUrl: "./app.component.html"
 })
 export class AppComponent implements OnInit {
     users: Observable<UserDTO[]>;
