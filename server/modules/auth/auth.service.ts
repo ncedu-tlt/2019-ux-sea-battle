@@ -8,6 +8,7 @@ import { TokenPayloadModel } from "../../../common/models/token-payload.model";
 import { LoginRequestDTO } from "common/dto/login-request.dto";
 import { RegisterRequestDTO } from "common/dto/register-request.dto";
 import { ConfigService } from "@nestjs/config";
+import { RegistrationUserDto } from "../../../common/dto/registration-user.dto";
 
 @Injectable()
 export class AuthService {
@@ -60,8 +61,9 @@ export class AuthService {
                 HttpStatus.BAD_REQUEST
             );
         }
-        const candidateUser: RegisterRequestDTO = {
+        const candidateUser: RegistrationUserDto = {
             ...registerDTO,
+            isAnon: false,
             password: this.cryptoService.hashPassword(registerDTO.password)
         };
         await this.usersService.create(candidateUser);
