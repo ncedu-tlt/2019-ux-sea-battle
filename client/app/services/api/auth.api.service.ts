@@ -9,7 +9,7 @@ import { Observable } from "rxjs";
 export class AuthApiService {
     constructor(private httpClient: HttpClient) {}
 
-    registration(
+    register(
         registrationBody: RegisterRequestDTO
     ): Observable<RegisterRequestDTO> {
         return this.httpClient.post<RegisterRequestDTO>(
