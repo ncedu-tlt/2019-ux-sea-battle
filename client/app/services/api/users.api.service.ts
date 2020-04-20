@@ -10,6 +10,6 @@ export class UsersApiService {
     constructor(private httpClient: HttpClient) {}
 
     getAll(): Observable<UserDTO[]> {
-        return this.httpClient.get<UserDTO[]>("/api/users");
+        return this.httpClient.get<UserDTO[]>("/api/management/users");
     }
 }
