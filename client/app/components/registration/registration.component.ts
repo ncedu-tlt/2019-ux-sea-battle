@@ -87,7 +87,7 @@ export class RegistrationComponent {
         if (this.registrationForm.valid) {
             this.authService.register(newUser).subscribe(
                 () => {
-                    this.router.navigate(["/login"]).then();
+                    this.router.navigate(["/login"]);
                 },
                 err => {
                     this.serverErrors = err.error.statusCode;
