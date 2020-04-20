@@ -6,9 +6,9 @@ import {
     Validators
 } from "@angular/forms";
 import { matchingPasswords } from "../../validators/matchingPasswords";
-import { HttpStatus } from "@nestjs/common";
 import { Router } from "@angular/router";
 import { AuthApiService } from "../../services/api/auth.api.service";
+import { RegisterRequestDTO } from "../../../../common/dto/register-request.dto";
 
 @Component({
     selector: "registration-form",
@@ -22,7 +22,7 @@ export class RegistrationComponent {
         private authService: AuthApiService
     ) {}
 
-    serverErrors: HttpStatus;
+    serverErrors: number;
 
     registrationForm: FormGroup = this.fb.group(
         {
@@ -51,7 +51,7 @@ export class RegistrationComponent {
                     Validators.maxLength(20)
                 ])
             ],
-            confirmPassword: ["", []],
+            confirmPassword: ["", [Validators.required]],
             acceptTerms: [false, Validators.requiredTrue]
         },
         { validator: matchingPasswords("password", "confirmPassword") }
@@ -79,13 +79,13 @@ export class RegistrationComponent {
 
     submitHandler(): void {
         this.serverErrors = null;
-        const newUser = {
+        const newUser: RegisterRequestDTO = {
             email: this.registrationForm.value.email,
             nickname: this.registrationForm.value.nickname,
             password: this.registrationForm.value.password
         };
         if (this.registrationForm.valid) {
-            this.authService.registration(newUser).subscribe(
+            this.authService.register(newUser).subscribe(
                 () => {
                     this.router.navigate(["/login"]).then();
                 },
