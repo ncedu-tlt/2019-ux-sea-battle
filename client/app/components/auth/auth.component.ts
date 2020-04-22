@@ -16,14 +16,14 @@ import {
     styleUrls: ["./auth.component.less"]
 })
 export class AuthComponent {
+    errorCode: number;
+
     constructor(
         private fb: FormBuilder,
         private authService: AuthApiService,
         private router: Router,
         private tokenService: TokenService
     ) {}
-
-    errorCode: number;
 
     authForm: FormGroup = this.fb.group({
         email: [
