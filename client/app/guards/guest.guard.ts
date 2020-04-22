@@ -1,11 +1,11 @@
-import { TokenService } from "./../services/token.service";
+import { TokenService } from "../services/token.service";
 import { CanActivate, Router } from "@angular/router";
 import { Injectable } from "@angular/core";
 
 @Injectable({
     providedIn: "root"
 })
-export class AuthGuard implements CanActivate {
+export class GuestGuard implements CanActivate {
     constructor(private router: Router, private tokenService: TokenService) {}
 
     canActivate(): boolean {

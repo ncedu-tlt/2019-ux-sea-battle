@@ -21,7 +21,7 @@
         </label>
         
         <button [disabled]="authForm.invalid" type="submit">Войти</button>
-        <div class="auth__server-errors" *ngIf="serverErrors" [ngSwitch]="serverErrors">
+        <div class="auth__server-errors" *ngIf="errorCode" [ngSwitch]="errorCode">
             <span *ngSwitchCase="401">Неверные данные</span>
             <span *ngSwitchDefault>Что-то пошло не так</span>
         </div>

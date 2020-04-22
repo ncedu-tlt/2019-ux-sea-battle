@@ -23,7 +23,7 @@ export class AuthComponent {
         private tokenService: TokenService
     ) {}
 
-    serverErrors: number;
+    errorCode: number;
 
     authForm: FormGroup = this.fb.group({
         email: [
@@ -52,7 +52,7 @@ export class AuthComponent {
     }
 
     onSubmit(): void {
-        this.serverErrors = null;
+        this.errorCode = null;
         const user: LoginRequestDTO = {
             email: this.authForm.value.email,
             password: this.authForm.value.password
@@ -64,7 +64,7 @@ export class AuthComponent {
                     this.router.navigate(["/"]);
                 },
                 err => {
-                    this.serverErrors = err.error.statusCode;
+                    this.errorCode = err.error.statusCode;
                 }
             );
         }
