@@ -1,4 +1,4 @@
-import { CookieService } from "ngx-cookie-service";
+import { TokenService } from "../../services/token.service";
 import { AuthApiService } from "./../../services/api/auth.api.service";
 import { LoginRequestDTO } from "common/dto/login-request.dto";
 import { Router } from "@angular/router";
@@ -20,7 +20,7 @@ export class AuthComponent {
         private fb: FormBuilder,
         private authService: AuthApiService,
         private router: Router,
-        private cookieService: CookieService
+        private tokenService: TokenService
     ) {}
 
     serverErrors: number;
@@ -60,7 +60,7 @@ export class AuthComponent {
         if (this.authForm.valid) {
             this.authService.login(user).subscribe(
                 data => {
-                    this.cookieService.set("accessToken", data.accessToken);
+                    this.tokenService.setToken(data.accessToken);
                     this.router.navigate(["/"]);
                 },
                 err => {

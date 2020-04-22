@@ -1,4 +1,4 @@
-import { CookieService } from "ngx-cookie-service";
+import { TokenService } from "./token.service";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import {
@@ -13,13 +13,13 @@ import { catchError } from "rxjs/operators";
 
 @Injectable()
 export class TokenInterceptorService implements HttpInterceptor {
-    constructor(private cookieService: CookieService, private router: Router) {}
+    constructor(private tokenService: TokenService, private router: Router) {}
 
     intercept(
         req: HttpRequest<any>,
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
-        const token = this.cookieService.get("accessToken");
+        const token = this.tokenService.getToken();
         let r = req;
         if (token) {
             r = req.clone({
@@ -31,7 +31,7 @@ export class TokenInterceptorService implements HttpInterceptor {
         return next.handle(r).pipe(
             catchError((error: HttpErrorResponse) => {
                 if (error.status === 401 || error.status === 403) {
-                    this.cookieService.delete("accessToken");
+                    this.tokenService.deleteToken();
                     this.router.navigate(["/login"]);
                 }
                 return throwError(error);
