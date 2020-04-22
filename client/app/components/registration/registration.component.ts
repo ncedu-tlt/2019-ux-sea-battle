@@ -16,13 +16,13 @@ import { RegisterRequestDTO } from "../../../../common/dto/register-request.dto"
     styleUrls: ["./registration.component.less"]
 })
 export class RegistrationComponent {
+    errorsCode: number;
+
     constructor(
         private fb: FormBuilder,
         private router: Router,
         private authService: AuthApiService
     ) {}
-
-    serverErrors: number;
 
     registrationForm: FormGroup = this.fb.group(
         {
@@ -78,7 +78,7 @@ export class RegistrationComponent {
     }
 
     submitHandler(): void {
-        this.serverErrors = null;
+        this.errorsCode = null;
         const newUser: RegisterRequestDTO = {
             email: this.registrationForm.value.email,
             nickname: this.registrationForm.value.nickname,
@@ -90,7 +90,7 @@ export class RegistrationComponent {
                     this.router.navigate(["/login"]);
                 },
                 err => {
-                    this.serverErrors = err.error.statusCode;
+                    this.errorsCode = err.error.statusCode;
                 }
             );
         }

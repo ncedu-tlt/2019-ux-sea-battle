@@ -51,7 +51,7 @@
         >
             Зарегистрироваться
         </button>
-        <div class="registration__server-errors" *ngIf="serverErrors" [ngSwitch]="serverErrors">
+        <div class="registration__server-errors" *ngIf="errorsCode" [ngSwitch]="errorsCode">
             <span *ngSwitchCase="400">Такой пользователь уже существует</span>
             <span *ngSwitchCase="500">Внутренняя ошибка сервера</span>
             <span *ngSwitchDefault>Что-то пошло не так</span>
