@@ -8,7 +8,7 @@ import { RegistrationComponent } from "./components/registration/registration.co
 import { ReactiveFormsModule } from "@angular/forms";
 import { NotFoundComponent } from "./components/not-found/not-found.component";
 import { AuthComponent } from "./components/auth/auth.component";
-import { TokenInterceptorService } from "./services/token-interceptor.service";
+import { InterceptorService } from "./services/interceptor.service";
 import { CookieService } from "ngx-cookie-service";
 
 @NgModule({
@@ -28,7 +28,7 @@ import { CookieService } from "ngx-cookie-service";
         CookieService,
         {
             provide: HTTP_INTERCEPTORS,
-            useClass: TokenInterceptorService,
+            useClass: InterceptorService,
             multi: true
         }
     ],
