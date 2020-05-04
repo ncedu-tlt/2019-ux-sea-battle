@@ -11,7 +11,6 @@ import { ReportDAO } from "./domain/report.dao";
 import { ShipPresetDAO } from "./domain/ship-preset.dao";
 import { ShopCategoryDAO } from "./domain/shop-category.dao";
 import { ShopItemDAO } from "./domain/shop-item.dao";
-import { TagDAO } from "./domain/tag.dao";
 import { GameDAO } from "./domain/game.dao";
 
 @Module({
@@ -28,8 +27,7 @@ import { GameDAO } from "./domain/game.dao";
             ReportDAO,
             ShipPresetDAO,
             ShopCategoryDAO,
-            ShopItemDAO,
-            TagDAO
+            ShopItemDAO
         ])
     ],
     exports: [TypeOrmModule]
