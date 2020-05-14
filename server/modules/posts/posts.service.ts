@@ -1,4 +1,3 @@
-import { CreatePostDTO } from "./../../../common/dto/create-post.dto";
 import { UpdatePostDTO } from "./../../../common/dto/update-post.dto";
 import { PostDTO } from "./../../../common/dto/post.dto";
 import { PostDAO } from "./../db/domain/post.dao";
@@ -13,11 +12,25 @@ export class PostsService {
         private postsRepository: Repository<PostDAO>
     ) {}
 
-    create(post: CreatePostDTO): Promise<PostDAO> {
+    async getPosts(range: string): Promise<[PostDAO[], string]> {
+        const ranges = range.split("-", 2);
+        const begin = parseInt(ranges[0]);
+        const end = parseInt(ranges[1]);
+
+        const result = await this.postsRepository.find({
+            take: end - begin,
+            skip: begin > 0 ? begin - 1 : begin
+        });
+
+        const resRange = begin + "-" + end + "/" + result.length;
+        return [result, resRange];
+    }
+
+    create(post: PostDTO): Promise<PostDAO> {
         return this.postsRepository.save(post);
     }
 
-    async update(post: UpdatePostDTO): Promise<PostDTO> {
+    async update(post: UpdatePostDTO): Promise<PostDAO> {
         await this.postsRepository.update(post.id, post);
         return await this.postsRepository.findOne(post.id);
     }

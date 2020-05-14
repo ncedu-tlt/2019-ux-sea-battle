@@ -1,6 +1,4 @@
-import { UserDAO } from "./../../server/modules/db/domain/user.dao";
-import { IsString, IsOptional, IsDate } from "class-validator";
-import { Type } from "class-transformer";
+import { IsString, IsOptional } from "class-validator";
 
 export class CreatePostDTO {
     @IsString()
@@ -12,13 +10,6 @@ export class CreatePostDTO {
     @IsString()
     fullText: string;
 
-    @IsDate()
-    @Type(() => Date)
-    createdAt: Date;
-
     @IsOptional()
-    @IsString()
-    tags?: string;
-
-    author: Promise<UserDAO>;
+    tags?: string[];
 }

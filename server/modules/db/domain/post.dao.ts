@@ -27,13 +27,19 @@ export class PostDAO {
     })
     createdAt: Date;
 
-    @Column({ nullable: true })
-    tags: string;
-
-    @ManyToOne(() => UserDAO, {
-        cascade: true,
-        onDelete: "CASCADE"
+    @Column("text", {
+        array: true,
+        nullable: true
     })
+    tags: string[];
+
+    @ManyToOne(
+        () => UserDAO,
+        user => user.posts,
+        {
+            eager: true
+        }
+    )
     @JoinColumn({ name: "author_id" })
-    author: Promise<UserDAO>;
+    author: UserDAO;
 }
