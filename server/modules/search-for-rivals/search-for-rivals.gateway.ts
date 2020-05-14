@@ -1,6 +1,7 @@
 import {
     ConnectedSocket,
     MessageBody,
+    OnGatewayConnection,
     OnGatewayDisconnect,
     SubscribeMessage,
     WebSocketGateway,
@@ -8,27 +9,47 @@ import {
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
 import { GameModeEnum } from "../db/domain/game-mode.enum";
-import { UseGuards } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import { ClassicService } from "./classic.service";
 import { RoomDto } from "../../../common/dto/room.dto";
 import { SearchDto } from "../../../common/dto/search.dto";
+import { UseGuards } from "@nestjs/common";
+import { WsAuthGuard } from "../../guards/ws-auth.guard";
+import { UsersService } from "../users/users.service";
+import { UserDTO } from "../../../common/dto/user.dto";
+import { WsExceptionHandlingService } from "./ws-exception-handling.service";
 
+@UseGuards(WsAuthGuard)
 @WebSocketGateway({ namespace: "rivals" })
-export class SearchForRivalsGateway implements OnGatewayDisconnect {
+export class SearchForRivalsGateway
+    implements OnGatewayDisconnect, OnGatewayConnection {
     @WebSocketServer()
     private server: Server;
     private socketToRivalsMapping = new Map<string, string>();
     private room: RoomDto;
 
-    constructor(private classicService: ClassicService) {}
+    constructor(
+        private classicService: ClassicService,
+        private usersService: UsersService,
+        private wsExceptionHandlingService: WsExceptionHandlingService
+    ) {}
+
+    async handleConnection(socket: Socket): Promise<void> {
+        const user: UserDTO = await this.wsExceptionHandlingService.tokenCheck(
+            socket
+        );
+        if (!user) {
+            socket.emit("connection", "401");
+            socket.disconnect();
+        } else {
+            this.server.emit("connection", user.id);
+        }
+    }
 
     handleDisconnect(socket: Socket): void {
         this.server.emit("leave", socket.id);
         this.socketToRivalsMapping.delete(socket.id);
     }
 
-    @UseGuards(AuthGuard())
     @SubscribeMessage("search")
     async handleSearch(
         @MessageBody() req: SearchDto,
