@@ -53,10 +53,10 @@ export class SearchForRivalsGateway
             throw new WsException("Unknown game mode");
         }
 
-        const searching: Search = this.searchFactoryService.searchForRivals(
+        const searchFactory: Search = this.searchFactoryService.searchForRivals(
             req.gameMode
         );
-        const room: RoomDto = await searching.search(
+        const room: RoomDto = await searchFactory.search(
             this.idToClassicModeMapping
         );
 
