@@ -1,8 +1,9 @@
-import { PostDAO } from "./../db/domain/post.dao";
 import { AuthGuard } from "@nestjs/passport";
 import { CreatePostDTO } from "./../../../common/dto/create-post.dto";
 import { UpdatePostDTO } from "./../../../common/dto/update-post.dto";
 import { PostsService } from "./posts.service";
+import { ConverterService } from "./converter.service";
+import { PageService } from "../shared/page/page.service";
 import { PostDTO } from "../../../common/dto/post.dto";
 import {
     Controller,
@@ -21,26 +22,30 @@ import {
 } from "@nestjs/common";
 import { Roles } from "server/decorators/role.decorator";
 import { RoleEnum } from "../db/domain/role.enum";
+import { Response as ResponseType, Request as RequestType } from "express";
 
 @Controller("/api/posts")
 export class PostsController {
-    constructor(private postsService: PostsService) {}
+    constructor(
+        private postsService: PostsService,
+        private pageService: PageService,
+        private converterService: ConverterService
+    ) {}
 
     @Get()
-    async get(@Headers("range") range, @Response() res): Promise<any> {
+    async get(
+        @Headers("range") range: string,
+        @Response() res: ResponseType
+    ): Promise<ResponseType> {
         if (range) {
-            const [posts, resRange] = await this.postsService.getPosts(range);
-            res.set("Range", resRange);
-            res.send(
-                posts.map(post => ({
-                    id: post.id,
-                    title: post.title,
-                    shortText: post.shortText,
-                    fullText: post.fullText,
-                    createdAt: post.createdAt,
-                    tags: post.tags,
-                    author: post.author
-                }))
+            const postsPage = await this.postsService.getPosts(range);
+
+            return this.pageService.sendResponse(
+                res,
+                postsPage.getHeader(),
+                postsPage.items.map(post =>
+                    this.converterService.getConvertedPost(post)
+                )
             );
         } else {
             throw new HttpException(
@@ -54,50 +59,28 @@ export class PostsController {
     @Post()
     @Roles(RoleEnum.ADMIN)
     async create(
-        @Request() req,
+        @Request() req: RequestType,
         @Body() post: CreatePostDTO
-    ): Promise<PostDAO> {
+    ): Promise<PostDTO> {
         const user = req.user;
-        const newPost: PostDTO = {
-            ...post,
-            createdAt: new Date(),
-            author: user
-        };
-
-        const createdPost = await this.postsService.create(newPost);
-        return {
-            id: createdPost.id,
-            title: createdPost.title,
-            shortText: createdPost.shortText,
-            fullText: createdPost.fullText,
-            createdAt: createdPost.createdAt,
-            tags: createdPost.tags,
-            author: createdPost.author
-        };
+        const createdPost = await this.postsService.create(post, user);
+        return this.converterService.getConvertedPost(createdPost);
     }
 
     @Patch(":id")
     @Roles(RoleEnum.ADMIN)
     async update(
-        @Param("id") id,
+        @Param("id") id: string,
         @Body() post: UpdatePostDTO
-    ): Promise<PostDAO> {
+    ): Promise<PostDTO> {
         post.id = Number(id);
-        const updated = await this.postsService.update(post);
-        return {
-            id: updated.id,
-            title: updated.title,
-            shortText: updated.shortText,
-            fullText: updated.fullText,
-            createdAt: updated.createdAt,
-            tags: updated.tags,
-            author: updated.author
-        };
+        const updatedPost = await this.postsService.update(post);
+        return this.converterService.getConvertedPost(updatedPost);
     }
 
     @Delete(":id")
     @Roles(RoleEnum.ADMIN)
-    async delete(@Param("id") id): Promise<void> {
+    async delete(@Param("id") id: number): Promise<void> {
         await this.postsService.delete(id);
     }
 }

@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNumber } from "class-validator";
+import { IsString, IsOptional, IsNumber, IsArray } from "class-validator";
 
 export class UpdatePostDTO {
     @IsOptional()
@@ -18,5 +18,6 @@ export class UpdatePostDTO {
     fullText: string;
 
     @IsOptional()
+    @IsArray()
     tags: string[];
 }

@@ -1,3 +1,6 @@
+import { PageService } from "../shared/page/page.service";
+import { Page } from "../shared/page/page";
+import { CreatePostDTO } from "./../../../common/dto/create-post.dto";
 import { UpdatePostDTO } from "./../../../common/dto/update-post.dto";
 import { PostDTO } from "./../../../common/dto/post.dto";
 import { PostDAO } from "./../db/domain/post.dao";
@@ -9,25 +12,26 @@ import { Repository, DeleteResult } from "typeorm";
 export class PostsService {
     constructor(
         @InjectRepository(PostDAO)
-        private postsRepository: Repository<PostDAO>
+        private postsRepository: Repository<PostDAO>,
+        private pageService: PageService
     ) {}
 
-    async getPosts(range: string): Promise<[PostDAO[], string]> {
-        const ranges = range.split("-", 2);
-        const begin = parseInt(ranges[0]);
-        const end = parseInt(ranges[1]);
-
-        const result = await this.postsRepository.find({
-            take: end - begin,
-            skip: begin > 0 ? begin - 1 : begin
-        });
-
-        const resRange = begin + "-" + end + "/" + result.length;
-        return [result, resRange];
+    async getPosts(range: string): Promise<Page<PostDAO>> {
+        const options = this.pageService.getOptions(range);
+        const postsPage = await this.pageService.getItems<PostDAO>(
+            options,
+            limit => this.postsRepository.find(limit)
+        );
+        return postsPage;
     }
 
-    create(post: PostDTO): Promise<PostDAO> {
-        return this.postsRepository.save(post);
+    create(post: CreatePostDTO, user): Promise<PostDAO> {
+        const newPost: PostDTO = {
+            ...post,
+            createdAt: new Date(),
+            author: user
+        };
+        return this.postsRepository.save(newPost);
     }
 
     async update(post: UpdatePostDTO): Promise<PostDAO> {
