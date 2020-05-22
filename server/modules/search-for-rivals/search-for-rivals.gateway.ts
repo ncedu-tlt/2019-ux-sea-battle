@@ -5,41 +5,33 @@ import {
     OnGatewayDisconnect,
     SubscribeMessage,
     WebSocketGateway,
-    WebSocketServer
+    WebSocketServer,
+    WsException
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
 import { GameModeEnum } from "../db/domain/game-mode.enum";
-import { ClassicService } from "./classic.service";
 import { RoomDto } from "../../../common/dto/room.dto";
 import { SearchDto } from "../../../common/dto/search.dto";
-import { UseGuards } from "@nestjs/common";
-import { WsAuthGuard } from "../../guards/ws-auth.guard";
-import { UsersService } from "../users/users.service";
-import { UserDTO } from "../../../common/dto/user.dto";
-import { WsExceptionHandlingService } from "./ws-exception-handling.service";
+import { WsAuthService } from "../auth/ws-auth.service";
+import { UserDAO } from "../db/domain/user.dao";
+import { SearchFactoryService } from "./search-factory.service";
+import { Search } from "./search";
 
-@UseGuards(WsAuthGuard)
-@WebSocketGateway({ namespace: "rivals" })
+@WebSocketGateway({ namespace: "game-search" })
 export class SearchForRivalsGateway
     implements OnGatewayDisconnect, OnGatewayConnection {
     @WebSocketServer()
     private server: Server;
-    private socketToRivalsMapping = new Map<string, string>();
-    private room: RoomDto;
-
+    private idToClassicModeMapping = new Map<string, SearchDto>();
     constructor(
-        private classicService: ClassicService,
-        private usersService: UsersService,
-        private wsExceptionHandlingService: WsExceptionHandlingService
+        private wsAuthService: WsAuthService,
+        private searchFactoryService: SearchFactoryService
     ) {}
 
     async handleConnection(socket: Socket): Promise<void> {
-        const user: UserDTO = await this.wsExceptionHandlingService.tokenCheck(
-            socket
-        );
+        const user: UserDAO = await this.wsAuthService.tokenCheck(socket);
         if (!user) {
-            socket.emit("connection", "401");
-            socket.disconnect();
+            this.wsAuthService.disconnect(socket);
         } else {
             this.server.emit("connection", user.id);
         }
@@ -47,7 +39,7 @@ export class SearchForRivalsGateway
 
     handleDisconnect(socket: Socket): void {
         this.server.emit("leave", socket.id);
-        this.socketToRivalsMapping.delete(socket.id);
+        this.idToClassicModeMapping.delete(socket.id);
     }
 
     @SubscribeMessage("search")
@@ -55,30 +47,24 @@ export class SearchForRivalsGateway
         @MessageBody() req: SearchDto,
         @ConnectedSocket() socket: Socket
     ): Promise<void> {
-        this.socketToRivalsMapping.set(socket.id.toString(), req.gameMode);
-        switch (req.gameMode) {
-            case GameModeEnum.CLASSIC:
-                this.room = await this.classicService.classicModeSearch(
-                    this.socketToRivalsMapping,
-                    req.gameMode
-                );
-                break;
-            case GameModeEnum.CLASSIC_P:
-                // 2
-                break;
-            case GameModeEnum.SALVO:
-                // 3
-                break;
-            case GameModeEnum.SALVO_P:
-                // 4
-                break;
+        if (req.gameMode === GameModeEnum.CLASSIC) {
+            this.idToClassicModeMapping.set(socket.id.toString(), req);
+        } else {
+            throw new WsException("Unknown game mode");
         }
-        if (this.room) {
-            this.room.players.forEach(id => {
-                this.server.sockets[id].join(this.room.id);
+
+        const searching: Search = this.searchFactoryService.searchForRivals(
+            req.gameMode
+        );
+        const room: RoomDto = await searching.search(
+            this.idToClassicModeMapping
+        );
+
+        if (room) {
+            room.players.forEach(id => {
+                this.server.sockets[id].emit("search", room.id);
             });
-            this.server.to(this.room.id).emit("search", this.room.id);
-            this.room.players.forEach(id => {
+            room.players.forEach(id => {
                 this.server.sockets[id].disconnect();
             });
         }

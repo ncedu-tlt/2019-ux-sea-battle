@@ -4,6 +4,7 @@ import { GameDAO } from "../db/domain/game.dao";
 import { Repository } from "typeorm";
 import { GameStatusEnum } from "../db/domain/game-status.enum";
 import { GameModeEnum } from "../db/domain/game-mode.enum";
+import { GameDto } from "../../../common/dto/game.dto";
 
 @Injectable()
 export class GameService {
@@ -16,11 +17,15 @@ export class GameService {
         return this.gameRepository.find();
     }
 
-    create(gameMode: GameModeEnum): Promise<GameDAO> {
-        const game = {
+    findById(id: number): Promise<GameDAO> {
+        return this.gameRepository.findOne(id);
+    }
+
+    create(gameMode: GameModeEnum, isPrivate = false): Promise<GameDAO> {
+        const game: GameDto = {
             gameMode,
             status: GameStatusEnum.WAITING,
-            isPrivate: false,
+            isPrivate,
             createdAt: new Date()
         };
         return this.gameRepository.save(game);
