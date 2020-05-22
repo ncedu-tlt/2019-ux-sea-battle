@@ -1,3 +1,4 @@
+import { SharedModule } from "./modules/shared/shared.module";
 import { PostsModule } from "./modules/posts/posts.module";
 import { Module } from "@nestjs/common";
 import { ServeStaticModule } from "@nestjs/serve-static";
@@ -29,7 +30,8 @@ import { UsersModule } from "./modules/users/users.module";
         }),
         AuthModule,
         UsersModule,
-        PostsModule
+        PostsModule,
+        SharedModule
     ]
 })
 export class AppModule {}
