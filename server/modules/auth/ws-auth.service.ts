@@ -8,29 +8,24 @@ import { UserDAO } from "../db/domain/user.dao";
 
 @Injectable()
 export class WsAuthService {
+    private readonly logger = new Logger(WsAuthService.name);
     constructor(
         private usersService: UsersService,
         private configService: ConfigService
     ) {}
 
-    async tokenCheck(socket: Socket): Promise<UserDAO> | undefined {
+    async getUser(socket: Socket): Promise<UserDAO> | undefined {
         try {
             const payload: TokenPayloadModel = jwt.verify(
-                socket.handshake.query.tokenSecretKey,
+                socket.handshake.query.authorizationToken,
                 this.configService.get<string>("tokenSecretKey")
             ) as TokenPayloadModel;
-            Logger.debug(
-                `Token: ${socket.handshake.query.tokenSecretKey}. Payload: ${payload}`
-            );
+            this.logger.debug(`Payload: ${payload}`);
             return await this.usersService.findById(payload.sub);
         } catch (e) {
-            Logger.debug(`Token is empty: ${e.message}. ID: ${socket.id}`);
-            return undefined;
+            this.logger.debug(`Token is empty: ${e.message}. ID: ${socket.id}`);
+            socket.emit("leave", "401");
+            socket.disconnect();
         }
-    }
-
-    disconnect(socket: Socket): void {
-        socket.emit("connection", "401");
-        socket.disconnect();
     }
 }
