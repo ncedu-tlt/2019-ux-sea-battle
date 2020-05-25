@@ -5,12 +5,15 @@ import { Repository } from "typeorm";
 import { GameStatusEnum } from "../db/domain/game-status.enum";
 import { GameModeEnum } from "../db/domain/game-mode.enum";
 import { GameDto } from "../../../common/dto/game.dto";
+import { SearchDto } from "../../../common/dto/search.dto";
+import { ParticipantService } from "./participant.service";
 
 @Injectable()
 export class GameService {
     constructor(
         @InjectRepository(GameDAO)
-        private gameRepository: Repository<GameDAO>
+        private gameRepository: Repository<GameDAO>,
+        private participantService: ParticipantService
     ) {}
 
     getAll(): Promise<GameDAO[]> {
@@ -21,13 +24,23 @@ export class GameService {
         return this.gameRepository.findOne(id);
     }
 
-    create(gameMode: GameModeEnum, isPrivate = false): Promise<GameDAO> {
-        const game: GameDto = {
+    async create(
+        gameMode: GameModeEnum,
+        isPrivate?,
+        participants?: Map<string, SearchDto>
+    ): Promise<GameDAO> {
+        const gameInfo: GameDto = {
             gameMode,
             status: GameStatusEnum.WAITING,
             isPrivate,
             createdAt: new Date()
         };
-        return this.gameRepository.save(game);
+        const game: GameDAO = await this.gameRepository.save(gameInfo);
+        if (participants) {
+            for (const value of [...participants.values()].slice(0, 2)) {
+                await this.participantService.create(game, value.id);
+            }
+        }
+        return game;
     }
 }
