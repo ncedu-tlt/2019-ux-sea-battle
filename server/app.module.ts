@@ -6,7 +6,7 @@ import { mainConfig } from "server/config/main.config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AuthModule } from "./modules/auth/auth.module";
 import { UsersModule } from "./modules/users/users.module";
-import { SearchForRivalsModule } from "./modules/search-for-rivals/search-for-rivals.module";
+import { MatchmakingModule } from "./modules/matchmaking/matchmaking.module";
 import { GameModule } from "./modules/game/game.module";
 
 @Module({
@@ -30,7 +30,7 @@ import { GameModule } from "./modules/game/game.module";
         }),
         AuthModule,
         UsersModule,
-        SearchForRivalsModule,
+        MatchmakingModule,
         GameModule
     ]
 })
