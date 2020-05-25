@@ -2,7 +2,7 @@ import { AuthGuard } from "@nestjs/passport";
 import { CreatePostDTO } from "./../../../common/dto/create-post.dto";
 import { UpdatePostDTO } from "./../../../common/dto/update-post.dto";
 import { PostsService } from "./posts.service";
-import { ConverterService } from "./converter.service";
+import { PostsConversionService } from "./posts-conversion.service";
 import { PageService } from "../shared/page/page.service";
 import { PostDTO } from "../../../common/dto/post.dto";
 import {
@@ -23,13 +23,14 @@ import {
 import { Roles } from "server/decorators/role.decorator";
 import { RoleEnum } from "../db/domain/role.enum";
 import { Response as ResponseType, Request as RequestType } from "express";
+import { Page } from "../shared/page/page";
 
 @Controller("/api/posts")
 export class PostsController {
     constructor(
         private postsService: PostsService,
         private pageService: PageService,
-        private converterService: ConverterService
+        private postsConversionService: PostsConversionService
     ) {}
 
     @Get()
@@ -40,13 +41,14 @@ export class PostsController {
         if (range) {
             const postsPage = await this.postsService.getPosts(range);
 
-            return this.pageService.sendResponse(
-                res,
-                postsPage.getHeader(),
-                postsPage.items.map(post =>
-                    this.converterService.getConvertedPost(post)
-                )
+            const convertedPage = new Page<PostDTO>();
+            convertedPage.begin = postsPage.begin;
+            convertedPage.end = postsPage.end;
+            convertedPage.items = postsPage.items.map(post =>
+                this.postsConversionService.convertDaoToDto(post)
             );
+
+            return this.pageService.sendResponse(res, convertedPage);
         } else {
             throw new HttpException(
                 "posts/postsBadRange",
@@ -64,7 +66,7 @@ export class PostsController {
     ): Promise<PostDTO> {
         const user = req.user;
         const createdPost = await this.postsService.create(post, user);
-        return this.converterService.getConvertedPost(createdPost);
+        return this.postsConversionService.convertDaoToDto(createdPost);
     }
 
     @Patch(":id")
@@ -75,7 +77,7 @@ export class PostsController {
     ): Promise<PostDTO> {
         post.id = Number(id);
         const updatedPost = await this.postsService.update(post);
-        return this.converterService.getConvertedPost(updatedPost);
+        return this.postsConversionService.convertDaoToDto(updatedPost);
     }
 
     @Delete(":id")

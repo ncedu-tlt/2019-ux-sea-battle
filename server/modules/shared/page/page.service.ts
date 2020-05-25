@@ -1,11 +1,11 @@
-import { Options } from "./options";
+import { Range } from "./range";
 import { Page } from "./page";
 import { Response } from "express";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class PageService {
-    getOptions(range: string): Options {
+    parseRange(range: string): Range {
         const ranges = range.split("-", 2);
         const begin = parseInt(ranges[0]);
         const end = parseInt(ranges[1]);
@@ -21,19 +21,21 @@ export class PageService {
     }
 
     async getItems<T>(
-        options: Options,
+        range: string,
         find: (Object) => Promise<T[]>
     ): Promise<Page<T>> {
-        const page = new Page<T>();
-        page.begin = options.begin;
-        page.end = options.end;
+        const rangeObject = this.parseRange(range);
 
-        page.items = await find(options.limit);
+        const page = new Page<T>();
+        page.begin = rangeObject.begin;
+        page.end = rangeObject.end;
+
+        page.items = await find(rangeObject.limit);
         return page;
     }
 
-    sendResponse<T>(res: Response, header: string, items: T[]): Response {
-        res.set("Range", header);
-        return res.send(items);
+    sendResponse<T>(res: Response, page: Page<T>): Response {
+        res.set("Range", page.getHeader());
+        return res.send(page.items);
     }
 }

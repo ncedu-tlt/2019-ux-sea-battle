@@ -17,9 +17,8 @@ export class PostsService {
     ) {}
 
     async getPosts(range: string): Promise<Page<PostDAO>> {
-        const options = this.pageService.getOptions(range);
         const postsPage = await this.pageService.getItems<PostDAO>(
-            options,
+            range,
             limit => this.postsRepository.find(limit)
         );
         return postsPage;
