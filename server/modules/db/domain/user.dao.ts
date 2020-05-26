@@ -4,7 +4,8 @@ import {
     JoinColumn,
     JoinTable,
     ManyToMany,
-    PrimaryGeneratedColumn
+    PrimaryGeneratedColumn,
+    OneToMany
 } from "typeorm";
 import { ShopItemDAO } from "./shop-item.dao";
 import { AchievementDAO } from "./achievement.dao";
@@ -84,11 +85,14 @@ export class UserDAO {
     @JoinTable()
     achievements: Promise<AchievementDAO[]>;
 
-    @ManyToMany(() => PostDAO, {
-        nullable: true,
-        cascade: true,
-        onDelete: "CASCADE"
-    })
+    @OneToMany(
+        () => PostDAO,
+        post => post.author,
+        {
+            cascade: true,
+            onDelete: "CASCADE"
+        }
+    )
     @JoinTable()
     posts: Promise<PostDAO[]>;
 }

@@ -1,3 +1,5 @@
+import { SharedModule } from "./modules/shared/shared.module";
+import { PostsModule } from "./modules/posts/posts.module";
 import { Module } from "@nestjs/common";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
@@ -6,8 +8,6 @@ import { mainConfig } from "server/config/main.config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AuthModule } from "./modules/auth/auth.module";
 import { UsersModule } from "./modules/users/users.module";
-import { MatchmakingModule } from "./modules/matchmaking/matchmaking.module";
-import { GameModule } from "./modules/game/game.module";
 
 @Module({
     imports: [
@@ -30,8 +30,8 @@ import { GameModule } from "./modules/game/game.module";
         }),
         AuthModule,
         UsersModule,
-        MatchmakingModule,
-        GameModule
+        PostsModule,
+        SharedModule
     ]
 })
 export class AppModule {}

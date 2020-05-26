@@ -2,13 +2,10 @@ import {
     Column,
     Entity,
     JoinColumn,
-    JoinTable,
     ManyToOne,
-    ManyToMany,
     PrimaryGeneratedColumn
 } from "typeorm";
 import { UserDAO } from "./user.dao";
-import { TagDAO } from "./tag.dao";
 
 @Entity("posts")
 export class PostDAO {
@@ -30,18 +27,19 @@ export class PostDAO {
     })
     createdAt: Date;
 
-    @ManyToMany(() => TagDAO, {
-        nullable: true,
-        cascade: true,
-        onDelete: "CASCADE"
+    @Column("text", {
+        array: true,
+        nullable: true
     })
-    @JoinTable()
-    tags: Promise<TagDAO[]>;
+    tags: string[];
 
-    @ManyToOne(() => UserDAO, {
-        cascade: true,
-        onDelete: "CASCADE"
-    })
+    @ManyToOne(
+        () => UserDAO,
+        user => user.posts,
+        {
+            eager: true
+        }
+    )
     @JoinColumn({ name: "author_id" })
-    author: Promise<UserDAO>;
+    author: UserDAO;
 }
