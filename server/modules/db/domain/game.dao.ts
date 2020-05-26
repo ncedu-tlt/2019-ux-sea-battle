@@ -1,24 +1,17 @@
-import {
-    Column,
-    Entity,
-    JoinColumn,
-    ManyToOne,
-    PrimaryGeneratedColumn
-} from "typeorm";
-import { GameModeDAO } from "./game-mode.dao";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { GameStatusEnum } from "./game-status.enum";
+import { GameModeEnum } from "./game-mode.enum";
 
 @Entity("games")
 export class GameDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => GameModeDAO, {
-        cascade: true,
-        onDelete: "CASCADE"
+    @Column({
+        type: "enum",
+        enum: GameModeEnum
     })
-    @JoinColumn({ name: "game_mode_id" })
-    gameMode: Promise<GameModeDAO>;
+    gameMode: GameModeEnum;
 
     @Column({
         type: "enum",

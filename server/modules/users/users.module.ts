@@ -8,6 +8,7 @@ import { AuthModule } from "../auth/auth.module";
 @Module({
     imports: [DbModule, AuthModule],
     providers: [UsersService],
-    controllers: [UsersManagementController, UsersController]
+    controllers: [UsersManagementController, UsersController],
+    exports: [UsersService]
 })
 export class UsersModule {}
