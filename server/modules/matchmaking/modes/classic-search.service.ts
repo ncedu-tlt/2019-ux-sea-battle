@@ -11,7 +11,7 @@ export class ClassicSearchService implements SearchService {
 
     async search(
         participants: Map<string, SearchDto>
-    ): Promise<RoomDto> | undefined {
+    ): Promise<RoomDto | undefined> {
         if (participants.size >= 2) {
             const game = await this.gameService.create(
                 GameModeEnum.CLASSIC,

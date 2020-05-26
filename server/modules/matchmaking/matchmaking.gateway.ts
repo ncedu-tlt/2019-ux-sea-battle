@@ -51,12 +51,9 @@ export class MatchmakingGateway
         @MessageBody() req: SearchDto,
         @ConnectedSocket() socket: Socket
     ): Promise<void> {
-        this.modeToParticipantsMapping.set(
-            req.gameMode,
-            this.modeToParticipantsMapping
-                .get(req.gameMode)
-                .set(socket.id.toString(), req)
-        );
+        this.modeToParticipantsMapping
+            .get(req.gameMode)
+            .set(socket.id.toString(), req);
         const service: SearchService = this.searchServiceFactory.getService(
             req.gameMode
         );

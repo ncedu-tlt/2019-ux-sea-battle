@@ -14,7 +14,7 @@ export class WsAuthService {
         private configService: ConfigService
     ) {}
 
-    async getUser(socket: Socket): Promise<UserDAO> | undefined {
+    async getUser(socket: Socket): Promise<UserDAO | undefined> {
         try {
             const payload: TokenPayloadModel = jwt.verify(
                 socket.handshake.query.authorizationToken,
