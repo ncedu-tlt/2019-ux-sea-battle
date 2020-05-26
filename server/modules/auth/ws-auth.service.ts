@@ -20,7 +20,6 @@ export class WsAuthService {
                 socket.handshake.query.authorizationToken,
                 this.configService.get<string>("tokenSecretKey")
             ) as TokenPayloadModel;
-            this.logger.debug(`Payload: ${payload}`);
             return await this.usersService.findById(payload.sub);
         } catch (e) {
             this.logger.debug(`Token is empty: ${e.message}. ID: ${socket.id}`);

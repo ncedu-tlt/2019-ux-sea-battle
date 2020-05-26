@@ -15,6 +15,7 @@ export class ClassicSearchService implements SearchService {
         if (participants.size >= 2) {
             const game = await this.gameService.create(
                 GameModeEnum.CLASSIC,
+                false,
                 participants
             );
             const players: string[] = [...participants.keys()].slice(0, 2);

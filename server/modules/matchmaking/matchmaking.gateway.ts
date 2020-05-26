@@ -5,8 +5,7 @@ import {
     OnGatewayDisconnect,
     SubscribeMessage,
     WebSocketGateway,
-    WebSocketServer,
-    WsException
+    WebSocketServer
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
 import { GameModeEnum } from "../db/domain/game-mode.enum";
@@ -22,14 +21,13 @@ export class MatchmakingGateway
     implements OnGatewayDisconnect, OnGatewayConnection {
     @WebSocketServer()
     private server: Server;
-    private classicModeParticipants = new Map<string, SearchDto>();
     private modeToParticipantsMapping = new Map<
         GameModeEnum,
         Map<string, SearchDto>
-    >().set(GameModeEnum.CLASSIC, this.classicModeParticipants);
+    >().set(GameModeEnum.CLASSIC, new Map<string, SearchDto>());
     constructor(
         private wsAuthService: WsAuthService,
-        private searchFactoryService: SearchServiceFactory
+        private searchServiceFactory: SearchServiceFactory
     ) {}
 
     async handleConnection(socket: Socket): Promise<void> {
@@ -43,15 +41,9 @@ export class MatchmakingGateway
 
     handleDisconnect(socket: Socket): void {
         this.server.emit("leave", socket.id);
-        this.modeToParticipantsMapping.set(
-            this.classicModeParticipants.get(socket.id).gameMode,
-            new Map<string, SearchDto>(
-                [...this.classicModeParticipants].filter(
-                    ([key]) => key !== socket.id
-                )
-            )
-        );
-        this.classicModeParticipants.delete(socket.id);
+        this.modeToParticipantsMapping
+            .get(GameModeEnum.CLASSIC)
+            .delete(socket.id);
     }
 
     @SubscribeMessage("search")
@@ -59,20 +51,16 @@ export class MatchmakingGateway
         @MessageBody() req: SearchDto,
         @ConnectedSocket() socket: Socket
     ): Promise<void> {
-        if (req.gameMode === GameModeEnum.CLASSIC) {
-            this.classicModeParticipants.set(socket.id.toString(), req);
-            this.modeToParticipantsMapping.set(
-                GameModeEnum.CLASSIC,
-                this.classicModeParticipants
-            );
-        } else {
-            throw new WsException("Unknown game mode");
-        }
-
-        const searchFactory: SearchService = this.searchFactoryService.getService(
+        this.modeToParticipantsMapping.set(
+            req.gameMode,
+            this.modeToParticipantsMapping
+                .get(req.gameMode)
+                .set(socket.id.toString(), req)
+        );
+        const service: SearchService = this.searchServiceFactory.getService(
             req.gameMode
         );
-        const room: RoomDto = await searchFactory.search(
+        const room: RoomDto = await service.search(
             this.modeToParticipantsMapping.get(req.gameMode)
         );
 

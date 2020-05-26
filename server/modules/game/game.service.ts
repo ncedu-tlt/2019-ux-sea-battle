@@ -26,7 +26,7 @@ export class GameService {
 
     async create(
         gameMode: GameModeEnum,
-        isPrivate?,
+        isPrivate?: boolean,
         participants?: Map<string, SearchDto>
     ): Promise<GameDAO> {
         const gameInfo: GameDto = {
