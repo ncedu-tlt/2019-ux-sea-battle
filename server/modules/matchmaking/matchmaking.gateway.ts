@@ -8,7 +8,7 @@ import {
     WebSocketServer
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
-import { GameModeEnum } from "../db/domain/game-mode.enum";
+import { GameModeEnum } from "../../../common/game-mode.enum";
 import { RoomDto } from "../../../common/dto/room.dto";
 import { SearchDto } from "../../../common/dto/search.dto";
 import { WsAuthService } from "../auth/ws-auth.service";
@@ -33,14 +33,14 @@ export class MatchmakingGateway
     async handleConnection(socket: Socket): Promise<void> {
         const user: UserDAO = await this.wsAuthService.getUser(socket);
         if (user) {
-            this.server.emit("connection", user.id);
+            socket.emit("connection", user.id);
         } else {
             socket.disconnect();
         }
     }
 
     handleDisconnect(socket: Socket): void {
-        this.server.emit("leave", socket.id);
+        socket.emit("leave", socket.id);
         this.modeToParticipantsMapping
             .get(GameModeEnum.CLASSIC)
             .delete(socket.id);

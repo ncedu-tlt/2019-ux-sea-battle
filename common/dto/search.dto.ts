@@ -1,5 +1,5 @@
 import { IsEnum, IsNumber } from "class-validator";
-import { GameModeEnum } from "../../server/modules/db/domain/game-mode.enum";
+import { GameModeEnum } from "../game-mode.enum";
 
 export class SearchDto {
     @IsNumber()

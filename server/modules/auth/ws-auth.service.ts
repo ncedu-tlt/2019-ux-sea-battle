@@ -15,14 +15,15 @@ export class WsAuthService {
     ) {}
 
     async getUser(socket: Socket): Promise<UserDAO | undefined> {
+        const token = socket.handshake.query.token;
         try {
             const payload: TokenPayloadModel = jwt.verify(
-                socket.handshake.query.authorizationToken,
+                token,
                 this.configService.get<string>("tokenSecretKey")
             ) as TokenPayloadModel;
             return await this.usersService.findById(payload.sub);
         } catch (e) {
-            this.logger.debug(`Token is empty: ${e.message}. ID: ${socket.id}`);
+            this.logger.debug(`Token: ${e.message}. ID: ${socket.id}`);
             socket.emit("leave", "401");
             socket.disconnect();
         }

@@ -19,11 +19,11 @@ export class TokenService {
 
     setToken(token: string): void {
         this.accessToken = token;
-        this.cookieService.set(TOKEN_COOKIE, token);
+        this.cookieService.set(TOKEN_COOKIE, token, 0, "/");
     }
 
     deleteToken(): void {
         this.accessToken = "";
-        this.cookieService.delete(TOKEN_COOKIE);
+        this.cookieService.delete(TOKEN_COOKIE, "/");
     }
 }
