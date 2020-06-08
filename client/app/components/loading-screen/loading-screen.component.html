@@ -1,0 +1,6 @@
+<div class="loading_screen">
+    <h3>{{gameMode}}</h3>
+    {{ticks}}
+    <span *ngIf="isLoading">Поиск...</span>
+    <button type="button" (click)="onLeave()">Отмена</button>
+</div>

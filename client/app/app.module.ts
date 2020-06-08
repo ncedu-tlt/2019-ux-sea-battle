@@ -10,19 +10,28 @@ import { NotFoundComponent } from "./components/not-found/not-found.component";
 import { AuthComponent } from "./components/auth/auth.component";
 import { AuthHttpInterceptor } from "./interceptors/auth.interceptor";
 import { CookieService } from "ngx-cookie-service";
+import { MainMenuComponent } from "./components/main-menu/main-menu.component";
+import { LoadingScreenComponent } from "./components/loading-screen/loading-screen.component";
+import { GameComponent } from "./components/game/game.component";
+import { SocketIoModule } from "ngx-socket-io";
+import { MatchmakingSocket } from "./sockets/matchmaking.socket";
 
 @NgModule({
     declarations: [
         AppComponent,
         AuthComponent,
         RegistrationComponent,
-        NotFoundComponent
+        NotFoundComponent,
+        MainMenuComponent,
+        LoadingScreenComponent,
+        GameComponent
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        SocketIoModule
     ],
     providers: [
         CookieService,
@@ -30,7 +39,8 @@ import { CookieService } from "ngx-cookie-service";
             provide: HTTP_INTERCEPTORS,
             useClass: AuthHttpInterceptor,
             multi: true
-        }
+        },
+        MatchmakingSocket
     ],
     bootstrap: [AppComponent]
 })

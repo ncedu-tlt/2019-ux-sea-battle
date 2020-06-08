@@ -1,12 +1,13 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GameDAO } from "../db/domain/game.dao";
 import { Repository } from "typeorm";
 import { GameStatusEnum } from "../db/domain/game-status.enum";
-import { GameModeEnum } from "../db/domain/game-mode.enum";
+import { GameModeEnum } from "../../../common/game-mode.enum";
 import { GameDto } from "../../../common/dto/game.dto";
 import { SearchDto } from "../../../common/dto/search.dto";
 import { ParticipantService } from "./participant.service";
+import { ParticipantDAO } from "../db/domain/participant.dao";
 
 @Injectable()
 export class GameService {
@@ -31,7 +32,7 @@ export class GameService {
     ): Promise<GameDAO> {
         const gameInfo: GameDto = {
             gameMode,
-            status: GameStatusEnum.WAITING,
+            status: GameStatusEnum.STARTED,
             isPrivate,
             createdAt: new Date()
         };
@@ -42,5 +43,31 @@ export class GameService {
             }
         }
         return game;
+    }
+
+    async getGame(id: number): Promise<GameDAO> {
+        const game: GameDAO = await this.gameRepository.findOne(id);
+        if (!game) {
+            throw new HttpException(
+                "game/gameDoesNotExist",
+                HttpStatus.NOT_FOUND
+            );
+        }
+        return game;
+    }
+
+    async getGameByUserId(id: number): Promise<GameDAO> {
+        const participant: ParticipantDAO = await this.participantService.getParticipantByUserId(
+            id
+        );
+        if (!participant) {
+            throw new HttpException(
+                "game/participantDoesNotExist",
+                HttpStatus.NOT_FOUND
+            );
+        }
+        return await this.gameRepository.findOne(participant.game, {
+            where: { status: GameStatusEnum.STARTED }
+        });
     }
 }
