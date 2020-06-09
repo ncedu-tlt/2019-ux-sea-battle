@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { MatchmakingSocket } from "../../sockets/matchmaking.socket";
 import { Observable } from "rxjs";
-import { SearchDto } from "../../../../common/dto/search.dto";
 import { TokenService } from "../token.service";
+import { GameModeEnum } from "../../../../common/game-mode.enum";
 
 @Injectable({
     providedIn: "root"
@@ -24,8 +24,8 @@ export class MatchmakingService {
         this.socket.disconnect();
     }
 
-    search(data: SearchDto): void {
-        this.socket.emit("search", data);
+    search(gameMode: GameModeEnum): void {
+        this.socket.emit("search", gameMode);
     }
 
     onSearch(): Observable<number> {
@@ -33,10 +33,6 @@ export class MatchmakingService {
     }
 
     onConnection(): Observable<number> {
-        return this.socket.fromEvent<number>("connection");
-    }
-
-    onLeave(): Observable<string> {
-        return this.socket.fromEvent<string>("leave");
+        return this.socket.fromEvent<number>("connect");
     }
 }

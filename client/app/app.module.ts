@@ -6,12 +6,11 @@ import { AppComponent } from "./app.component";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { RegistrationComponent } from "./components/registration/registration.component";
 import { ReactiveFormsModule } from "@angular/forms";
-import { NotFoundComponent } from "./components/not-found/not-found.component";
 import { AuthComponent } from "./components/auth/auth.component";
 import { AuthHttpInterceptor } from "./interceptors/auth.interceptor";
 import { CookieService } from "ngx-cookie-service";
 import { MainMenuComponent } from "./components/main-menu/main-menu.component";
-import { LoadingScreenComponent } from "./components/loading-screen/loading-screen.component";
+import { GameSearchComponent } from "./components/game-search/game-search.component";
 import { GameComponent } from "./components/game/game.component";
 import { SocketIoModule } from "ngx-socket-io";
 import { MatchmakingSocket } from "./sockets/matchmaking.socket";
@@ -21,9 +20,8 @@ import { MatchmakingSocket } from "./sockets/matchmaking.socket";
         AppComponent,
         AuthComponent,
         RegistrationComponent,
-        NotFoundComponent,
         MainMenuComponent,
-        LoadingScreenComponent,
+        GameSearchComponent,
         GameComponent
     ],
     imports: [

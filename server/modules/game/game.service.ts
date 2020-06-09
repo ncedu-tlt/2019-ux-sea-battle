@@ -60,13 +60,7 @@ export class GameService {
         const participant: ParticipantDAO = await this.participantService.getParticipantByUserId(
             id
         );
-        if (!participant) {
-            throw new HttpException(
-                "game/participantDoesNotExist",
-                HttpStatus.NOT_FOUND
-            );
-        }
-        return await this.gameRepository.findOne(participant.game, {
+        return await this.gameRepository.findOne(await participant.game, {
             where: { status: GameStatusEnum.STARTED }
         });
     }

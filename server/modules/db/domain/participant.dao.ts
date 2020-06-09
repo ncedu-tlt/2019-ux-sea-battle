@@ -24,7 +24,7 @@ export class ParticipantDAO {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "game_id" })
-    game: GameDAO;
+    game: Promise<GameDAO>;
 
     @Column({
         name: "is_host",
