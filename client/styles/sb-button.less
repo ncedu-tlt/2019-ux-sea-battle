@@ -1,0 +1,67 @@
+@import "./colors.less";
+
+.sb-button {
+    min-width: 170px;
+    height: 46px;
+    padding: 0 46px;
+
+    font-size: 20px;
+    font-style: normal;
+    font-weight: normal;
+
+    border-radius: 23px;
+    border: none;
+    outline: none;
+
+    transition: box-shadow .5s;
+    cursor: pointer;
+}
+
+.sb-button._slim {
+    height: 36px;
+    font-size: 16px;
+}
+
+._light .sb-button,
+.sb-button._light {
+    color: @text-dark;
+    background: @button-background-light;
+    box-shadow: 5px 5px 10px fade(#000, 15%), -5px -4px 10px fade(#fff, 60%);
+
+    &:hover {
+        box-shadow: 5px 5px 10px fade(#000, 15%), -5px -4px 10px fade(#fff, 60%),
+            inset 4px 4px 14px fade(#000, 10%), inset -4px -4px 14px fade(#fff, 65%);
+    }
+
+    &:active {
+        box-shadow: inset 4px 4px 14px fade(#000, 20%), inset -4px -4px 14px fade(#fff, 75%);
+    }
+
+    &:disabled {
+        color: @text-light-fade;
+        box-shadow: 4px 4px 14px fade(#000, 10%), -4px -4px 14px fade(#fff, 50%);
+        cursor: not-allowed;
+    }
+}
+
+._dark .sb-button,
+.sb-button._dark {
+    color: @text-light;
+    background: @button-background-dark;
+    box-shadow: 4px 4px 14px fade(#000, 40%), -4px -4px 14px fade(#fff, 50%);
+
+    &:hover {
+        box-shadow: 4px 4px 14px fade(#000, 40%), -4px -4px 14px fade(#fff, 50%),
+            inset 4px 4px 14px fade(#000, 25%), inset -4px -4px 14px fade(#fff, 35%);
+    }
+
+    &:active {
+        box-shadow: inset 4px 4px 14px fade(#000, 25%), inset -4px -4px 14px fade(#fff, 35%);
+    }
+
+    &:disabled {
+        color: @text-dark-fade;
+        box-shadow: 4px 4px 14px fade(#000, 20%), -4px -4px 14px fade(#fff, 20%);
+        cursor: not-allowed;
+    }
+}
