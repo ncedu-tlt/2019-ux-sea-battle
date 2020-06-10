@@ -3,7 +3,7 @@
 .sb-button {
     min-width: 170px;
     height: 46px;
-    padding: 0 46px 0 46px;
+    padding: 0 46px;
 
     font-size: 20px;
     font-style: normal;
@@ -13,6 +13,7 @@
     border: none;
     outline: none;
 
+    transition: box-shadow .5s;
     cursor: pointer;
 }
 
@@ -28,7 +29,8 @@
     box-shadow: 5px 5px 10px fade(#000, 15%), -5px -4px 10px fade(#fff, 60%);
 
     &:hover {
-        box-shadow: inset 4px 4px 14px fade(#000, 10%), inset -4px -4px 14px fade(#fff, 65%);
+        box-shadow: 5px 5px 10px fade(#000, 15%), -5px -4px 10px fade(#fff, 60%),
+            inset 4px 4px 14px fade(#000, 10%), inset -4px -4px 14px fade(#fff, 65%);
     }
 
     &:active {
@@ -49,7 +51,8 @@
     box-shadow: 4px 4px 14px fade(#000, 40%), -4px -4px 14px fade(#fff, 50%);
 
     &:hover {
-        box-shadow: inset 4px 4px 14px fade(#000, 25%), inset -4px -4px 14px fade(#fff, 35%);
+        box-shadow: 4px 4px 14px fade(#000, 40%), -4px -4px 14px fade(#fff, 50%),
+            inset 4px 4px 14px fade(#000, 25%), inset -4px -4px 14px fade(#fff, 35%);
     }
 
     &:active {
