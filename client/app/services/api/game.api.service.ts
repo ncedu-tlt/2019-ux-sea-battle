@@ -8,6 +8,6 @@ export class GameApiService {
     constructor(private httpClient: HttpClient) {}
 
     getGame(): Observable<GameDto> {
-        return this.httpClient.get<GameDto>("/api/game/current");
+        return this.httpClient.get<GameDto>("/api/games/current");
     }
 }
