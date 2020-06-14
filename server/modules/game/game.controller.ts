@@ -3,7 +3,7 @@ import { GameService } from "./game.service";
 import { GameDto } from "../../../common/dto/game.dto";
 import { AuthGuard } from "@nestjs/passport";
 
-@Controller("/api/game")
+@Controller("/api/games")
 export class GameController {
     constructor(private gameService: GameService) {}
 
