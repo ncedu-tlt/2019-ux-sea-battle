@@ -24,7 +24,8 @@ export class GameSearchComponent implements OnInit, OnDestroy {
             matchmakingService.onConnection().subscribe(() => {
                 this.search();
             }),
-            matchmakingService.onSearch().subscribe(() => this.onSearch())
+            matchmakingService.onSearch().subscribe(() => this.onSearch()),
+            matchmakingService.onDisconnect().subscribe(() => this.onLeave())
         );
     }
 

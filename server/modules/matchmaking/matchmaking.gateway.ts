@@ -53,6 +53,16 @@ export class MatchmakingGateway
             id: user.id,
             gameMode: gameMode
         };
+        if (
+            [...this.modeToParticipantsMapping.get(gameMode)].find(
+                ([, v]) => v.id === user.id
+            )
+        ) {
+            const connectionDuplicate = [
+                ...this.modeToParticipantsMapping.get(gameMode)
+            ].find(([, v]) => v.id === user.id)[0];
+            this.server.sockets[connectionDuplicate].disconnect();
+        }
         this.modeToParticipantsMapping
             .get(data.gameMode)
             .set(socket.id.toString(), data);
