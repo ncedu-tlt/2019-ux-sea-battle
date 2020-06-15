@@ -8,7 +8,7 @@ import {
     WebSocketServer
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
-import { GameModeEnum } from "../db/domain/game-mode.enum";
+import { GameModeEnum } from "../../../common/game-mode.enum";
 import { RoomDto } from "../../../common/dto/room.dto";
 import { SearchDto } from "../../../common/dto/search.dto";
 import { WsAuthService } from "../auth/ws-auth.service";
@@ -32,15 +32,12 @@ export class MatchmakingGateway
 
     async handleConnection(socket: Socket): Promise<void> {
         const user: UserDAO = await this.wsAuthService.getUser(socket);
-        if (user) {
-            this.server.emit("connection", user.id);
-        } else {
+        if (!user) {
             socket.disconnect();
         }
     }
 
     handleDisconnect(socket: Socket): void {
-        this.server.emit("leave", socket.id);
         this.modeToParticipantsMapping
             .get(GameModeEnum.CLASSIC)
             .delete(socket.id);
@@ -48,17 +45,32 @@ export class MatchmakingGateway
 
     @SubscribeMessage("search")
     async handleSearch(
-        @MessageBody() req: SearchDto,
+        @MessageBody() gameMode: GameModeEnum,
         @ConnectedSocket() socket: Socket
     ): Promise<void> {
+        const user: UserDAO = await this.wsAuthService.getUser(socket);
+        const data: SearchDto = {
+            id: user.id,
+            gameMode: gameMode
+        };
+        if (
+            [...this.modeToParticipantsMapping.get(gameMode)].find(
+                ([, v]) => v.id === user.id
+            )
+        ) {
+            const connectionDuplicate = [
+                ...this.modeToParticipantsMapping.get(gameMode)
+            ].find(([, v]) => v.id === user.id)[0];
+            this.server.sockets[connectionDuplicate].disconnect();
+        }
         this.modeToParticipantsMapping
-            .get(req.gameMode)
-            .set(socket.id.toString(), req);
+            .get(data.gameMode)
+            .set(socket.id.toString(), data);
         const service: SearchService = this.searchServiceFactory.getService(
-            req.gameMode
+            data.gameMode
         );
         const room: RoomDto = await service.search(
-            this.modeToParticipantsMapping.get(req.gameMode)
+            this.modeToParticipantsMapping.get(data.gameMode)
         );
 
         if (room) {

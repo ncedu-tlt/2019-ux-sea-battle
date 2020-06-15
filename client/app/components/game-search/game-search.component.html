@@ -1,0 +1,7 @@
+<div class="game-search">
+    <div class="game-search__title" [ngSwitch]="gameMode">
+        <h3 *ngSwitchCase="'classic'">Классика</h3>
+    </div>
+    {{timer | async}}
+    <button type="button" (click)="onLeave()">Отмена</button>
+</div>

@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { GameStatusEnum } from "./game-status.enum";
-import { GameModeEnum } from "./game-mode.enum";
+import { GameModeEnum } from "../../../../common/game-mode.enum";
 
 @Entity("games")
 export class GameDAO {

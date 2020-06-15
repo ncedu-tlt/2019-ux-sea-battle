@@ -17,7 +17,7 @@ export class ParticipantDAO {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "user_id" })
-    user: Promise<UserDAO>;
+    user: UserDAO;
 
     @ManyToOne(() => GameDAO, {
         cascade: true,

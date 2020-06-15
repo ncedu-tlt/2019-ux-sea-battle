@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { GameModeEnum } from "../../db/domain/game-mode.enum";
+import { GameModeEnum } from "../../../../common/game-mode.enum";
 import { GameService } from "../../game/game.service";
 import { RoomDto } from "../../../../common/dto/room.dto";
 import { SearchService } from "../search.service";

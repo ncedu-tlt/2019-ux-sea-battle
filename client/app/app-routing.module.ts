@@ -2,10 +2,18 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AuthComponent } from "./components/auth/auth.component";
 import { RegistrationComponent } from "./components/registration/registration.component";
-import { NotFoundComponent } from "./components/not-found/not-found.component";
 import { GuestGuard } from "./guards/guest.guard";
+import { MainMenuComponent } from "./components/main-menu/main-menu.component";
+import { GameSearchComponent } from "./components/game-search/game-search.component";
+import { GameComponent } from "./components/game/game.component";
+import { AuthGuard } from "./guards/auth.guard";
 
 const routes: Routes = [
+    {
+        path: "",
+        component: MainMenuComponent,
+        canActivate: [AuthGuard]
+    },
     {
         path: "login",
         component: AuthComponent,
@@ -17,8 +25,18 @@ const routes: Routes = [
         canActivate: [GuestGuard]
     },
     {
+        path: "search",
+        component: GameSearchComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: "game",
+        component: GameComponent,
+        canActivate: [AuthGuard]
+    },
+    {
         path: "**",
-        component: NotFoundComponent
+        redirectTo: ""
     }
 ];
 

@@ -1,4 +1,4 @@
-import { GameModeEnum } from "../../server/modules/db/domain/game-mode.enum";
+import { GameModeEnum } from "../game-mode.enum";
 import { GameStatusEnum } from "../../server/modules/db/domain/game-status.enum";
 
 export interface GameDto {

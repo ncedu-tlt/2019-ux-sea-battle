@@ -11,7 +11,7 @@ import { AuthApiService } from "../../services/api/auth.api.service";
 import { RegisterRequestDTO } from "../../../../common/dto/register-request.dto";
 
 @Component({
-    selector: "registration-form",
+    selector: "sb-registration-form",
     templateUrl: "./registration.component.html",
     styleUrls: ["./registration.component.less"]
 })
