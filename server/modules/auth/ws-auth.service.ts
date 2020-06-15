@@ -24,7 +24,7 @@ export class WsAuthService {
             return await this.usersService.findById(payload.sub);
         } catch (e) {
             this.logger.debug(`Token: ${e.message}. ID: ${socket.id}`);
-            socket.emit("leave", "401");
+            socket.emit("tokenExpired", "401");
             socket.disconnect();
         }
     }

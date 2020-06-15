@@ -23,10 +23,6 @@ export class GameService {
         return this.gameRepository.find();
     }
 
-    findById(id: number): Promise<GameDAO> {
-        return this.gameRepository.findOne(id);
-    }
-
     async create(
         gameMode: GameModeEnum,
         isPrivate?: boolean,
@@ -48,14 +44,7 @@ export class GameService {
     }
 
     async getGame(id: number): Promise<GameDAO> {
-        const game: GameDAO = await this.findById(id);
-        if (!game) {
-            throw new HttpException(
-                "game/gameDoesNotExist",
-                HttpStatus.NOT_FOUND
-            );
-        }
-        return game;
+        return await this.gameRepository.findOne(id);
     }
 
     async getGameByUserId(id: number): Promise<GameDAO> {
@@ -73,11 +62,11 @@ export class GameService {
 
     async updateGame(updateDTO: UpdateGameDto): Promise<GameDAO> {
         await this.gameRepository.update(updateDTO.id, updateDTO);
-        return await this.findById(updateDTO.id);
+        return await this.gameRepository.findOne(updateDTO.id);
     }
 
     async deleteGame(id: number): Promise<DeleteResult> {
-        const game: GameDAO = await this.findById(id);
+        const game: GameDAO = await this.gameRepository.findOne(id);
         if (!game) {
             if (!game) {
                 throw new HttpException(

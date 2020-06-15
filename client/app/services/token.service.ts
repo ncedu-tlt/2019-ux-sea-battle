@@ -18,13 +18,10 @@ export class TokenService {
     }
 
     setToken(token: string): void {
+        const expiresValue = new Date();
+        expiresValue.setHours(new Date().getHours() + 1);
         this.accessToken = token;
-        this.cookieService.set(
-            TOKEN_COOKIE,
-            token,
-            new Date().getHours() + 1,
-            "/"
-        );
+        this.cookieService.set(TOKEN_COOKIE, token, expiresValue, "/");
     }
 
     deleteToken(): void {

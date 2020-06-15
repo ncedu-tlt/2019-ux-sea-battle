@@ -41,6 +41,6 @@ export class MatchmakingService {
     }
 
     onConnectionError(): Observable<string> {
-        return this.socket.fromEvent<string>("leave");
+        return this.socket.fromEvent<string>("tokenExpired");
     }
 }
