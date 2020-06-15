@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { MatchmakingService } from "../../services/ws/matchmaking.service";
 import { Unsubscribable, timer, Observable } from "rxjs";
 import { GameModeEnum } from "../../../../common/game-mode.enum";
+import { TokenService } from "../../services/token.service";
 
 @Component({
     selector: "sb-loading-screen",
@@ -18,14 +19,19 @@ export class GameSearchComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private matchmakingService: MatchmakingService
+        private matchmakingService: MatchmakingService,
+        private tokenService: TokenService
     ) {
         this.subscriptions.push(
             matchmakingService.onConnection().subscribe(() => {
                 this.search();
             }),
             matchmakingService.onSearch().subscribe(() => this.onSearch()),
-            matchmakingService.onDisconnect().subscribe(() => this.onLeave())
+            matchmakingService.onDisconnect().subscribe(() => this.onLeave()),
+            matchmakingService.onConnectionError().subscribe(() => {
+                this.tokenService.deleteToken();
+                this.router.navigate(["/login"]);
+            })
         );
     }
 

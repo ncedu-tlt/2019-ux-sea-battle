@@ -39,4 +39,8 @@ export class MatchmakingService {
     onDisconnect(): Observable<any> {
         return this.socket.fromEvent<any>("disconnect");
     }
+
+    onConnectionError(): Observable<string> {
+        return this.socket.fromEvent<string>("leave");
+    }
 }
