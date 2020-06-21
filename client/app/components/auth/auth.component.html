@@ -1,27 +1,58 @@
-<div class="auth">
+<div class="auth _dark">
     <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="auth__form">
-        <label class="auth__label">
-            Адрес электронной почты
-            <input formControlName="email" type="text">
+        <label 
+            class="auth__label"
+            [ngClass]="[(_email.touched && _email.dirty && _email.errors)? '_warning':'']"
+        >
+            <div class="sb-input _no-label">
+                <div class="sb-input__container">
+                    <div class="sb-input__icon" [inlineSVG]="'email-icon.svg'"></div>
+                    <input class="sb-input__textfield" formControlName="email" placeholder="Электронная почта" type="text">
+                </div>
+            </div>
             <div class="auth__errors" *ngIf="authForm.invalid && (_email.touched && _email.dirty)">
-                <span *ngIf="_email.errors?.required">Поле почты обязательно для заполнения</span>
-                <span *ngIf="_email.errors?.pattern">Введен некорректный адрес электронной почты</span>
+                <span *ngIf="_email.errors?.required">
+                    <span class="auth__icon" [inlineSVG]="'warning-icon.svg'"></span>
+                    Поле почты обязательно для заполнения
+                </span>
+                <span *ngIf="_email.errors?.pattern">
+                    <span class="auth__icon" [inlineSVG]="'warning-icon.svg'"></span>
+                    Введен некорректный адрес электронной почты
+                </span>
             </div>
         </label>
-        
-        <label class="auth__label">
-            Пароль
-            <input formControlName="password" id="password" type="password">
+        <label 
+            class="auth__label"
+            [ngClass]="[(_password.touched && _password.dirty && _password.errors)? '_warning':'']"
+        >
+            <div class="sb-input _no-label">
+                <div class="sb-input__container">
+                    <div class="sb-input__icon" [inlineSVG]="'password-icon.svg'"></div>
+                    <input class="sb-input__textfield" formControlName="password" placeholder="Пароль" type="password">
+                </div>
+            </div>
             <div class="auth__errors" *ngIf="authForm.invalid && (_password.touched && _password.dirty)">
-                <span *ngIf="_password.errors?.required">Поле пароля обязательно для заполения</span>
+                <span *ngIf="_password.errors?.required">
+                    <span class="auth__icon" [inlineSVG]="'warning-icon.svg'"></span>
+                    Поле пароля обязательно для заполения
+                </span>
                 <span *ngIf="_password.errors?.minlength || _password.errors?.maxlength">
+                    <span class="auth__icon" [inlineSVG]="'warning-icon.svg'"></span>
                     Пароль должен быть от 5 до 20 смиволов
                 </span>
             </div>
         </label>
-        
-        <button [disabled]="authForm.invalid" type="submit">Войти</button>
+        <button
+            type="submit"
+            class="sb-button"
+            *ngIf="authForm.enabled"
+            [disabled]="authForm.invalid"
+        >
+            <span class="auth__icon" [inlineSVG]="'checkmark-icon.svg'"></span>
+            Войти
+        </button>
         <div class="auth__server-errors" *ngIf="errorCode" [ngSwitch]="errorCode">
+            <span class="auth__icon" [inlineSVG]="'warning-icon.svg'"></span>
             <span *ngSwitchCase="401">Неверные данные</span>
             <span *ngSwitchDefault>Что-то пошло не так</span>
         </div>
