@@ -2,59 +2,59 @@
 @import "../../../styles/constants.less";
 
 .auth {
-	display: flex;
-	justify-content: center;
-	height: 100%;
-	padding-top: 100px;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    padding-top: 100px;
 
-	&._light,
-	._light & {
-		background: @background-light;
-	}
+    &._light,
+    ._light & {
+        background: @background-light;
+    }
 
-	&._dark,
-	._dark & {
-		background: @background-dark;
-	}
+    &._dark,
+    ._dark & {
+        background: @background-dark;
+    }
 
-	&__form {
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-	}
+    &__form {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
 
-	&__label {
-		width: @input-max-width;
-		display: flex;
-		flex-direction: column;
-		margin-bottom: 34px;
-	}
+    &__label {
+        width: @input-max-width;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 34px;
+    }
 
-	&__errors {
-		display: flex;
+    &__errors {
+        display: flex;
 
-		&._error,
-		._error & {
-			color: @form-error;
-			fill: @form-error;
-		}
+        &._error,
+        ._error & {
+            color: @form-error;
+            fill: @form-error;
+        }
 
-		&._warning,
-		._warning & {
-			color: @form-warning;
-			fill: @form-warning;
-		}
-	}
+        &._warning,
+        ._warning & {
+            color: @form-warning;
+            fill: @form-warning;
+        }
+    }
 
-	&__icon {
-		margin-right: 7px;
-	}
+    &__icon {
+        margin-right: 7px;
+    }
 
-	&__server-errors {
-		display: flex;
-		margin-top: 12px;
+    &__server-errors {
+        display: flex;
+        margin-top: 12px;
 
-		color: @form-error;
-		fill: @form-error;
-	}
+        color: @form-error;
+        fill: @form-error;
+    }
 }
