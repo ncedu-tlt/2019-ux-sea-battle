@@ -1,0 +1,169 @@
+@import "./colors.less";
+
+.sb-radio {
+    position: relative;
+    cursor: pointer;
+
+    &__label {
+        margin-left: 40px;
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 26px;
+
+        user-select: none;
+
+        &._light,
+        ._light & {
+            color: @text-dark;
+        }
+
+        &._dark,
+        ._dark & {
+            color: @text-light;
+        }
+    }
+
+    &__input {
+        position: absolute;
+        height: 0;
+        width: 0;
+
+        opacity: 0;
+    }
+
+    &__checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 26px;
+        height: 26px;
+
+        border-radius: 16px;
+        transition: box-shadow .5s;
+
+        &:after {
+            position: absolute;
+            left: 5px;
+            top: 5px;
+    
+            width: 12px;
+            height: 12px;
+
+            border-radius: 16px;
+            content: "";
+        }
+    }
+}
+
+._light .sb-radio__checkmark,
+.sb-radio__checkmark._light {
+    box-shadow: inset 4px 4px 8px fade(#000, 25%), inset -2px -2px 8px fade(#fff, 80%);
+
+    &:after {
+        border: 2px solid @text-dark;
+    }
+
+    &:hover {
+        background-color: fade(#fff, 30%);
+        box-shadow: inset 4px 4px 8px fade(#000, 25%), inset -2px -2px 8px fade(#fff, 80%);
+    }
+}
+
+._light .sb-radio__input,
+.sb-radio__input._light {
+
+    &:checked ~ .sb-radio__checkmark {
+        box-shadow: 5px 5px 10px fade(#000, 15%), -5px -5px 10px fade(#fff, 60%);
+
+        &:hover {
+            background-color: fade(#fff, 30%);
+            box-shadow: 5px 5px 10px fade(#000, 15%), -5px -5px 10px fade(#fff, 60%),
+                inset 4px 4px 8px fade(#000, 25%), inset -2px -2px 8px fade(#fff, 80%);
+            }
+
+        &:after {
+            background-color: @text-dark;
+        }
+    }
+
+    &:disabled ~ .sb-radio__checkmark {
+        background: transparent;
+        box-shadow: inset 4px 4px 8px fade(#000, 15%), inset -2px -2px 8px fade(#fff, 70%);
+    
+        &:after {
+            background-color: transparent;
+            border: 2px solid @text-dark-fade;
+        }
+    }
+
+    &:disabled:checked ~ .sb-radio__checkmark {
+        background: transparent;
+        box-shadow: 5px 5px 10px fade(#000, 10%), -5px -5px 10px fade(#fff, 50%);
+
+        &:after {
+            background-color: @text-dark-fade;
+            border: 2px solid transparent;
+        }
+    }
+
+    &:disabled ~ .sb-radio__label {
+        color: @text-dark-fade;
+    }
+}
+
+._dark .sb-radio__checkmark,
+.sb-radio__checkmark._dark {
+    box-shadow: inset 4px 4px 10px fade(#000, 30%), inset -2px -2px 5px fade(#fff, 30%);
+
+    &:after {
+        border: 2px solid @text-light;
+    }
+
+    &:hover {
+        background-color: fade(#fff, 20%);
+        box-shadow: inset 4px 4px 10px fade(#000, 40%), inset -2px -2px 5px fade(#fff, 40%);
+    }
+}
+
+._dark .sb-radio__input,
+.sb-radio__input._dark {
+
+    &:checked ~ .sb-radio__checkmark {
+        box-shadow: 4px 4px 10px fade(#000, 40%), -4px -4px 10px fade(#fff, 50%);
+
+        &:hover {
+            background-color: fade(#fff, 20%);
+            box-shadow: 4px 4px 10px fade(#000, 40%), -4px -4px 10px fade(#fff, 50%),
+                inset 4px 4px 10px fade(#000, 40%), inset -2px -2px 5px fade(#fff, 30%);
+        }
+
+        &:after {
+            background-color: @text-light;
+        }
+    }
+
+    &:disabled ~ .sb-radio__checkmark {
+        background: transparent;
+        box-shadow: inset 4px 4px 10px fade(#000, 20%), inset -2px -2px 5px fade(#fff, 20%);
+    
+        &:after {
+            background-color: transparent;
+            border: 2px solid @text-light-fade;
+        } 
+    }
+
+    &:disabled:checked ~ .sb-radio__checkmark {
+        background: transparent;
+        box-shadow: 4px 4px 10px fade(#000, 20%), -4px -4px 10px fade(#fff, 20%);
+
+        &:after {
+            background-color: @text-light-fade;
+            border: 2px solid transparent;
+        }        
+    }
+
+    &:disabled ~ .sb-radio__label {
+        color: @text-light-fade;
+    }
+}
