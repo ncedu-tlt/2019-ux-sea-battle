@@ -5,7 +5,7 @@
             [ngClass]="[(_email.touched && _email.dirty && _email.errors)? '_warning':'']"
         >
             <div class="sb-input _label">
-                <span *ngIf="_email.touched || _email.dirty" class="sb-input__label">
+                <span class="sb-input__label">
                     Адрес электронной почты
                     <span class="sb-input__required"></span>
                 </span>
@@ -14,7 +14,6 @@
                         class="sb-input__textfield"
                         [ngClass]="[(_email.touched || _email.dirty)? '_touched':'']"
                         formControlName="email"
-                        placeholder="Адрес электронной почты" 
                         type="text"
                     >
                 </div>
@@ -35,7 +34,7 @@
             [ngClass]="[(_nickname.touched && _nickname.dirty && _nickname.errors)? '_warning':'']"
         >
             <div class="sb-input _label">
-                <span *ngIf="_nickname.touched || _nickname.dirty" class="sb-input__label">
+                <span class="sb-input__label">
                     Никнейм
                     <span class="sb-input__required"></span>
                 </span>
@@ -44,7 +43,6 @@
                         class="sb-input__textfield"
                         [ngClass]="[(_nickname.touched || _nickname.dirty)? '_touched':'']"
                         formControlName="nickname"
-                        placeholder="Никнейм" 
                         type="text"
                     >
                 </div>
@@ -65,7 +63,7 @@
             [ngClass]="[(_password.touched && _password.dirty && _password.errors)? '_warning':'']"
         >
             <div class="sb-input _label">
-                <span *ngIf="_password.touched || _password.dirty" class="sb-input__label">
+                <span class="sb-input__label">
                     Пароль
                     <span class="sb-input__required"></span>
                 </span>
@@ -74,7 +72,6 @@
                         class="sb-input__textfield"
                         [ngClass]="[(_password.touched || _password.dirty)? '_touched':'']"
                         formControlName="password"
-                        placeholder="Пароль" 
                         type="password"
                     >
                 </div>
@@ -95,7 +92,7 @@
             [ngClass]="[(_confirmPassword.touched && _confirmPassword.dirty && _confirmPassword.errors)? '_warning':'']"
         >
             <div class="sb-input _label">
-                <span *ngIf="_confirmPassword.touched || _confirmPassword.dirty" class="sb-input__label">
+                <span class="sb-input__label">
                     Подвердите пароль
                     <span class="sb-input__required"></span>
                 </span>
@@ -104,7 +101,6 @@
                         class="sb-input__textfield"
                         [ngClass]="[(_confirmPassword.touched || _confirmPassword.dirty)? '_touched':'']"
                         formControlName="confirmPassword"
-                        placeholder="Подвердите пароль" 
                         type="password"
                     >
                 </div>

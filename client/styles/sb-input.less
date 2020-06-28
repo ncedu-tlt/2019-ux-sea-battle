@@ -8,6 +8,7 @@
         align-items: center;
 
         width: @input-max-width;
+        margin-bottom: 12px;
 
         font-size: 16px;
         
@@ -45,6 +46,7 @@
         position: relative;
         display: flex;
         align-items: center;
+        margin-bottom: 12px;
         line-height: 0px;
     }
 
@@ -66,7 +68,6 @@
     &__textfield {
         width: @input-max-width;
         height: 46px;
-        margin: 12px 0;
 
         font-size: 20px;
         font-style: normal;
@@ -106,11 +107,10 @@
 
 ._light .sb-input__textfield,
 .sb-input__textfield._light {
-    color: @text-dark-fade;
+    color: @text-dark;
     box-shadow: inset 4px 4px 14px fade(#000, 20%), inset -4px -4px 14px fade(#fff, 80%);
 
     &:focus {
-        color: @text-dark;
         border: 2px solid @text-dark;
     }
 
@@ -121,21 +121,14 @@
 
 ._dark .sb-input__textfield,
 .sb-input__textfield._dark {
-    color: @text-light-fade;
+    color: @text-light;
     box-shadow: inset 4px 4px 14px fade(#000, 30%), inset -4px -4px 10px fade(#fff, 25%);
 
     &:focus {
-        color: @text-light;
         border: 2px solid @text-light;
     }
 
     &::placeholder {
         color: @text-light-fade;
-    }
-}
-
-.sb-input__textfield._touched {
-    &::placeholder {
-        color: transparent;
     }
 }
