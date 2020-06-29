@@ -1,9 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
 @import (css) url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400&display=swap");
+@import "./styles/sb-container.less";
 @import "./styles/sb-button.less";
+@import "./styles/sb-input.less";
+@import "./styles/sb-checkbox.less";
+@import "./styles/sb-radio.less";
+@import "./styles/sb-link.less";
 
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
     font-family: "Roboto Slab", serif;
+}
+
+.app {
+    min-height: 100vh;
 }

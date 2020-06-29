@@ -1,21 +1,55 @@
+@import "../../../styles/colors.less";
+@import "../../../styles/constants.less";
+
 .auth {
-	&__form {
-		display: flex;
-		flex-direction: column;
-	}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 30px 0;
 
-	&__label {
-		display: flex;
-	}
+    &__form {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
 
-	&__errors {
-		display: flex;
-		color: red;
-	}
+    &__label {
+        width: @input-max-width;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 25px;
+    }
 
-	&__server-errors {
-		display: flex;
-		flex-direction: column;
-		color: purple;
-	}
+    &__errors {
+        display: flex;
+
+        &._error,
+        ._error & {
+            color: @form-error;
+            fill: @form-error;
+        }
+
+        &._warning,
+        ._warning & {
+            color: @form-warning;
+            fill: @form-warning;
+        }
+    }
+
+    &__icon {
+        margin-right: 7px;
+    }
+
+    &__server-errors {
+        display: flex;
+        margin-top: 12px;
+
+        color: @form-error;
+        fill: @form-error;
+    }
+
+    &__registration-link {
+        margin-top: 20px;
+    }
 }

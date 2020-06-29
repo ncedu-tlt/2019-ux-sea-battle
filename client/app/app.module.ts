@@ -14,6 +14,7 @@ import { GameSearchComponent } from "./components/game-search/game-search.compon
 import { GameComponent } from "./components/game/game.component";
 import { SocketIoModule } from "ngx-socket-io";
 import { MatchmakingSocket } from "./sockets/matchmaking.socket";
+import { InlineSVGModule } from "ng-inline-svg";
 
 @NgModule({
     declarations: [
@@ -29,7 +30,8 @@ import { MatchmakingSocket } from "./sockets/matchmaking.socket";
         AppRoutingModule,
         HttpClientModule,
         ReactiveFormsModule,
-        SocketIoModule
+        SocketIoModule,
+        InlineSVGModule.forRoot({ baseUrl: "assets/" })
     ],
     providers: [
         CookieService,

@@ -1,57 +1,137 @@
 <div class="registration">
     <form [formGroup]="registrationForm" class="registration__form" (ngSubmit)="submitHandler()">
-        <label class="registration__label">
-            Адрес электронной почты
-            <input type="email" formControlName="email">
+        <label
+            class="registration__label"
+            [ngClass]="[(_email.touched && _email.dirty && _email.errors)? '_warning':'']"
+        >
+            <div class="sb-input _label">
+                <span class="sb-input__label">
+                    Адрес электронной почты
+                    <span class="sb-input__required"></span>
+                </span>
+                <div class="sb-input__container">
+                    <input 
+                        class="sb-input__textfield"
+                        [ngClass]="[(_email.touched || _email.dirty)? '_touched':'']"
+                        formControlName="email"
+                        type="text"
+                    >
+                </div>
+            </div>
             <div class="registration__errors" *ngIf="registrationForm.invalid && (_email.touched && _email.dirty)">
-                <span *ngIf="_email.errors?.required">Поле почты обязательно для заполнения</span>
-                <span *ngIf="_email.errors?.pattern">Введен некорректный адрес электронной почты</span>
+                <span *ngIf="_email.errors?.required">
+                    <span class="registration__icon" [inlineSVG]="'warning-icon.svg'"></span>
+                    Поле почты обязательно для заполнения
+                </span>
+                <span *ngIf="_email.errors?.pattern">
+                    <span class="registration__icon" [inlineSVG]="'warning-icon.svg'"></span>
+                    Введен некорректный адрес электронной почты
+                </span>
             </div>
         </label>
-        <label class="registration__label">
-            Никнейм
-            <input type="text" id="nickname" formControlName="nickname">
+        <label
+            class="registration__label"
+            [ngClass]="[(_nickname.touched && _nickname.dirty && _nickname.errors)? '_warning':'']"
+        >
+            <div class="sb-input _label">
+                <span class="sb-input__label">
+                    Никнейм
+                    <span class="sb-input__required"></span>
+                </span>
+                <div class="sb-input__container">
+                    <input 
+                        class="sb-input__textfield"
+                        [ngClass]="[(_nickname.touched || _nickname.dirty)? '_touched':'']"
+                        formControlName="nickname"
+                        type="text"
+                    >
+                </div>
+            </div>
             <div class="registration__errors" *ngIf="registrationForm.invalid && (_nickname.touched && _nickname.dirty)">
-                <span *ngIf="_nickname.errors?.required">Поле никнейма обязательно для заполнения</span>
+                <span *ngIf="_nickname.errors?.required">
+                    <span class="registration__icon" [inlineSVG]="'warning-icon.svg'"></span>
+                    Поле никнейма обязательно для заполнения
+                </span>
                 <span *ngIf="_nickname.errors?.minlength || _nickname.errors?.maxlength">
+                    <span class="registration__icon" [inlineSVG]="'warning-icon.svg'"></span>
                     Никнейм должен быть от 3 до 20 смиволов
                 </span>
             </div>
         </label>
-        <label class="registration__label">
-            Пароль
-            <input type="password" formControlName="password">
-            <div class="registration__errors" *ngIf="registrationForm.invalid && (_password.touched && _password.dirty) || (_confirmPassword.touched && _confirmPassword.dirty)">
-                <span *ngIf="_password.errors?.required">Поле пароля обязательно для заполения</span>
+        <label
+            class="registration__label"
+            [ngClass]="[(_password.touched && _password.dirty && _password.errors)? '_warning':'']"
+        >
+            <div class="sb-input _label">
+                <span class="sb-input__label">
+                    Пароль
+                    <span class="sb-input__required"></span>
+                </span>
+                <div class="sb-input__container">
+                    <input 
+                        class="sb-input__textfield"
+                        [ngClass]="[(_password.touched || _password.dirty)? '_touched':'']"
+                        formControlName="password"
+                        type="password"
+                    >
+                </div>
+            </div>
+            <div class="registration__errors" *ngIf="registrationForm.invalid && _password.touched && _password.dirty">
+                <span *ngIf="_password.errors?.required">
+                    <span class="registration__icon" [inlineSVG]="'warning-icon.svg'"></span>
+                    Поле пароля обязательно для заполения
+                </span>
                 <span *ngIf="_password.errors?.minlength || _password.errors?.maxlength">
+                    <span class="registration__icon" [inlineSVG]="'warning-icon.svg'"></span>
                     Пароль должен быть от 5 до 20 смиволов
                 </span>
             </div>
         </label>
-        <label class="registration__label">
-            Подвердите пароль
-            <input type="password" formControlName="confirmPassword">
-            <div class="registration__errors" *ngIf="registrationForm.invalid && (_password.touched && _password.dirty) || (_confirmPassword.touched && _confirmPassword.dirty)">
-                <span *ngIf="_confirmPassword.errors?.required">Подтвердите пароль</span>
-                <span *ngIf="_confirmPassword.errors?.mustMatch">Пароли должны совпадать</span>
+        <label
+            class="registration__label"
+            [ngClass]="[(_confirmPassword.touched && _confirmPassword.dirty && _confirmPassword.errors)? '_warning':'']"
+        >
+            <div class="sb-input _label">
+                <span class="sb-input__label">
+                    Подвердите пароль
+                    <span class="sb-input__required"></span>
+                </span>
+                <div class="sb-input__container">
+                    <input 
+                        class="sb-input__textfield"
+                        [ngClass]="[(_confirmPassword.touched || _confirmPassword.dirty)? '_touched':'']"
+                        formControlName="confirmPassword"
+                        type="password"
+                    >
+                </div>
+            </div>
+            <div class="registration__errors" *ngIf="registrationForm.invalid && _confirmPassword.touched && _confirmPassword.dirty">
+                <span *ngIf="_confirmPassword.errors?.required">
+                    <span class="registration__icon" [inlineSVG]="'warning-icon.svg'"></span>
+                    Подтвердите пароль
+                </span>
+                <span *ngIf="_confirmPassword.errors?.mustMatch">
+                    <span class="registration__icon" [inlineSVG]="'warning-icon.svg'"></span>
+                    Пароли должны совпадать
+                </span>
             </div>
         </label>
-        <label class="registration__label">
-            Согласие с правилами
-            <input type="checkbox" formControlName="acceptTerms">
-            <div class="registration__errors" *ngIf="registrationForm.invalid && (acceptTerms.touched || acceptTerms.dirty)">
-                <span *ngIf="acceptTerms.errors">Согласие с правилами</span>
-            </div>
+        <label class="registration__label sb-checkbox">
+            <input class="sb-checkbox__input" type="checkbox" formControlName="acceptTerms">
+            <span class="sb-checkbox__checkmark"></span>
+            <span class="sb-checkbox__label">Согласие с правилами</span>
         </label>
         <button
                 type="submit"
-                class="registration__button"
+                class="sb-button"
                 *ngIf="registrationForm.enabled"
                 [disabled]="registrationForm.invalid"
         >
+            <span class="registration__icon" [inlineSVG]="'checkmark-icon.svg'"></span>
             Зарегистрироваться
         </button>
         <div class="registration__server-errors" *ngIf="errorsCode" [ngSwitch]="errorsCode">
+            <span class="registration__icon" [inlineSVG]="'warning-icon.svg'"></span>
             <span *ngSwitchCase="400">Такой пользователь уже существует</span>
             <span *ngSwitchCase="500">Внутренняя ошибка сервера</span>
             <span *ngSwitchDefault>Что-то пошло не так</span>

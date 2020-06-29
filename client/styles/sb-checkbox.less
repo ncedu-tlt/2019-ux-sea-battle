@@ -1,0 +1,276 @@
+@import "./colors.less";
+
+.sb-checkbox {
+    position: relative;
+    cursor: pointer;
+
+    &__label {
+        margin-left: 40px;
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 26px;
+
+        user-select: none;
+
+        &._light,
+        ._light & {
+            color: @text-dark;
+        }
+
+        &._dark,
+        ._dark & {
+            color: @text-light;
+        }
+    }
+
+    &__input {
+        position: absolute;
+        height: 0;
+        width: 0;
+
+        opacity: 0;
+    }
+
+    &__checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 26px;
+        height: 26px;
+
+        border-radius: 6px;
+        transition: box-shadow .5s;
+
+        &:after {
+            position: absolute;
+            left: 8.5px;
+            top: 4px;
+    
+            display: none;
+            width: 6px;
+            height: 12px;
+
+            content: "";
+            transform: rotate(45deg);
+        }
+    }
+}
+
+._switch .sb-checkbox {
+
+    &__label {
+        margin-left: 66px;
+    }
+
+    &__checkmark {
+        width: 50px;
+        border-radius: 16px;
+        
+        &::after {
+            left: 3px;
+            top: 3px;
+
+            display: block;
+            width: 20px;
+            height: 20px;
+
+            border-radius: 16px;
+            background-color: transparent;
+            box-sizing: border-box;
+            transition: all .1s;
+            transform: none;
+        }
+    }
+}
+
+._light .sb-checkbox__checkmark,
+.sb-checkbox__checkmark._light {
+    box-shadow: inset 4px 4px 8px fade(#000, 25%), inset -2px -2px 10px fade(#fff, 80%);
+
+    &:after {
+        border: solid @text-dark;
+        border-width: 0 4px 4px 0;
+    }
+
+    &:hover {
+        background-color: fade(#fff, 30%);
+        box-shadow: inset 4px 4px 8px fade(#000, 25%), inset -2px -2px 10px fade(#fff, 80%);
+    }
+}
+
+._light .sb-checkbox__input,
+.sb-checkbox__input._light {
+
+    &:checked ~ .sb-checkbox__checkmark {
+        box-shadow: 5px 5px 10px fade(#000, 15%), -5px -5px 10px fade(#fff, 60%);
+
+        &:hover {
+            background-color: fade(#fff, 30%);
+            box-shadow: 5px 5px 10px fade(#000, 15%), -5px -5px 10px fade(#fff, 60%),
+                inset 4px 4px 8px fade(#000, 25%), inset -2px -2px 10px fade(#fff, 80%);
+        }
+
+        &:after {
+            display: block;
+        }
+    }
+
+    &:disabled ~ .sb-checkbox__checkmark {
+        background: transparent;
+        box-shadow: inset 4px 4px 8px fade(#000, 15%), inset -2px -2px 10px fade(#fff, 70%);
+    }
+
+    &:disabled:checked ~ .sb-checkbox__checkmark {
+        background: transparent;
+        box-shadow: 5px 5px 10px fade(#000, 10%), -5px -5px 10px fade(#fff, 50%);
+
+        &:after {
+            border: solid @text-dark-fade;
+            border-width: 0 4px 4px 0;
+        }        
+    }
+
+    &:disabled ~ .sb-checkbox__label {
+        color: @text-dark-fade;
+    }
+}
+
+._dark .sb-checkbox__checkmark,
+.sb-checkbox__checkmark._dark {
+    box-shadow: inset 4px 4px 10px fade(#000, 30%), inset -2px -2px 5px fade(#fff, 30%);
+
+    &:after {
+        border: solid @text-light;
+        border-width: 0 4px 4px 0;
+    }
+
+    &:hover {
+        background-color: fade(#fff, 20%);
+        box-shadow: inset 4px 4px 10px fade(#000, 40%), inset -2px -2px 5px fade(#fff, 40%);
+    }
+}
+
+._dark .sb-checkbox__input,
+.sb-checkbox__input._dark {
+
+    &:checked ~ .sb-checkbox__checkmark {
+        box-shadow: 4px 4px 10px fade(#000, 40%), -4px -4px 10px fade(#fff, 50%);
+
+        &:hover {
+            background-color: fade(#fff, 20%);
+            box-shadow: 4px 4px 10px fade(#000, 40%), -4px -4px 10px fade(#fff, 50%),
+                inset 4px 4px 10px fade(#000, 30%), inset -2px -2px 5px fade(#fff, 30%);
+        }
+
+        &:after {
+            display: block;
+        }
+    }
+
+    &:disabled ~ .sb-checkbox__checkmark {
+        background: transparent;
+        box-shadow: inset 4px 4px 10px fade(#000, 20%), inset -2px -2px 5px fade(#fff, 20%);
+    }
+
+    &:disabled:checked ~ .sb-checkbox__checkmark {
+        background: transparent;
+        box-shadow: 4px 4px 10px fade(#000, 20%), -4px -4px 10px fade(#fff, 20%);
+
+        &:after {
+            border: solid @text-light-fade;
+            border-width: 0 4px 4px 0;
+        }
+    }
+
+    &:disabled ~ .sb-checkbox__label {
+        color: @text-light-fade;
+    }
+}
+
+.sb-checkbox._switch .sb-checkbox__checkmark {
+
+    ._light &:after,
+    &._light:after {
+        border: 2px solid @text-dark;
+    }
+
+    ._dark &:after,
+    &._dark:after {
+        border: 2px solid @text-light;
+    }
+}
+
+.sb-checkbox._switch .sb-checkbox__input {
+
+    ._light &,
+    &._light {
+
+        &:checked ~ .sb-checkbox__checkmark {
+            box-shadow: 4px 4px 8px fade(#000, 25%), -2px -2px 10px fade(#fff, 80%);
+
+            &:hover {
+                box-shadow: 4px 4px 8px fade(#000, 25%), -2px -2px 10px fade(#fff, 80%),
+                    inset 4px 4px 8px fade(#000, 25%), inset -2px -2px 10px fade(#fff, 80%);
+            }
+
+            &:after {
+                left: calc(50px - 20px - 3px);
+                background-color: @text-dark;
+            }
+        }
+        
+        &:disabled ~ .sb-checkbox__checkmark {
+
+            &:after {
+                background-color: transparent;
+                border: 2px solid @text-dark-fade;
+            }
+        }
+
+        &:disabled:checked ~ .sb-checkbox__checkmark {
+            box-shadow: inset 4px 4px 8px fade(#000, 15%), inset -2px -2px 10px fade(#fff, 70%);
+
+            &:after {
+                background-color: @text-dark-fade;
+                border: 2px solid transparent;
+            }
+        }
+    }
+
+    ._dark &,
+    &._dark {
+
+        &:checked ~ .sb-checkbox__checkmark {
+            box-shadow: 4px 4px 10px fade(#000, 30%), -2px -2px 5px fade(#fff, 30%);
+
+            &:hover {
+                box-shadow: 4px 4px 10px fade(#000, 30%), -2px -2px 5px fade(#fff, 30%),
+                    inset 4px 4px 10px fade(#000, 30%), inset -2px -2px 5px fade(#fff, 30%);
+            }
+
+            &:after {
+                left: calc(50px - 20px - 3px);
+                background-color: @text-light;
+            }
+        }
+        
+        &:disabled ~ .sb-checkbox__checkmark {
+            box-shadow: inset 4px 4px 10px fade(#000, 30%), inset -2px -2px 5px fade(#fff, 30%);
+            
+            &:after {
+                background-color: transparent;
+                border: 2px solid @text-light-fade;
+            }
+        }
+
+        &:disabled:checked ~ .sb-checkbox__checkmark {
+            box-shadow: inset 4px 4px 10px fade(#000, 30%), inset -2px -2px 5px fade(#fff, 30%);
+
+            &:after {
+                background-color: @text-light-fade;
+                border: 2px solid transparent;
+            }
+        }
+    }
+}

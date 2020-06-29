@@ -1,0 +1,134 @@
+@import "./colors.less";
+@import "./constants.less";
+
+.sb-input {
+
+    &__label {
+        display: flex;
+        align-items: center;
+
+        width: @input-max-width;
+        margin-bottom: 12px;
+
+        font-size: 16px;
+        
+        &._light,
+        ._light & {
+            color: @text-dark;
+        }
+
+        &._dark,
+        ._dark & {
+            color: @text-light;
+        }
+        
+        &._error,
+        ._error & {
+            color: @form-error;
+        }
+
+        &._warning,
+        ._warning & {
+            color: @form-warning;
+        }
+    }
+
+    &__required {
+        width: 5px;
+        height: 5px;
+        margin-left: 5px;
+
+        background-color: #ff0000;
+        border-radius: 50%;
+    }
+
+    &__container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        line-height: 0px;
+    }
+
+    &__icon {
+        position: absolute;
+        left: 18px;
+
+        &._light,
+        ._light & {
+            fill: @text-dark;
+        }
+
+        &._dark,
+        ._dark & {
+            fill: @text-light;
+        }
+    }
+
+    &__textfield {
+        width: @input-max-width;
+        height: 46px;
+
+        font-size: 20px;
+        font-style: normal;
+        font-weight: normal;
+
+        background: transparent;
+        border-radius: 10px;
+        border: 2px solid transparent;
+        outline: none;
+    }
+}
+
+.sb-input__textfield._slim {
+    height: 36px;
+    font-size: 16px;
+}
+
+._no-label .sb-input__textfield,
+.sb-input__textfield._no-label {
+    padding: 0 18px 0 58px;
+}
+
+._label .sb-input__textfield,
+.sb-input__textfield._label {
+    padding: 0 18px;
+}
+
+._warning .sb-input__textfield,
+.sb-input__textfield._warning {
+    border: 2px solid @form-warning !important;
+}
+
+._error .sb-input__textfield,
+.sb-input__textfield._error {
+    border: 2px solid @form-error !important;
+}
+
+._light .sb-input__textfield,
+.sb-input__textfield._light {
+    color: @text-dark;
+    box-shadow: inset 4px 4px 14px fade(#000, 20%), inset -4px -4px 14px fade(#fff, 80%);
+
+    &:focus {
+        border: 2px solid @text-dark;
+    }
+
+    &::placeholder {
+        color: @text-dark-fade;
+    }
+}
+
+._dark .sb-input__textfield,
+.sb-input__textfield._dark {
+    color: @text-light;
+    box-shadow: inset 4px 4px 14px fade(#000, 30%), inset -4px -4px 10px fade(#fff, 25%);
+
+    &:focus {
+        border: 2px solid @text-light;
+    }
+
+    &::placeholder {
+        color: @text-light-fade;
+    }
+}
