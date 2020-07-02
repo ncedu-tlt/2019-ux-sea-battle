@@ -1,0 +1,45 @@
+@import "./colors.less";
+
+.sb-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+
+  &._dark,
+  ._dark & {
+    box-shadow: 5px 5px 10px fade(#000, 25%), -5px -4px 10px fade(#fff, 25%);
+  }
+
+  &._dark:hover,
+  ._dark &:hover {
+    box-shadow: inset 4px 4px 14px fade(#000, 25%), inset -4px -4px 14px fade(#fff, 35%);
+  }
+
+  &._empty._dark,
+  ._dark &._empty {
+    box-shadow: inset 4px 4px 10px fade(#000, 30%), inset -2px -2px 5px fade(#fff, 30%);
+  }
+
+  &._light,
+  ._light & {
+    background: @background-light;
+    box-shadow: 5px 5px 10px fade(#000, 15%), -5px -4px 10px fade(#fff, 60%);
+  }
+
+  &._light:hover,
+  ._light &:hover {
+    background: @background-light;
+    box-shadow: inset 4px 4px 14px fade(#000, 10%), inset -4px -4px 14px fade(#fff, 65%);
+  }
+
+  &._empty._light,
+  ._light &._empty {
+    background: @background-light;
+    box-shadow: inset 4px 4px 10px fade(#000, 25%), inset -2px -2px 10px fade(#fff, 80%);
+  }
+
+}

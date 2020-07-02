@@ -1,0 +1,164 @@
+@import "../../../styles/colors.less";
+.battlefield {
+  display: inline-block;
+
+  &__row {
+    display: flex;
+  }
+
+  &__row:not(:last-child) {
+    margin-bottom: 5px;
+  }
+
+  &__column {
+    display: flex;
+  }
+
+  &__column:not(:last-child) {
+    margin-right: 5px;
+  }
+
+  &__move-icon {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    pointer-events:none;
+  }
+
+  &__move-icon._horizontal {
+    &._top {
+      top: -36px;
+      .position();
+    }
+
+    &._bottom {
+      bottom: -36px;
+      .position();
+    }
+
+    .position() {
+      &._beside {
+        right: -20.5px;
+      }
+
+      &._side {
+        right: -36px;
+      }
+
+      &._far {
+        right: -51.5px;
+      }
+    }
+  }
+
+  &__move-icon._vertical {
+    &._top {
+      top: -36px;
+    }
+
+    &._bottom {
+      bottom: -36px;
+    }
+
+    &._right {
+      right: -36px;
+      .position();
+    }
+
+    &._left {
+      left: -36px;
+      .position();
+    }
+
+    .position() {
+      &._beside {
+        bottom: -20.5px;
+      }
+
+      &._side {
+        bottom: -36px;
+      }
+
+      &._far {
+        bottom: -51.5px;
+      }
+    }
+  }
+
+  &__move-icon._red {
+    fill: @ship-red;
+  }
+
+  &__move-icon._reddish {
+    fill: @ship-reddish;
+  }
+
+  &__move-icon._green {
+    fill: @ship-green;
+  }
+
+  &__move-icon._saffron {
+    fill: @ship-saffron;
+  }
+
+  &__ship {
+    width: 22px;
+    height: 22px;
+
+    border-radius: 4px;
+  }
+
+  &__ship._green {
+    border-color: @ship-green;
+    background-color: @ship-green;
+  }
+
+  &__ship._reddish {
+    border-color: @ship-reddish;
+    background-color: @ship-reddish;
+  }
+
+  &__ship._red {
+    border-color: @ship-red;
+    background-color: @ship-red;
+  }
+
+  &__ship._saffron {
+    border-color: @ship-saffron;
+    background-color: @ship-saffron;
+  }
+
+  &__ship._hit {
+    border-width: 3px;
+    border-style: solid;
+    background-color: transparent;
+  }
+
+  &__ship._destroyed {
+    position: relative;
+    height: 0;
+  }
+
+  &__ship._destroyed:after {
+    .line;
+    transform: rotate(45deg);
+  }
+
+  &__ship._destroyed:before {
+    .line;
+    transform: rotate(-45deg);
+  }
+
+  .line() {
+    position: absolute;
+    top: -1px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 22px;
+    height: 3px;
+    content: "";
+    border-radius: 2px;
+    background-color: inherit;
+  }
+}
