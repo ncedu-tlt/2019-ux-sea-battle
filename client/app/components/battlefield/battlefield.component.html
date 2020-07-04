@@ -1,30 +1,32 @@
 <div class="battlefield">
-    <div class="battlefield__row" *ngFor="let row of battlefield; let i = index;">
-        <div class="battlefield__column" *ngFor="let cell of row; let j = index;" [ngSwitch]="cell.state">
-                <div *ngSwitchCase="0" class="sb-cell" (click)="onClick(i, j)"></div>
-                <div *ngSwitchCase="1"  class="sb-cell" (click)="onClick(i, j)">
-                    <span
-                            *ngIf="getShip(j, i).isMoving &&
-                            getShip(j, i).cells[0].X === j &&
-                            getShip(j, i).cells[0].Y === i"
-                            [ngClass]="[
-                            'sb-moving',
-                            'battlefield__move-icon',
-                            getShip(j, i).team,
-                            movingIconStyles(j, i)
-                            ]"
-                            [inlineSVG]="'move.svg'">
-                    </span>
-                    <div
-                            [ngClass]="[
-                            'battlefield__ship',
-                            getShip(j, i).team,
-                            getShip(j, i).cells[getShipCellIndex(j, i)].state
-                            ]"
-                            *ngIf="getShip(j, i).team">
+    <div class="battlefield__row" *ngFor="let row of battlefield(size); let i = index;">
+        <div class="battlefield__column" *ngFor="let cell of battlefield(size); let j = index;" >
+                    <div *ngIf="getShip(j, i) as ship else empty" class="sb-cell" (click)="onClick(i, j)">
+                        <span
+                                *ngIf="ship.isMoving &&
+                                ship.cells[0].X === j &&
+                                ship.cells[0].Y === i"
+                                [ngClass]="[
+                                'sb-moving',
+                                'battlefield__move-icon',
+                                ship.team,
+                                shipMovingIconStyles(j, i)
+                                ]"
+                                [inlineSVG]="'move.svg'">
+                        </span>
+                        <div
+                                [ngClass]="[
+                                'battlefield__ship',
+                                ship.team,
+                                ship.cells[getShipCellIndex(j, i)].state
+                                ]"
+                                *ngIf="ship.team">
+                        </div>
                     </div>
-                </div>
-                <div *ngSwitchCase="2" class="sb-cell _empty"></div>
+                    <ng-template #empty [ngSwitch]="getCell(i, j).hit">
+                        <div *ngSwitchCase="false" class="sb-cell" (click)="onClick(i, j)"></div>
+                        <div *ngSwitchCase="true" class="sb-cell _hit"></div>
+                    </ng-template>
         </div>
     </div>
 </div>

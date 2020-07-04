@@ -1,5 +1,6 @@
-import { CellStateEnum } from "./cell-state.enum";
+import { CoordinatesModel } from "./coordinates.model";
 
 export interface CellModel {
-    state: CellStateEnum;
+    coordinates: CoordinatesModel;
+    hit: boolean;
 }

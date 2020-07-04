@@ -1,20 +1,22 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { CellModel } from "../../models/battlefield/cell.model";
-import { CellStateEnum } from "../../models/battlefield/cell-state.enum";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { ShipModel } from "../../models/battlefield/ship.model";
 import { MoveIconDirectionEnum } from "../../models/battlefield/styles/move-icon-direction.enum";
 import { ShipOrientationEnum } from "../../models/battlefield/styles/ship-orientation.enum";
 import { CoordinatesModel } from "../../models/battlefield/coordinates.model";
 import { MoveIconPositionEnum } from "../../models/battlefield/styles/move-icon-position.enum";
+import { CellModel } from "../../models/battlefield/cell.model";
 
 @Component({
     selector: "sb-battlefield",
     templateUrl: "./battlefield.component.html",
     styleUrls: ["./battlefield.component.less"]
 })
-export class BattlefieldComponent implements OnInit {
+export class BattlefieldComponent {
     @Input()
-    battlefield: CellModel[][];
+    size: number;
+
+    @Input()
+    fieldCells: CellModel[];
 
     @Input()
     ships: ShipModel[];
@@ -22,13 +24,8 @@ export class BattlefieldComponent implements OnInit {
     @Output()
     coordinates = new EventEmitter<CoordinatesModel>();
 
-    ngOnInit(): void {
-        for (const ship of this.ships) {
-            for (const coordinates of ship.cells) {
-                this.battlefield[coordinates.Y][coordinates.X].state =
-                    CellStateEnum.SHIP;
-            }
-        }
+    battlefield(size: number): Array<any> {
+        return new Array<any>(size);
     }
 
     onClick(X: number, Y: number): void {
@@ -36,16 +33,14 @@ export class BattlefieldComponent implements OnInit {
         this.coordinates.emit(coordinates);
     }
 
-    movingIconStyles(X: number, Y: number): string {
+    shipMovingIconStyles(X: number, Y: number): string {
         const ship: ShipModel = this.getShip(X, Y);
 
-        const orientation: ShipOrientationEnum = ship.isVertical
+        const orientation: ShipOrientationEnum = this.isVertical(ship)
             ? ShipOrientationEnum.VERTICAL
             : ShipOrientationEnum.HORIZONTAL;
 
-        const direction: MoveIconDirectionEnum = BattlefieldComponent.borderCheck(
-            ship
-        );
+        const direction: MoveIconDirectionEnum = this.borderCheck(ship);
 
         let position: MoveIconPositionEnum;
         switch (ship.cells.length) {
@@ -68,8 +63,27 @@ export class BattlefieldComponent implements OnInit {
         return `${orientation} ${direction} ${position}`;
     }
 
-    private static borderCheck(ship: ShipModel): MoveIconDirectionEnum {
-        if (ship.isVertical && ship.cells.length !== 1) {
+    getShip(X: number, Y: number): ShipModel {
+        return this.ships.find(ship =>
+            ship.cells.find(
+                coordinates => coordinates.X === X && coordinates.Y === Y
+            )
+        );
+    }
+
+    getShipCellIndex(X: number, Y: number): number {
+        const ship: ShipModel = this.getShip(X, Y);
+        return ship.cells.findIndex(cell => cell.X === X && cell.Y === Y);
+    }
+
+    getCell(X: number, Y: number): CellModel {
+        return this.fieldCells.find(
+            cell => cell.coordinates.X === X && cell.coordinates.Y === Y
+        );
+    }
+
+    private borderCheck(ship: ShipModel): MoveIconDirectionEnum {
+        if (this.isVertical(ship) && ship.cells.length !== 1) {
             if (ship.cells[0].Y === 0) {
                 if (ship.cells[0].X === 0) {
                     return MoveIconDirectionEnum.RIGHT;
@@ -88,19 +102,7 @@ export class BattlefieldComponent implements OnInit {
         }
     }
 
-    getShip(X: number, Y: number): ShipModel {
-        return this.ships.find(ship =>
-            ship.cells.find(
-                coordinates => coordinates.X === X && coordinates.Y === Y
-            )
-        );
-    }
-
-    getShipCellIndex(X: number, Y: number): number {
-        const ship: ShipModel = this.ships.find(ship =>
-            ship.cells.find(cell => cell.X === X && cell.Y === Y)
-        );
-
-        return ship.cells.findIndex(cell => cell.X === X && cell.Y === Y);
+    private isVertical(ship: ShipModel): boolean {
+        return ship.cells.every(cell => cell.X === ship.cells[0].X);
     }
 }
