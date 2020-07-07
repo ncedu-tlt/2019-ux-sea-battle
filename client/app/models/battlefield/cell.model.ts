@@ -1,6 +1,5 @@
 import { CoordinatesModel } from "./coordinates.model";
 
-export interface CellModel {
-    coordinates: CoordinatesModel;
+export interface CellModel extends CoordinatesModel {
     hit: boolean;
 }
