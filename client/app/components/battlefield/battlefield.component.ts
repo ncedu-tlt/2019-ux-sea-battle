@@ -43,7 +43,14 @@ export class BattlefieldComponent implements OnChanges {
         );
         this.ships.forEach(ship => {
             ship.cells.forEach(
-                cell => (this.field[cell.y][cell.x] = { model: ship })
+                cell =>
+                    (this.field[cell.y][cell.x] = {
+                        model: {
+                            cellParams: cell,
+                            team: ship.team,
+                            isSelected: ship.isSelected
+                        }
+                    })
             );
         });
     }
@@ -81,11 +88,6 @@ export class BattlefieldComponent implements OnChanges {
             }
         }
         return `${orientation} ${direction} ${position}`;
-    }
-
-    getShipCellIndex(x: number, y: number): number {
-        const ship: ShipModel = this.getShip(x, y);
-        return ship.cells.findIndex(cell => cell.x === x && cell.y === y);
     }
 
     private getShip(x: number, y: number): ShipModel {

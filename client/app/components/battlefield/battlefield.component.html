@@ -4,8 +4,8 @@
                     <div *ngIf="cell.model.team else empty" class="sb-cell" (click)="onClick(j, i)">
                         <span
                                 *ngIf="cell.model.isSelected &&
-                                cell.model.cells[0].x === j &&
-                                cell.model.cells[0].y === i"
+                                cell.model.cellParams.x === j &&
+                                cell.model.cellParams.y === i"
                                 [ngClass]="[
                                 'sb-moving',
                                 'battlefield__move-icon',
@@ -18,7 +18,7 @@
                                 [ngClass]="[
                                 'battlefield__ship',
                                 cell.model.team,
-                                cell.model.cells[getShipCellIndex(j, i)].state
+                                cell.model.cellParams.state
                                 ]"
                                 *ngIf="cell.model.team">
                         </div>

@@ -1,6 +1,6 @@
-import { ShipModel } from "./ship.model";
 import { CellModel } from "./cell.model";
+import { FieldShipModel } from "./field-ship.model";
 
 export interface FieldModel {
-    model: ShipModel | CellModel;
+    model: FieldShipModel | CellModel;
 }
