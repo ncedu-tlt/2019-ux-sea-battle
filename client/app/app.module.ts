@@ -15,6 +15,7 @@ import { GameComponent } from "./components/game/game.component";
 import { SocketIoModule } from "ngx-socket-io";
 import { MatchmakingSocket } from "./sockets/matchmaking.socket";
 import { InlineSVGModule } from "ng-inline-svg";
+import { BattlefieldComponent } from "./components/battlefield/battlefield.component";
 
 @NgModule({
     declarations: [
@@ -23,7 +24,8 @@ import { InlineSVGModule } from "ng-inline-svg";
         RegistrationComponent,
         MainMenuComponent,
         GameSearchComponent,
-        GameComponent
+        GameComponent,
+        BattlefieldComponent
     ],
     imports: [
         BrowserModule,

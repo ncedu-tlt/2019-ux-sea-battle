@@ -1,0 +1,31 @@
+<div class="battlefield">
+    <div class="battlefield__row" *ngFor="let row of field; let i = index;">
+        <div class="battlefield__column" *ngFor="let cell of row; let j = index;">
+                    <div *ngIf="cell.team else empty" class="sb-cell" (click)="onClick(j, i)">
+                        <span
+                                *ngIf="cell.isSelected &&
+                                cell.movingIconLocation"
+                                [ngClass]="[
+                                'sb-moving',
+                                'battlefield__move-icon',
+                                cell.team,
+                                cell.movingIconLocation
+                                ]"
+                                [inlineSVG]="'move.svg'">
+                        </span>
+                        <div
+                                [ngClass]="[
+                                'battlefield__ship',
+                                cell.team,
+                                cell.cellParams.state
+                                ]"
+                                *ngIf="cell.team">
+                        </div>
+                    </div>
+                    <ng-template #empty [ngSwitch]="cell.hit">
+                        <div *ngSwitchCase="false" class="sb-cell" (click)="onClick(j, i)"></div>
+                        <div *ngSwitchCase="true" class="sb-cell _hit"></div>
+                    </ng-template>
+        </div>
+    </div>
+</div>
