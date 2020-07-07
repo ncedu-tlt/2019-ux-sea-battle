@@ -1,15 +1,15 @@
 <div class="battlefield">
-    <div class="battlefield__row" *ngFor="let row of battlefield(size); let i = index;">
-        <div class="battlefield__column" *ngFor="let cell of battlefield(size); let j = index;" >
-                    <div *ngIf="getShip(j, i) as ship else empty" class="sb-cell" (click)="onClick(i, j)">
+    <div class="battlefield__row" *ngFor="let row of field; let i = index;">
+        <div class="battlefield__column" *ngFor="let cell of row; let j = index;">
+                    <div *ngIf="cell.model.team else empty" class="sb-cell" (click)="onClick(j, i)">
                         <span
-                                *ngIf="ship.isMoving &&
-                                ship.cells[0].X === j &&
-                                ship.cells[0].Y === i"
+                                *ngIf="cell.model.isSelected &&
+                                cell.model.cells[0].x === j &&
+                                cell.model.cells[0].y === i"
                                 [ngClass]="[
                                 'sb-moving',
                                 'battlefield__move-icon',
-                                ship.team,
+                                cell.model.team,
                                 shipMovingIconStyles(j, i)
                                 ]"
                                 [inlineSVG]="'move.svg'">
@@ -17,14 +17,14 @@
                         <div
                                 [ngClass]="[
                                 'battlefield__ship',
-                                ship.team,
-                                ship.cells[getShipCellIndex(j, i)].state
+                                cell.model.team,
+                                cell.model.cells[getShipCellIndex(j, i)].state
                                 ]"
-                                *ngIf="ship.team">
+                                *ngIf="cell.model.team">
                         </div>
                     </div>
-                    <ng-template #empty [ngSwitch]="getCell(i, j).hit">
-                        <div *ngSwitchCase="false" class="sb-cell" (click)="onClick(i, j)"></div>
+                    <ng-template #empty [ngSwitch]="cell.model.hit">
+                        <div *ngSwitchCase="false" class="sb-cell" (click)="onClick(j, i)"></div>
                         <div *ngSwitchCase="true" class="sb-cell _hit"></div>
                     </ng-template>
         </div>

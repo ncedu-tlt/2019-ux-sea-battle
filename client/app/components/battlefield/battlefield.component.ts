@@ -1,17 +1,24 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output
+} from "@angular/core";
 import { ShipModel } from "../../models/battlefield/ship.model";
 import { MoveIconDirectionEnum } from "../../models/battlefield/styles/move-icon-direction.enum";
 import { ShipOrientationEnum } from "../../models/battlefield/styles/ship-orientation.enum";
 import { CoordinatesModel } from "../../models/battlefield/coordinates.model";
 import { MoveIconPositionEnum } from "../../models/battlefield/styles/move-icon-position.enum";
 import { CellModel } from "../../models/battlefield/cell.model";
+import { FieldModel } from "../../models/battlefield/field.model";
 
 @Component({
     selector: "sb-battlefield",
     templateUrl: "./battlefield.component.html",
     styleUrls: ["./battlefield.component.less"]
 })
-export class BattlefieldComponent {
+export class BattlefieldComponent implements OnChanges {
     @Input()
     size: number;
 
@@ -22,19 +29,32 @@ export class BattlefieldComponent {
     ships: ShipModel[];
 
     @Output()
-    coordinates = new EventEmitter<CoordinatesModel>();
+    cellSelection = new EventEmitter<CoordinatesModel>();
 
-    battlefield(size: number): Array<any> {
-        return new Array<any>(size);
+    field: FieldModel[][];
+
+    ngOnChanges(): void {
+        this.field = new Array(this.size);
+        for (let i = 0; i < this.field.length; i++) {
+            this.field[i] = new Array(this.size);
+        }
+        this.fieldCells.forEach(
+            cell => (this.field[cell.y][cell.x] = { model: cell })
+        );
+        this.ships.forEach(ship => {
+            ship.cells.forEach(
+                cell => (this.field[cell.y][cell.x] = { model: ship })
+            );
+        });
     }
 
-    onClick(X: number, Y: number): void {
-        const coordinates: CoordinatesModel = { X, Y };
-        this.coordinates.emit(coordinates);
+    onClick(x: number, y: number): void {
+        const coordinates: CoordinatesModel = { x, y };
+        this.cellSelection.emit(coordinates);
     }
 
-    shipMovingIconStyles(X: number, Y: number): string {
-        const ship: ShipModel = this.getShip(X, Y);
+    shipMovingIconStyles(x: number, y: number): string {
+        const ship: ShipModel = this.getShip(x, y);
 
         const orientation: ShipOrientationEnum = this.isVertical(ship)
             ? ShipOrientationEnum.VERTICAL
@@ -63,29 +83,21 @@ export class BattlefieldComponent {
         return `${orientation} ${direction} ${position}`;
     }
 
-    getShip(X: number, Y: number): ShipModel {
+    getShipCellIndex(x: number, y: number): number {
+        const ship: ShipModel = this.getShip(x, y);
+        return ship.cells.findIndex(cell => cell.x === x && cell.y === y);
+    }
+
+    private getShip(x: number, y: number): ShipModel {
         return this.ships.find(ship =>
-            ship.cells.find(
-                coordinates => coordinates.X === X && coordinates.Y === Y
-            )
-        );
-    }
-
-    getShipCellIndex(X: number, Y: number): number {
-        const ship: ShipModel = this.getShip(X, Y);
-        return ship.cells.findIndex(cell => cell.X === X && cell.Y === Y);
-    }
-
-    getCell(X: number, Y: number): CellModel {
-        return this.fieldCells.find(
-            cell => cell.coordinates.X === X && cell.coordinates.Y === Y
+            ship.cells.find(cell => cell.x === x && cell.y === y)
         );
     }
 
     private borderCheck(ship: ShipModel): MoveIconDirectionEnum {
         if (this.isVertical(ship) && ship.cells.length !== 1) {
-            if (ship.cells[0].Y === 0) {
-                if (ship.cells[0].X === 0) {
+            if (ship.cells[0].y === 0) {
+                if (ship.cells[0].x === 0) {
                     return MoveIconDirectionEnum.RIGHT;
                 } else {
                     return MoveIconDirectionEnum.LEFT;
@@ -94,7 +106,7 @@ export class BattlefieldComponent {
                 return MoveIconDirectionEnum.TOP;
             }
         } else {
-            if (ship.cells[0].Y === 0) {
+            if (ship.cells[0].y === 0) {
                 return MoveIconDirectionEnum.BOTTOM;
             } else {
                 return MoveIconDirectionEnum.TOP;
@@ -103,6 +115,6 @@ export class BattlefieldComponent {
     }
 
     private isVertical(ship: ShipModel): boolean {
-        return ship.cells.every(cell => cell.X === ship.cells[0].X);
+        return ship.cells.every(cell => cell.x === ship.cells[0].x);
     }
 }
