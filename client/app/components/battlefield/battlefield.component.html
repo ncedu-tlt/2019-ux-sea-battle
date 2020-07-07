@@ -4,8 +4,7 @@
                     <div *ngIf="cell.team else empty" class="sb-cell" (click)="onClick(j, i)">
                         <span
                                 *ngIf="cell.isSelected &&
-                                cell.cellParams.x === j &&
-                                cell.cellParams.y === i"
+                                cell.movingIconLocation"
                                 [ngClass]="[
                                 'sb-moving',
                                 'battlefield__move-icon',

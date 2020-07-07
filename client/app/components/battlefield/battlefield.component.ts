@@ -40,15 +40,22 @@ export class BattlefieldComponent implements OnChanges {
         }
         this.fieldCells.forEach(cell => (this.field[cell.y][cell.x] = cell));
         this.ships.forEach(ship => {
-            ship.cells.forEach(
-                cell =>
-                    (this.field[cell.y][cell.x] = {
-                        cellParams: cell,
+            for (let i = 0; i < ship.cells.length; i++) {
+                if (i === 0) {
+                    this.field[ship.cells[i].y][ship.cells[i].x] = {
+                        cellParams: ship.cells[i],
                         team: ship.team,
                         isSelected: ship.isSelected,
                         movingIconLocation: this.shipMovingIconStyles(ship)
-                    })
-            );
+                    };
+                } else {
+                    this.field[ship.cells[i].y][ship.cells[i].x] = {
+                        cellParams: ship.cells[i],
+                        team: ship.team,
+                        isSelected: ship.isSelected
+                    };
+                }
+            }
         });
     }
 
@@ -57,7 +64,7 @@ export class BattlefieldComponent implements OnChanges {
         this.cellSelection.emit(coordinates);
     }
 
-    shipMovingIconStyles(ship: ShipModel): string {
+    private shipMovingIconStyles(ship: ShipModel): string {
         const orientation: ShipOrientationEnum = this.isVertical(ship)
             ? ShipOrientationEnum.VERTICAL
             : ShipOrientationEnum.HORIZONTAL;
