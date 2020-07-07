@@ -38,18 +38,15 @@ export class BattlefieldComponent implements OnChanges {
         for (let i = 0; i < this.field.length; i++) {
             this.field[i] = new Array(this.size);
         }
-        this.fieldCells.forEach(
-            cell => (this.field[cell.y][cell.x] = { model: cell })
-        );
+        this.fieldCells.forEach(cell => (this.field[cell.y][cell.x] = cell));
         this.ships.forEach(ship => {
             ship.cells.forEach(
                 cell =>
                     (this.field[cell.y][cell.x] = {
-                        model: {
-                            cellParams: cell,
-                            team: ship.team,
-                            isSelected: ship.isSelected
-                        }
+                        cellParams: cell,
+                        team: ship.team,
+                        isSelected: ship.isSelected,
+                        movingIconLocation: this.shipMovingIconStyles(ship)
                     })
             );
         });
@@ -60,9 +57,7 @@ export class BattlefieldComponent implements OnChanges {
         this.cellSelection.emit(coordinates);
     }
 
-    shipMovingIconStyles(x: number, y: number): string {
-        const ship: ShipModel = this.getShip(x, y);
-
+    shipMovingIconStyles(ship: ShipModel): string {
         const orientation: ShipOrientationEnum = this.isVertical(ship)
             ? ShipOrientationEnum.VERTICAL
             : ShipOrientationEnum.HORIZONTAL;
@@ -88,12 +83,6 @@ export class BattlefieldComponent implements OnChanges {
             }
         }
         return `${orientation} ${direction} ${position}`;
-    }
-
-    private getShip(x: number, y: number): ShipModel {
-        return this.ships.find(ship =>
-            ship.cells.find(cell => cell.x === x && cell.y === y)
-        );
     }
 
     private borderCheck(ship: ShipModel): MoveIconDirectionEnum {

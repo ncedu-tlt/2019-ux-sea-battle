@@ -5,4 +5,5 @@ export interface FieldShipModel {
     cellParams: ShipCellModel;
     team: ShipColorEnum;
     isSelected: boolean;
+    movingIconLocation: string;
 }
