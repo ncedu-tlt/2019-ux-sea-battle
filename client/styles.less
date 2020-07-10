@@ -1,11 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import (css) url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400&display=swap");
+@import "./styles/constants.less";
 @import "./styles/sb-container.less";
 @import "./styles/sb-button.less";
 @import "./styles/sb-input.less";
 @import "./styles/sb-checkbox.less";
 @import "./styles/sb-radio.less";
 @import "./styles/sb-link.less";
+@import "./styles/sb-header.less";
+@import "./styles/sb-sidebar.less";
 
 * {
     padding: 0;
@@ -16,4 +19,13 @@
 
 .app {
     min-height: 100vh;
+}
+
+.page-content {
+    display: grid;
+    grid-template-rows: @header-height calc(100vh - @header-height);
+
+    &._no-header {
+        grid-template-rows: 0 100vh;
+    }
 }

@@ -1,0 +1,45 @@
+@import "./colors.less";
+
+.sb-sidebar {
+    width: calc(100vw - 40px);
+    height: 100%;
+
+    background-color: @background-light;
+    color: @text-dark;
+
+    &__element {
+        display: flex;
+        align-items: center;
+
+        user-select: none;
+        outline: 0;
+    }
+
+    &__element-icon {
+        margin-right: 19px;
+    }
+
+    &__element-label {
+        font-weight: 300;
+        font-size: 18px;
+        color: #000;
+    }
+
+    &__section {
+        padding: 22px;
+        
+        &:not(:first-child) {
+            border-top: 1px solid #c4c4c4;
+        }
+    }
+}
+
+@media (min-width: 500px) {
+    .sb-sidebar {
+        width: calc(100vw - 150px);
+    }
+}
+
+sb-sidebar-element:not(:last-child) .sb-sidebar__element {
+    margin-bottom: 26px;
+}
