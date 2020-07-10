@@ -1,0 +1,35 @@
+<div class="sidebar sb-sidebar">
+    <section *ngIf="user" class="sb-sidebar__section">
+        <sb-sidebar-element
+            [itemImageLink]="'experience-icon.svg'"
+            [itemLabel]="user.experience"
+        ></sb-sidebar-element>
+        <sb-sidebar-element
+            [itemImageLink]="'balance-icon.svg'"
+            [itemLabel]="user.balance"
+        ></sb-sidebar-element>
+    </section>
+
+    <section class="sb-sidebar__section">
+        <sb-sidebar-element
+            [itemImageLink]="'friends-icon.svg'"
+            [itemLabel]="'Друзья'"
+            [isLink]="true"
+            [itemLink]="'/friends'"
+        ></sb-sidebar-element>
+        <sb-sidebar-element
+            [itemImageLink]="'stats-icon.svg'"
+            [itemLabel]="'Статистика'"
+            [isLink]="true"
+            [itemLink]="'/stats'"
+        ></sb-sidebar-element>
+    </section>
+
+    <section class="sb-sidebar__section">
+        <sb-sidebar-element
+            (click)="logout()"
+            [itemLabel]="'Выход'"
+            [isLink]="true"
+        ></sb-sidebar-element>
+    </section>
+</div>

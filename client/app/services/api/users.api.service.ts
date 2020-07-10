@@ -12,4 +12,8 @@ export class UsersApiService {
     getAll(): Observable<UserDTO[]> {
         return this.httpClient.get<UserDTO[]>("/api/management/users");
     }
+
+    getCurrent(): Observable<UserDTO> {
+        return this.httpClient.get<UserDTO>("/api/users/current");
+    }
 }
