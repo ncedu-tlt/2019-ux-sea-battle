@@ -19,6 +19,7 @@ import { SidebarModule } from "ng-sidebar";
 import { HeaderComponent } from "./components/header/header.component";
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { SidebarElementComponent } from "./components/sidebar-element/sidebar-element.component";
+import { BattlefieldComponent } from "./components/battlefield/battlefield.component";
 
 @NgModule({
     declarations: [
@@ -30,7 +31,8 @@ import { SidebarElementComponent } from "./components/sidebar-element/sidebar-el
         GameComponent,
         SidebarComponent,
         SidebarElementComponent,
-        HeaderComponent
+        HeaderComponent,
+        BattlefieldComponent
     ],
     imports: [
         BrowserModule,
