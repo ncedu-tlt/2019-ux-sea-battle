@@ -1,3 +1,4 @@
+import { CurrentUserService } from "./../../services/current-user.service";
 import { TokenService } from "../../services/token.service";
 import { AuthApiService } from "./../../services/api/auth.api.service";
 import { LoginRequestDTO } from "common/dto/login-request.dto";
@@ -22,7 +23,8 @@ export class AuthComponent {
         private fb: FormBuilder,
         private authService: AuthApiService,
         private router: Router,
-        private tokenService: TokenService
+        private tokenService: TokenService,
+        private currentUserService: CurrentUserService
     ) {}
 
     authForm: FormGroup = this.fb.group({
@@ -61,6 +63,7 @@ export class AuthComponent {
             this.authService.login(user).subscribe(
                 data => {
                     this.tokenService.setToken(data.accessToken);
+                    this.currentUserService.fetchCurrentUser();
                     this.router.navigate(["/"]);
                 },
                 err => {

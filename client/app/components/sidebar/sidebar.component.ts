@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { UserDTO } from "common/dto/user.dto";
-import { UsersApiService } from "./../../services/api/users.api.service";
+import { CurrentUserService } from "./../../services/current-user.service";
 import { TokenService } from "./../../services/token.service";
 
 @Component({
@@ -14,13 +14,13 @@ export class SidebarComponent implements OnInit {
     constructor(
         private tokenService: TokenService,
         private router: Router,
-        private usersService: UsersApiService
+        private currentUserService: CurrentUserService
     ) {}
 
     ngOnInit(): void {
-        this.usersService
-            .getCurrent()
-            .subscribe((user: UserDTO) => (this.user = user));
+        this.currentUserService
+            .getCurrentUser()
+            .subscribe((u: UserDTO) => (this.user = u));
     }
 
     logout(): void {

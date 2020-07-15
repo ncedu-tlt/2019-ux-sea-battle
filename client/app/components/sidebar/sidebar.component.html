@@ -1,13 +1,25 @@
 <div class="sidebar sb-sidebar">
     <section *ngIf="user" class="sb-sidebar__section">
-        <sb-sidebar-element
-            [itemImageLink]="'experience-icon.svg'"
-            [itemLabel]="user.experience"
-        ></sb-sidebar-element>
-        <sb-sidebar-element
-            [itemImageLink]="'balance-icon.svg'"
-            [itemLabel]="user.balance"
-        ></sb-sidebar-element>
+        <div class="sb-sidebar__user-info">
+            <span class="sb-sidebar__username">{{user.nickname}}</span>
+            <div class="sb-sidebar__stats">
+                <div class="sb-sidebar__stats-item">
+                    <span class="sb-sidebar__stats-icon"
+                        [setSVGAttributes]="{width: '47px', height: '47px'}"
+                        [inlineSVG]="'experience-icon.svg'"
+                    ></span>
+                    <span>{{user.experience}}</span>
+                </div>
+
+                <div class="sb-sidebar__stats-item">
+                    <span class="sb-sidebar__stats-icon"
+                        [setSVGAttributes]="{width: '47px', height: '47px'}"
+                        [inlineSVG]="'balance-icon.svg'"
+                    ></span>
+                    <span>{{user.balance}}</span>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section class="sb-sidebar__section">

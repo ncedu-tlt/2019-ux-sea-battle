@@ -1,11 +1,13 @@
 @import "./colors.less";
 
 .sb-sidebar {
-    width: calc(100vw - 40px);
+    width: 280px;
     height: 100%;
 
     background-color: @background-light;
     color: @text-dark;
+
+    font-size: 18px;
 
     &__element {
         display: flex;
@@ -21,7 +23,6 @@
 
     &__element-label {
         font-weight: 300;
-        font-size: 18px;
         color: #000;
     }
 
@@ -32,11 +33,43 @@
             border-top: 1px solid #c4c4c4;
         }
     }
+
+    &__user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__username {
+        margin-bottom: 15px;
+        font-size: 22px;
+    }
+
+    &__stats {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+    }
+
+    &__stats-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 16px;
+    }
 }
 
 @media (min-width: 500px) {
     .sb-sidebar {
-        width: calc(100vw - 150px);
+        width: 450px;
+    }
+}
+
+@media (min-width: 1000px) {
+    .sb-sidebar {
+        width: 600px;
     }
 }
 
