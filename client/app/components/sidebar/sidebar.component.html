@@ -1,0 +1,51 @@
+<div class="sidebar sb-sidebar">
+    <section *ngIf="user" class="sb-sidebar__section">
+        <div class="sb-sidebar__user-info">
+            <img
+                class="sb-sidebar__avatar"
+                [src]="user.avatarUrl? user.avatarUrl : './../../../assets/avatar.png'"
+            >
+            <span class="sb-sidebar__username">{{user.nickname}}</span>
+            <div class="sb-sidebar__stats">
+                <div class="sb-sidebar__stats-item">
+                    <span class="sb-sidebar__stats-icon"
+                        [setSVGAttributes]="{width: '47px', height: '47px'}"
+                        [inlineSVG]="'experience-icon.svg'"
+                    ></span>
+                    <span>{{user.experience}}</span>
+                </div>
+
+                <div class="sb-sidebar__stats-item">
+                    <span class="sb-sidebar__stats-icon"
+                        [setSVGAttributes]="{width: '47px', height: '47px'}"
+                        [inlineSVG]="'balance-icon.svg'"
+                    ></span>
+                    <span>{{user.balance}}</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="sb-sidebar__section">
+        <sb-sidebar-element
+            [itemImageLink]="'friends-icon.svg'"
+            [itemLabel]="'Друзья'"
+            [isLink]="true"
+            [itemLink]="'/friends'"
+        ></sb-sidebar-element>
+        <sb-sidebar-element
+            [itemImageLink]="'stats-icon.svg'"
+            [itemLabel]="'Статистика'"
+            [isLink]="true"
+            [itemLink]="'/stats'"
+        ></sb-sidebar-element>
+    </section>
+
+    <section class="sb-sidebar__section">
+        <sb-sidebar-element
+            (click)="logout()"
+            [itemLabel]="'Выход'"
+            [isLink]="true"
+        ></sb-sidebar-element>
+    </section>
+</div>

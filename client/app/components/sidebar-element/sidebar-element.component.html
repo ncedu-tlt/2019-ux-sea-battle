@@ -1,0 +1,10 @@
+<div class="sb-sidebar__element"
+    [ngClass]="[isLink? 'sb-link':'']"
+    routerLink="{{itemLink}}"
+>
+    <span class="sb-sidebar__element-icon"
+        *ngIf="itemImageLink"
+        [inlineSVG]="itemImageLink"
+    ></span>
+    <span class="sb-sidebar__element-label">{{itemLabel}}</span>
+</div>

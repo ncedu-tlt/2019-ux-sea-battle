@@ -1,3 +1,22 @@
 <div class="app sb-container _dark">
-    <router-outlet></router-outlet>
+    <ng-sidebar-container style="position:absolute">
+        <ng-sidebar
+            [(opened)]="opened"
+            [closeOnClickOutside]="true"
+        >
+            <sb-sidebar></sb-sidebar>
+        </ng-sidebar>
+        <div
+            ng-sidebar-content
+            class="page-content"
+            [ngClass]="isAuthorized()? '':'_no-header'"
+        >
+            <div>
+                <sb-header *ngIf="isAuthorized()" (sidebarToggle)="toggleSidebar()"></sb-header>
+            </div>
+            <div>
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </ng-sidebar-container>
 </div>

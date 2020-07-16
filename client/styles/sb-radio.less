@@ -39,8 +39,9 @@
         width: 26px;
         height: 26px;
 
+        background-color: transparent;
         border-radius: 16px;
-        transition: box-shadow .5s;
+        transition: all .4s;
 
         &:after {
             position: absolute;
@@ -66,7 +67,6 @@
 
     &:hover {
         background-color: fade(#fff, 30%);
-        box-shadow: inset 4px 4px 8px fade(#000, 25%), inset -2px -2px 8px fade(#fff, 80%);
     }
 }
 
@@ -74,13 +74,12 @@
 .sb-radio__input._light {
 
     &:checked ~ .sb-radio__checkmark {
-        box-shadow: 5px 5px 10px fade(#000, 15%), -5px -5px 10px fade(#fff, 60%);
+        box-shadow: inset 5px 5px 10px fade(#000, 15%), inset -2px -2px 8px fade(#fff, 80%);
 
         &:hover {
             background-color: fade(#fff, 30%);
-            box-shadow: 5px 5px 10px fade(#000, 15%), -5px -5px 10px fade(#fff, 60%),
-                inset 4px 4px 8px fade(#000, 25%), inset -2px -2px 8px fade(#fff, 80%);
-            }
+            box-shadow: inset 4px 4px 8px fade(#000, 25%), inset -2px -2px 8px fade(#fff, 80%);
+        }
 
         &:after {
             background-color: @text-dark;
@@ -99,7 +98,7 @@
 
     &:disabled:checked ~ .sb-radio__checkmark {
         background: transparent;
-        box-shadow: 5px 5px 10px fade(#000, 10%), -5px -5px 10px fade(#fff, 50%);
+        box-shadow: inset 4px 4px 8px fade(#000, 15%), inset -2px -2px 8px fade(#fff, 70%);
 
         &:after {
             background-color: @text-dark-fade;
@@ -130,12 +129,11 @@
 .sb-radio__input._dark {
 
     &:checked ~ .sb-radio__checkmark {
-        box-shadow: 4px 4px 10px fade(#000, 40%), -4px -4px 10px fade(#fff, 50%);
+        box-shadow: inset 4px 4px 10px fade(#000, 30%), inset -2px -2px 5px fade(#fff, 30%);
 
         &:hover {
             background-color: fade(#fff, 20%);
-            box-shadow: 4px 4px 10px fade(#000, 40%), -4px -4px 10px fade(#fff, 50%),
-                inset 4px 4px 10px fade(#000, 40%), inset -2px -2px 5px fade(#fff, 30%);
+            box-shadow: inset 4px 4px 10px fade(#000, 40%), inset -2px -2px 5px fade(#fff, 40%);
         }
 
         &:after {
@@ -144,7 +142,7 @@
     }
 
     &:disabled ~ .sb-radio__checkmark {
-        background: transparent;
+        background-color: transparent;
         box-shadow: inset 4px 4px 10px fade(#000, 20%), inset -2px -2px 5px fade(#fff, 20%);
     
         &:after {
@@ -154,8 +152,8 @@
     }
 
     &:disabled:checked ~ .sb-radio__checkmark {
-        background: transparent;
-        box-shadow: 4px 4px 10px fade(#000, 20%), -4px -4px 10px fade(#fff, 20%);
+        background-color: transparent;
+        box-shadow: inset 4px 4px 10px fade(#000, 20%), inset -2px -2px 5px fade(#fff, 20%);
 
         &:after {
             background-color: @text-light-fade;

@@ -15,6 +15,10 @@ import { GameComponent } from "./components/game/game.component";
 import { SocketIoModule } from "ngx-socket-io";
 import { MatchmakingSocket } from "./sockets/matchmaking.socket";
 import { InlineSVGModule } from "ng-inline-svg";
+import { SidebarModule } from "ng-sidebar";
+import { HeaderComponent } from "./components/header/header.component";
+import { SidebarComponent } from "./components/sidebar/sidebar.component";
+import { SidebarElementComponent } from "./components/sidebar-element/sidebar-element.component";
 import { BattlefieldComponent } from "./components/battlefield/battlefield.component";
 
 @NgModule({
@@ -25,6 +29,9 @@ import { BattlefieldComponent } from "./components/battlefield/battlefield.compo
         MainMenuComponent,
         GameSearchComponent,
         GameComponent,
+        SidebarComponent,
+        SidebarElementComponent,
+        HeaderComponent,
         BattlefieldComponent
     ],
     imports: [
@@ -33,7 +40,8 @@ import { BattlefieldComponent } from "./components/battlefield/battlefield.compo
         HttpClientModule,
         ReactiveFormsModule,
         SocketIoModule,
-        InlineSVGModule.forRoot({ baseUrl: "assets/" })
+        InlineSVGModule.forRoot({ baseUrl: "assets/" }),
+        SidebarModule.forRoot()
     ],
     providers: [
         CookieService,
