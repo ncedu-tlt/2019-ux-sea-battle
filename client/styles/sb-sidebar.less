@@ -8,6 +8,7 @@
     color: @text-dark;
 
     font-size: 18px;
+    overflow-y: auto;
 
     &__element {
         display: flex;
@@ -27,9 +28,10 @@
     }
 
     &__section {
-        padding: 22px;
-        
+        padding: 0 22px 22px 22px;
+
         &:not(:first-child) {
+            padding-top: 22px;
             border-top: 1px solid #c4c4c4;
         }
     }
@@ -40,8 +42,15 @@
         align-items: center;
     }
 
+    &__avatar {
+        width: calc(100% + 44px);
+        height: 180px;
+
+        object-fit: cover;
+    }
+
     &__username {
-        margin-bottom: 15px;
+        margin: 15px 0;
         font-size: 22px;
     }
 
@@ -64,12 +73,20 @@
 @media (min-width: 500px) {
     .sb-sidebar {
         width: 450px;
+
+        &__avatar {
+            height: 240px;
+        }
     }
 }
 
 @media (min-width: 1000px) {
     .sb-sidebar {
         width: 600px;
+
+        &__avatar {
+            height: 280px;
+        }
     }
 }
 

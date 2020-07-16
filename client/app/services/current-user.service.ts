@@ -23,4 +23,8 @@ export class CurrentUserService {
     getCurrentUser(): Observable<UserDTO> {
         return this.user;
     }
+
+    deleteCurrentUser(): void {
+        this.user = null;
+    }
 }

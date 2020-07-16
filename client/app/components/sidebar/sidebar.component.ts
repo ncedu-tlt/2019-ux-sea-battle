@@ -25,6 +25,7 @@ export class SidebarComponent implements OnInit {
 
     logout(): void {
         this.tokenService.deleteToken();
+        this.currentUserService.deleteCurrentUser();
         this.router.navigate(["/login"]);
     }
 }

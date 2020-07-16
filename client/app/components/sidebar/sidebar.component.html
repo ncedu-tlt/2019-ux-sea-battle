@@ -1,6 +1,10 @@
 <div class="sidebar sb-sidebar">
     <section *ngIf="user" class="sb-sidebar__section">
         <div class="sb-sidebar__user-info">
+            <img
+                class="sb-sidebar__avatar"
+                [src]="user.avatarUrl? user.avatarUrl : './../../../assets/avatar.png'"
+            >
             <span class="sb-sidebar__username">{{user.nickname}}</span>
             <div class="sb-sidebar__stats">
                 <div class="sb-sidebar__stats-item">
