@@ -25,6 +25,6 @@ export class CurrentUserService {
     }
 
     deleteCurrentUser(): void {
-        this.user = null;
+        this.userSubject.next(null);
     }
 }
