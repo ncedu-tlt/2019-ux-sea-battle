@@ -1,0 +1,104 @@
+<div class="edit-profile">
+    <form
+        [formGroup]="editForm"
+        (ngSubmit)="onSubmit()"
+        class="edit-profile__form"
+    >
+        <sb-avatar-input
+            [userAvatar]="user.avatarUrl"
+            formControlName="avatar"
+        ></sb-avatar-input>
+        <label
+            class="edit-profile__label"
+            [ngClass]="[
+                _email.touched && _email.dirty && _email.errors ? '_error' : ''
+            ]"
+        >
+            <div class="sb-input _label">
+                <span class="sb-input__label">Адрес электронной почты</span>
+                <div class="sb-input__container">
+                    <input
+                        class="sb-input__textfield"
+                        [ngClass]="[
+                            _email.touched || _email.dirty ? '_touched' : ''
+                        ]"
+                        formControlName="email"
+                        type="text"
+                    />
+                </div>
+            </div>
+        </label>
+        <label
+            class="edit-profile__label"
+            [ngClass]="[
+                _nickname.touched && _nickname.dirty && _nickname.errors
+                    ? '_error'
+                    : ''
+            ]"
+        >
+            <div class="sb-input _label">
+                <span class="sb-input__label">Никнейм</span>
+                <div class="sb-input__container">
+                    <input
+                        class="sb-input__textfield"
+                        [ngClass]="[
+                            _nickname.touched || _nickname.dirty
+                                ? '_touched'
+                                : ''
+                        ]"
+                        formControlName="nickname"
+                        type="text"
+                    />
+                </div>
+            </div>
+        </label>
+        <div
+            class="edit-profile__errors"
+            *ngIf="(editForm.invalid && _avatar.errors) || errorsCode"
+        >
+            <div *ngIf="_avatar.errors?.size">
+                <span
+                    class="edit-profile__icon"
+                    [inlineSVG]="'warning-icon.svg'"
+                ></span>
+                Размер изображения не должен превышать 20 Кб.
+            </div>
+            <div *ngIf="_avatar.errors?.inappropriateName">
+                <span
+                    class="edit-profile__icon"
+                    [inlineSVG]="'warning-icon.svg'"
+                ></span>
+                Неподходящее имя файла.
+            </div>
+            <div *ngIf="_avatar.errors?.wrongExtension">
+                <span
+                    class="edit-profile__icon"
+                    [inlineSVG]="'warning-icon.svg'"
+                ></span>
+                Расширение файла может быть: "png", "jpg", "jpeg".
+            </div>
+            <div *ngIf="errorsCode" [ngSwitch]="errorsCode">
+                <span
+                    class="edit-profile__icon"
+                    [inlineSVG]="'warning-icon.svg'"
+                ></span>
+                <span *ngSwitchCase="400">
+                    Такой пользователь уже существует
+                </span>
+                <span *ngSwitchDefault>Что-то пошло не так</span>
+            </div>
+        </div>
+        <button
+            type="submit"
+            class="sb-button"
+            *ngIf="editForm.enabled"
+            [disabled]="editForm.invalid"
+        >
+            <span
+                class="edit-profile__icon"
+                [inlineSVG]="'checkmark-icon.svg'"
+            ></span>
+            Сохранить изменения
+        </button>
+    </form>
+</div>

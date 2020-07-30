@@ -9,7 +9,7 @@ import {
 export class UpdateCurrentUserDto {
     @IsOptional()
     @IsNumber()
-    id: number;
+    id?: number;
 
     @IsOptional()
     @IsEmail()

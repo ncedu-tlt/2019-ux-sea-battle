@@ -7,6 +7,7 @@ import { MainMenuComponent } from "./components/main-menu/main-menu.component";
 import { GameSearchComponent } from "./components/game-search/game-search.component";
 import { GameComponent } from "./components/game/game.component";
 import { AuthGuard } from "./guards/auth.guard";
+import { EditProfileComponent } from "./components/edit-profile/edit-profile.component";
 
 const routes: Routes = [
     {
@@ -32,6 +33,11 @@ const routes: Routes = [
     {
         path: "game",
         component: GameComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: "edit",
+        component: EditProfileComponent,
         canActivate: [AuthGuard]
     },
     {

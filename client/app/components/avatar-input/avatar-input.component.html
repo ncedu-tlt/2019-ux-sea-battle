@@ -1,0 +1,20 @@
+<div class="avatar-input">
+    <input
+        style="display: none;"
+        type="file"
+        accept="image/*"
+        (change)="onAvatarSelected($event.target.files[0])"
+        #fileInput
+    />
+    <img
+        class="avatar-input__image"
+        [src]="
+            selectedAvatar
+                ? selectedAvatar
+                : userAvatar
+                ? userAvatar
+                : './../../../assets/avatar.png'
+        "
+        (click)="fileInput.click()"
+    />
+</div>
