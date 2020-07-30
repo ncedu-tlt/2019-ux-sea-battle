@@ -5,6 +5,7 @@ import { DeleteResult, Repository } from "typeorm";
 import { RegisterRequestDTO } from "../../../common/dto/register-request.dto";
 import { UserDTO } from "../../../common/dto/user.dto";
 import { UpdateUserDto } from "../../../common/dto/update-user.dto";
+import { UpdateCurrentUserDto } from "./../../../common/dto/update-current-user.dto";
 import { CreateUserDto } from "../../../common/dto/create-user.dto";
 import { CryptographerService } from "../auth/cryptographer.service";
 
@@ -93,7 +94,20 @@ export class UsersService {
         }
     }
 
-    async update(updateDTO: UpdateUserDto): Promise<UserDTO> {
+    async update(
+        updateDTO: UpdateUserDto | UpdateCurrentUserDto
+    ): Promise<UserDTO> {
+        const user = await this.findByEmailOrNickname(
+            updateDTO.email,
+            updateDTO.nickname
+        );
+        if (user && user.id != updateDTO.id) {
+            throw new HttpException(
+                "users/userAlreadyExist",
+                HttpStatus.BAD_REQUEST
+            );
+        }
+
         if (!updateDTO.password) {
             await this.usersRepository.update(updateDTO.id, updateDTO);
         } else {
