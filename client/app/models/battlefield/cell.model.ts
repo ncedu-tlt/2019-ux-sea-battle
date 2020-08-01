@@ -1,4 +1,4 @@
-import { CoordinatesModel } from "./coordinates.model";
+import { CoordinatesModel } from "../../../../common/models/ship/coordinates.model";
 
 export interface CellModel extends CoordinatesModel {
     hit: boolean;

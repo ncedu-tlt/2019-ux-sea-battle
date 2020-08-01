@@ -1,8 +1,8 @@
 import { ShipCellModel } from "./ship-cell.model";
-import { ShipColorEnum } from "./styles/ship-color.enum";
+import { TeamEnum } from "./team.enum";
 
 export interface ShipModel {
     cells: ShipCellModel[];
-    team: ShipColorEnum;
+    team: TeamEnum;
     isSelected: boolean;
 }

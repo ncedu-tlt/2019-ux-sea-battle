@@ -20,6 +20,9 @@ import { HeaderComponent } from "./components/header/header.component";
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { SidebarElementComponent } from "./components/sidebar-element/sidebar-element.component";
 import { BattlefieldComponent } from "./components/battlefield/battlefield.component";
+import { ShipsPlacementComponent } from "./components/ships-placement/ships-placement.component";
+import { WaitingForPlacementSocket } from "./sockets/waiting-for-placement.socket";
+import { GameSocket } from "./sockets/game.socket";
 
 @NgModule({
     declarations: [
@@ -32,7 +35,8 @@ import { BattlefieldComponent } from "./components/battlefield/battlefield.compo
         SidebarComponent,
         SidebarElementComponent,
         HeaderComponent,
-        BattlefieldComponent
+        BattlefieldComponent,
+        ShipsPlacementComponent
     ],
     imports: [
         BrowserModule,
@@ -50,7 +54,9 @@ import { BattlefieldComponent } from "./components/battlefield/battlefield.compo
             useClass: AuthHttpInterceptor,
             multi: true
         },
-        MatchmakingSocket
+        MatchmakingSocket,
+        WaitingForPlacementSocket,
+        GameSocket
     ],
     bootstrap: [AppComponent]
 })

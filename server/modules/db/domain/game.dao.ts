@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { GameStatusEnum } from "./game-status.enum";
+import { GameStatusEnum } from "../../../../common/game-status.enum";
 import { GameModeEnum } from "../../../../common/game-mode.enum";
 
 @Entity("games")
