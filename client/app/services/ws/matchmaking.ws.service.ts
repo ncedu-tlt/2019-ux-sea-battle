@@ -7,7 +7,7 @@ import { GameModeEnum } from "../../../../common/game-mode.enum";
 @Injectable({
     providedIn: "root"
 })
-export class MatchmakingService {
+export class MatchmakingWsService {
     constructor(
         private socket: MatchmakingSocket,
         private tokenService: TokenService
@@ -34,10 +34,6 @@ export class MatchmakingService {
 
     onConnection(): Observable<number> {
         return this.socket.fromEvent<number>("connect");
-    }
-
-    onDisconnect(): Observable<any> {
-        return this.socket.fromEvent<any>("disconnect");
     }
 
     onConnectionError(): Observable<string> {

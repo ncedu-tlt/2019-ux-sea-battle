@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { MatchmakingService } from "../../services/ws/matchmaking.service";
+import { MatchmakingWsService } from "../../services/ws/matchmaking.ws.service";
 import { Unsubscribable, timer, Observable } from "rxjs";
 import { GameModeEnum } from "../../../../common/game-mode.enum";
 import { TokenService } from "../../services/token.service";
@@ -19,7 +19,7 @@ export class GameSearchComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private matchmakingService: MatchmakingService,
+        private matchmakingService: MatchmakingWsService,
         private tokenService: TokenService
     ) {
         this.subscriptions.push(
@@ -27,7 +27,6 @@ export class GameSearchComponent implements OnInit, OnDestroy {
                 this.search();
             }),
             matchmakingService.onSearch().subscribe(() => this.onSearch()),
-            matchmakingService.onDisconnect().subscribe(() => this.onLeave()),
             matchmakingService.onConnectionError().subscribe(() => {
                 this.tokenService.deleteToken();
                 this.router.navigate(["/login"]);
