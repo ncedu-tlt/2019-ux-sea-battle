@@ -1,10 +1,10 @@
-import { UserAvatarModel } from "./../models/user-avatar.model";
+import { FileModel } from "./../models/file.model";
 import { FormGroup } from "@angular/forms";
 
 export function fileExtension(fileControl: string, extensions: Array<string>) {
     return (formGroup: FormGroup): void => {
         const control = formGroup.controls[fileControl];
-        const file = control.value as File | UserAvatarModel;
+        const file = control.value as FileModel;
 
         if (!file) {
             return;

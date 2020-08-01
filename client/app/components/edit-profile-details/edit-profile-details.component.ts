@@ -49,7 +49,7 @@ export class EditProfileDetailsComponent implements OnInit {
             },
             {
                 validator: [
-                    fileSize("avatar", 20000),
+                    fileSize("avatar", 1000000),
                     fileExtension("avatar", ["png", "jpg", "jpeg"])
                 ]
             }

@@ -1,4 +1,4 @@
-import { UserAvatarModel } from "./../../models/user-avatar.model";
+import { FileModel } from "../../models/file.model";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { Component, forwardRef, Input } from "@angular/core";
 
@@ -19,37 +19,32 @@ export class AvatarInputComponent implements ControlValueAccessor {
     @Input()
     userAvatar: string;
 
-    selectedAvatar: string;
-    onChange: (file: UserAvatarModel) => void;
+    selectedAvatar: FileModel;
+    onChange: (file: FileModel) => void;
+    onTouched: () => void;
 
-    writeValue(): void {
-        return;
+    writeValue(value: FileModel): void {
+        this.selectedAvatar = value;
     }
 
     registerOnChange(fn: any): void {
         this.onChange = fn;
     }
 
-    registerOnTouched(): void {
-        return;
+    registerOnTouched(fn: any): void {
+        this.onTouched = fn;
     }
 
-    onAvatarSelected(file: File): void {
-        const avatarModel: UserAvatarModel = {
-            name: file.name,
-            size: file.size,
-            url: null
-        };
-
-        if (file && file.size < 20000) {
+    onAvatarSelected(file: FileModel): void {
+        if (file) {
+            this.selectedAvatar = file;
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = (): void => {
-                this.selectedAvatar = avatarModel.url = reader.result as string;
-                this.onChange(avatarModel);
+                this.selectedAvatar.url = reader.result as string;
+                this.onChange(this.selectedAvatar);
+                this.onTouched();
             };
-        } else {
-            this.onChange(avatarModel);
         }
     }
 }
