@@ -3,6 +3,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { fileSize } from "client/app/validators/fileSize";
 import { fileExtension } from "client/app/validators/fileExtension";
+import { UpdateCurrentUserModel } from "../../models/update-current-user.model";
 import { CurrentUserDTO } from "./../../../../dist/server/common/dto/current-user.dto.d";
 import { UpdateCurrentUserDto } from "./../../../../common/dto/update-current-user.dto";
 
@@ -19,7 +20,7 @@ export class EditProfileDetailsComponent implements OnInit {
     errorsCode: number;
 
     @Output()
-    saveChanges = new EventEmitter<UpdateCurrentUserDto>();
+    saveChanges = new EventEmitter<UpdateCurrentUserModel>();
 
     editForm: FormGroup;
 
@@ -69,16 +70,15 @@ export class EditProfileDetailsComponent implements OnInit {
     }
 
     onSubmit(): void {
-        const updatedUser: UpdateCurrentUserDto = {
+        const user: UpdateCurrentUserDto = {
             email: this.editForm.value.email,
-            nickname: this.editForm.value.nickname,
-            avatarUrl:
-                this.editForm.value.avatar && this.editForm.value.avatar.url
-                    ? this.editForm.value.avatar.url
-                    : this.user.avatarUrl
+            nickname: this.editForm.value.nickname
         };
         if (this.editForm.valid) {
-            this.saveChanges.emit(updatedUser);
+            this.saveChanges.emit({
+                user,
+                image: this.editForm.value.avatar
+            });
         }
     }
 }

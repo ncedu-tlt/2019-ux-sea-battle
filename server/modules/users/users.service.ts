@@ -95,7 +95,8 @@ export class UsersService {
     }
 
     async update(
-        updateDTO: UpdateUserDto | UpdateCurrentUserDto
+        updateDTO: UpdateUserDto | UpdateCurrentUserDto,
+        image = null
     ): Promise<UserDTO> {
         const user = await this.findByEmailOrNickname(
             updateDTO.email,
@@ -106,6 +107,14 @@ export class UsersService {
                 "users/userAlreadyExist",
                 HttpStatus.BAD_REQUEST
             );
+        }
+
+        if (image) {
+            updateDTO.avatarUrl =
+                "data:" +
+                image.mimetype +
+                ";base64," +
+                image.buffer.toString("base64");
         }
 
         if (!updateDTO.password) {

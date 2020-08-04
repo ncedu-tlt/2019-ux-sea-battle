@@ -8,10 +8,13 @@ import {
     HttpStatus,
     UseGuards,
     Patch,
-    Body
+    Body,
+    UseInterceptors,
+    UploadedFile
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { UsersService } from "./users.service";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 @Controller("/api/users")
 export class UsersController {
@@ -40,12 +43,18 @@ export class UsersController {
 
     @UseGuards(AuthGuard())
     @Patch()
+    @UseInterceptors(FileInterceptor("image"))
     async update(
         @Request() req,
-        @Body() user: UpdateCurrentUserDto
+        @Body() body: UpdateCurrentUserDto,
+        @UploadedFile() image
     ): Promise<CurrentUserDTO> {
+        const user: UpdateCurrentUserDto = {
+            ...body
+        };
         user.id = req.user.id;
-        const updatedUser = await this.userService.update(user);
+
+        const updatedUser = await this.userService.update(user, image);
         return {
             nickname: updatedUser.nickname,
             email: updatedUser.email,

@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { CurrentUserService } from "client/app/services/current-user.service";
 import { Router } from "@angular/router";
+import { UpdateCurrentUserModel } from "../../models/update-current-user.model";
 import { CurrentUserDTO } from "./../../../../dist/server/common/dto/current-user.dto.d";
-import { UpdateCurrentUserDto } from "./../../../../common/dto/update-current-user.dto";
 
 @Component({
     selector: "sb-edit-profile",
@@ -23,8 +23,8 @@ export class EditProfileComponent implements OnInit {
             .subscribe((u: CurrentUserDTO) => (this.user = u));
     }
 
-    onSaveChanges(updatedUser: UpdateCurrentUserDto): void {
-        this.currentUserService.updateCurrentUser(updatedUser).subscribe(
+    onSaveChanges(updateUserModel: UpdateCurrentUserModel): void {
+        this.currentUserService.updateCurrentUser(updateUserModel).subscribe(
             () => {
                 this.currentUserService.fetchCurrentUser();
                 this.router.navigate(["/"]);
