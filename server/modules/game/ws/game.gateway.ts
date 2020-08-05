@@ -15,6 +15,7 @@ import { WsAuthService } from "../../auth/ws-auth.service";
 import { GameService } from "../game.service";
 import { GameWsDto } from "../../../../common/dto/game-ws.dto";
 import { GameModeEnum } from "../../../../common/game-mode.enum";
+import { GameStatusEnum } from "../../../../common/game-status.enum";
 
 @WebSocketGateway({ namespace: "game" })
 export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -38,13 +39,16 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     async handleDisconnect(socket: Socket): Promise<void> {
         const user: UserDAO = await this.wsAuthService.getUser(socket);
         const game: GameDAO = await this.gameService.getGameByUserId(user.id);
-        delete this.gameToPlayersMapping.get(game.id)[
-            this.gameToPlayersMapping
-                .get(game.id)
-                .players.findIndex(player => player.id === socket.id)
-        ];
+        const i = this.gameToPlayersMapping
+            .get(game.id)
+            .players.findIndex(player => player.id === socket.id);
+        this.gameToPlayersMapping.get(game.id).players.splice(i, 1);
         if (this.gameToPlayersMapping.get(game.id).players.length < 1) {
             this.gameToPlayersMapping.delete(game.id);
+            await this.gameService.updateGameState({
+                id: game.id,
+                status: GameStatusEnum.FINISHED
+            });
         }
     }
 
