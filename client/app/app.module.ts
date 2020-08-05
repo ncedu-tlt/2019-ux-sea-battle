@@ -20,9 +20,9 @@ import { HeaderComponent } from "./components/header/header.component";
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { SidebarElementComponent } from "./components/sidebar-element/sidebar-element.component";
 import { BattlefieldComponent } from "./components/battlefield/battlefield.component";
-import { ShipsPlacementComponent } from "./components/ships-placement/ships-placement.component";
-import { WaitingForPlacementSocket } from "./sockets/waiting-for-placement.socket";
-import { GameSocket } from "./sockets/game.socket";
+import { EditProfileComponent } from "./components/edit-profile/edit-profile.component";
+import { EditProfileDetailsComponent } from "./components/edit-profile-details/edit-profile-details.component";
+import { AvatarInputComponent } from "./components/avatar-input/avatar-input.component";
 
 @NgModule({
     declarations: [
@@ -36,7 +36,9 @@ import { GameSocket } from "./sockets/game.socket";
         SidebarElementComponent,
         HeaderComponent,
         BattlefieldComponent,
-        ShipsPlacementComponent
+        EditProfileComponent,
+        EditProfileDetailsComponent,
+        AvatarInputComponent
     ],
     imports: [
         BrowserModule,
@@ -54,9 +56,7 @@ import { GameSocket } from "./sockets/game.socket";
             useClass: AuthHttpInterceptor,
             multi: true
         },
-        MatchmakingSocket,
-        WaitingForPlacementSocket,
-        GameSocket
+        MatchmakingSocket
     ],
     bootstrap: [AppComponent]
 })
