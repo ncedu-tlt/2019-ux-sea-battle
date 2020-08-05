@@ -3,24 +3,30 @@
         <div class="sb-sidebar__user-info">
             <img
                 class="sb-sidebar__avatar"
-                [src]="user.avatarUrl? user.avatarUrl : './../../../assets/avatar.png'"
-            >
-            <span class="sb-sidebar__username">{{user.nickname}}</span>
+                [src]="
+                    user.avatarUrl
+                        ? user.avatarUrl
+                        : './../../../assets/avatar.png'
+                "
+            />
+            <span class="sb-sidebar__username">{{ user.nickname }}</span>
             <div class="sb-sidebar__stats">
                 <div class="sb-sidebar__stats-item">
-                    <span class="sb-sidebar__stats-icon"
-                        [setSVGAttributes]="{width: '47px', height: '47px'}"
+                    <span
+                        class="sb-sidebar__stats-icon"
+                        [setSVGAttributes]="{ width: '47px', height: '47px' }"
                         [inlineSVG]="'experience-icon.svg'"
                     ></span>
-                    <span>{{user.experience}}</span>
+                    <span>{{ user.experience }}</span>
                 </div>
 
                 <div class="sb-sidebar__stats-item">
-                    <span class="sb-sidebar__stats-icon"
-                        [setSVGAttributes]="{width: '47px', height: '47px'}"
+                    <span
+                        class="sb-sidebar__stats-icon"
+                        [setSVGAttributes]="{ width: '47px', height: '47px' }"
                         [inlineSVG]="'balance-icon.svg'"
                     ></span>
-                    <span>{{user.balance}}</span>
+                    <span>{{ user.balance }}</span>
                 </div>
             </div>
         </div>
@@ -38,6 +44,12 @@
             [itemLabel]="'Статистика'"
             [isLink]="true"
             [itemLink]="'/stats'"
+        ></sb-sidebar-element>
+        <sb-sidebar-element
+            [itemImageLink]="'edit-icon.svg'"
+            [itemLabel]="'Редактировать профиль'"
+            [isLink]="true"
+            [itemLink]="'/edit'"
         ></sb-sidebar-element>
     </section>
 

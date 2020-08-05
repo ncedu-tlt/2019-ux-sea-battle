@@ -20,6 +20,9 @@ import { HeaderComponent } from "./components/header/header.component";
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { SidebarElementComponent } from "./components/sidebar-element/sidebar-element.component";
 import { BattlefieldComponent } from "./components/battlefield/battlefield.component";
+import { EditProfileComponent } from "./components/edit-profile/edit-profile.component";
+import { EditProfileDetailsComponent } from "./components/edit-profile-details/edit-profile-details.component";
+import { AvatarInputComponent } from "./components/avatar-input/avatar-input.component";
 
 @NgModule({
     declarations: [
@@ -32,7 +35,10 @@ import { BattlefieldComponent } from "./components/battlefield/battlefield.compo
         SidebarComponent,
         SidebarElementComponent,
         HeaderComponent,
-        BattlefieldComponent
+        BattlefieldComponent,
+        EditProfileComponent,
+        EditProfileDetailsComponent,
+        AvatarInputComponent
     ],
     imports: [
         BrowserModule,

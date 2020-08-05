@@ -1,0 +1,7 @@
+<sb-edit-profile-details
+    *ngIf="user"
+    [user]="user"
+    [errorsCode]="errorsCode"
+    (saveChanges)="onSaveChanges($event)"
+>
+</sb-edit-profile-details>
