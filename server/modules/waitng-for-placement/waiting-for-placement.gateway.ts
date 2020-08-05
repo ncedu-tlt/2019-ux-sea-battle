@@ -23,8 +23,6 @@ export class WaitingForPlacementGateway
 
     gameToPlayersMapping = new Map<number, PreparingForGameDto>();
 
-    timer = 90;
-
     constructor(
         private wsAuthService: WsAuthService,
         private gameService: GameService
@@ -50,7 +48,8 @@ export class WaitingForPlacementGateway
             ];
             this.gameToPlayersMapping.set(game.id, {
                 limit: playersLimit,
-                players
+                players,
+                timer: 90
             });
         }
     }
@@ -80,7 +79,9 @@ export class WaitingForPlacementGateway
                 const playerSocket: Socket = this.server.sockets[player.id];
                 playerSocket.join(game.id.toString());
             });
-            this.server.to(game.id.toString()).emit("timer", this.timer);
+            this.server
+                .to(game.id.toString())
+                .emit("timer", this.gameToPlayersMapping.get(game.id).timer);
         }
     }
 
