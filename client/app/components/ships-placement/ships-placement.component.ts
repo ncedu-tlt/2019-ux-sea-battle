@@ -42,6 +42,7 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
     leavingTimer = 10;
     leaving = false;
 
+    private timerSubscription: Unsubscribable;
     private subscriptions: Unsubscribable[] = [];
 
     constructor(
@@ -57,7 +58,7 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
             this.waitingForPlacementService.onTimer().subscribe(time => {
                 if (!this.timer) {
                     this.timer = time;
-                    timer(0, 1000).subscribe(() =>
+                    this.timerSubscription = timer(0, 1000).subscribe(() =>
                         this.timer > 0 && !this.leaving
                             ? this.timer--
                             : this.leaving
@@ -96,6 +97,7 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscriptions.forEach(s => s.unsubscribe());
+        this.timerSubscription.unsubscribe();
         this.waitingForPlacementService.disconnect();
     }
 
