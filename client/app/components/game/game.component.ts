@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { GameDto } from "../../../../common/dto/game.dto";
 import { GameApiService } from "../../services/api/game.api.service";
@@ -11,7 +11,7 @@ import { GameWsService } from "../../services/ws/game.ws.service";
     selector: "sb-game",
     templateUrl: "game.component.html"
 })
-export class GameComponent implements OnDestroy {
+export class GameComponent implements OnInit, OnDestroy {
     game: Observable<GameDto>;
 
     size = 10;
@@ -26,14 +26,15 @@ export class GameComponent implements OnDestroy {
         private gameWsService: GameWsService
     ) {
         this.subscriptions.push(
-            this.gameWsService.onConnection().subscribe(() => this.start()),
-            this.gameWsService.onStart().subscribe(() => {
-                this.game = this.gameService.getGame();
-                if (!this.game) {
-                    this.router.navigate(["/"]);
-                }
-            })
+            this.gameWsService.onConnection().subscribe(() => this.start())
         );
+    }
+
+    ngOnInit(): void {
+        this.game = this.gameService.getGame();
+        if (!this.game) {
+            this.router.navigate(["/"]);
+        }
     }
 
     ngOnDestroy(): void {
