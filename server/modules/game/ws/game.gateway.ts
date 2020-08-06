@@ -16,6 +16,7 @@ import { GameService } from "../game.service";
 import { GameWsDto } from "../../../../common/dto/game-ws.dto";
 import { GameModeEnum } from "../../../../common/game-mode.enum";
 import { GameStatusEnum } from "../../../../common/game-status.enum";
+import { Logger } from "@nestjs/common";
 
 @WebSocketGateway({ namespace: "game" })
 export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -30,6 +31,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     ) {}
 
     async handleConnection(socket: Socket): Promise<void> {
+        Logger.debug("game.gateway - CONNECTION\n");
         const user: UserDAO = await this.wsAuthService.getUser(socket);
         const game: GameDAO = await this.gameService.getGameByUserId(user.id);
         if (!user) {
@@ -39,6 +41,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     async handleDisconnect(socket: Socket): Promise<void> {
+        Logger.debug("game.gateway - DISCONNECT\n");
         const user: UserDAO = await this.wsAuthService.getUser(socket);
         const game: GameDAO = await this.gameService.getGameByUserId(user.id);
         const i = this.gameToPlayersMapping
@@ -78,6 +81,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         @ConnectedSocket() socket: Socket,
         ships: ShipModel[]
     ): Promise<void> {
+        Logger.debug("game.gateway - START\n");
         const user: UserDAO = await this.wsAuthService.getUser(socket);
         const game: GameDAO = await this.gameService.getGameByUserId(user.id);
         const player: PlayerDto = {

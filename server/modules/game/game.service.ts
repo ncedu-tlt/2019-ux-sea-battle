@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GameDAO } from "../db/domain/game.dao";
 import { DeleteResult, Repository } from "typeorm";
@@ -35,7 +35,9 @@ export class GameService {
             isPrivate,
             createdAt: new Date()
         };
+        Logger.debug("game.service - creating game");
         const game: GameDAO = await this.gameRepository.save(gameInfo);
+        Logger.debug("game.service - creating participants");
         if (participants) {
             for (const value of [...participants.values()].slice(0, 2)) {
                 await this.participantService.create(game, value.id);
@@ -52,6 +54,8 @@ export class GameService {
         const participant: ParticipantDAO = await this.participantService.getParticipantByUserId(
             id
         );
+        Logger.debug("game.service - getting participant:");
+        Logger.debug(participant);
         return await this.gameRepository.findOne(await participant.game, {
             where: { status: GameStatusEnum.STARTED }
         });

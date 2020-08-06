@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { GameModeEnum } from "../../../../common/game-mode.enum";
 import { GameService } from "../../game/game.service";
 import { RoomDto } from "../../../../common/dto/room.dto";
@@ -18,6 +18,8 @@ export class ClassicSearchService implements SearchService {
                 false,
                 participants
             );
+            Logger.debug("classic-search.service - game:");
+            Logger.debug(game);
             const players: string[] = [...participants.keys()].slice(0, 2);
             return {
                 id: game.id.toString(),

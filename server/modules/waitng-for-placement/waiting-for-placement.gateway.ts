@@ -14,6 +14,7 @@ import { GameDAO } from "../db/domain/game.dao";
 import { PreparingForGameDto } from "../../../common/dto/preparing-for-game.dto";
 import { WaitingForPlayerDto } from "../../../common/dto/waiting-for-player.dto";
 import { GameModeEnum } from "../../../common/game-mode.enum";
+import { Logger } from "@nestjs/common";
 
 @WebSocketGateway({ namespace: "placement" })
 export class WaitingForPlacementGateway
@@ -29,11 +30,14 @@ export class WaitingForPlacementGateway
     ) {}
 
     async handleConnection(socket: Socket): Promise<void> {
+        Logger.debug("waiting-for-placement.gateway - CONNECTION\n");
         const user: UserDAO = await this.wsAuthService.getUser(socket);
         if (!user) {
             socket.disconnect();
         }
+        Logger.debug("waiting-for-placement.gateway - getting the game");
         const game: GameDAO = await this.gameService.getGameByUserId(user.id);
+        socket.join(game.id.toString());
         let playersLimit: number;
         if (game.gameMode === GameModeEnum.CLASSIC) {
             playersLimit = 2;
@@ -55,30 +59,25 @@ export class WaitingForPlacementGateway
     }
 
     async handleDisconnect(socket: Socket): Promise<void> {
+        Logger.debug("waiting-for-placement.gateway - DISCONNECT\n");
         const user: UserDAO = await this.wsAuthService.getUser(socket);
         const game: GameDAO = await this.gameService.getGameByUserId(user.id);
-        if (this.gameToPlayersMapping.get(game.id) && game) {
-            this.gameToPlayersMapping
-                .get(game.id)
-                .players.forEach(player =>
-                    this.server.to(player.id).emit("leave")
-                );
+        socket.leave(game.id.toString());
+        if (game) {
+            this.server.to(game.id.toString()).emit("leave");
             this.gameToPlayersMapping.delete(game.id);
         }
     }
 
     @SubscribeMessage("timer")
     async getTimer(@ConnectedSocket() socket: Socket): Promise<void> {
+        Logger.debug("waiting-for-placement.gateway - TIMER\n");
         const user: UserDAO = await this.wsAuthService.getUser(socket);
         const game: GameDAO = await this.gameService.getGameByUserId(user.id);
         if (
             this.gameToPlayersMapping.get(game.id).limit ===
             this.gameToPlayersMapping.get(game.id).players.length
         ) {
-            this.gameToPlayersMapping.get(game.id).players.forEach(player => {
-                const playerSocket: Socket = this.server.sockets[player.id];
-                playerSocket.join(game.id.toString());
-            });
             this.server
                 .to(game.id.toString())
                 .emit("timer", this.gameToPlayersMapping.get(game.id).timer);
@@ -87,6 +86,7 @@ export class WaitingForPlacementGateway
 
     @SubscribeMessage("ready")
     async ready(@ConnectedSocket() socket: Socket): Promise<void> {
+        Logger.debug("waiting-for-placement.gateway - READY\n");
         const user: UserDAO = await this.wsAuthService.getUser(socket);
         const game: GameDAO = await this.gameService.getGameByUserId(user.id);
         this.gameToPlayersMapping
@@ -99,11 +99,7 @@ export class WaitingForPlacementGateway
             this.gameToPlayersMapping.get(game.id).limit ===
                 this.gameToPlayersMapping.get(game.id).players.length
         ) {
-            this.gameToPlayersMapping
-                .get(game.id)
-                .players.forEach(player =>
-                    this.server.to(player.id).emit("ready")
-                );
+            this.server.to(game.id.toString()).emit("ready");
         }
     }
 
