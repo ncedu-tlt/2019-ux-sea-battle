@@ -1,7 +1,7 @@
 <div class="ships-placement">
     <div class="ships-placement__top-bar">
         <span class="ships-placement__timer">{{timer || 90}}</span>
-        <button class="sb-img-button" (click)="onQuickPlacement()" [disabled]="isReady">
+        <button class="sb-img-button" (click)="onQuickPlacement()" [disabled]="isReady || leaving">
             <span class="ships-placement__dice-icon" [inlineSVG]="'dice.svg'"></span>
         </button>
     </div>

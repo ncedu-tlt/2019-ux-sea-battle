@@ -83,7 +83,6 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.waitingForPlacementService.connect();
         for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {
                 this.cells.push({
@@ -93,6 +92,7 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
                 });
             }
         }
+        this.connection();
     }
 
     ngOnDestroy(): void {
@@ -277,6 +277,10 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
 
     onReady(): void {
         this.shipsOnField.emit(this.ships);
+    }
+
+    private connection(): void {
+        this.waitingForPlacementService.connect();
     }
 
     private leave(): void {
