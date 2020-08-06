@@ -31,9 +31,11 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     async handleConnection(socket: Socket): Promise<void> {
         const user: UserDAO = await this.wsAuthService.getUser(socket);
+        const game: GameDAO = await this.gameService.getGameByUserId(user.id);
         if (!user) {
             socket.disconnect();
         }
+        socket.join(game.id.toString());
     }
 
     async handleDisconnect(socket: Socket): Promise<void> {
@@ -43,6 +45,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
             .get(game.id)
             .players.findIndex(player => player.id === socket.id);
         this.gameToPlayersMapping.get(game.id).players.splice(i, 1);
+        socket.leave(game.id.toString());
         if (this.gameToPlayersMapping.get(game.id).players.length < 1) {
             this.gameToPlayersMapping.delete(game.id);
             await this.gameService.updateGameState({
@@ -97,11 +100,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
             this.gameToPlayersMapping.get(game.id).limit ===
             this.gameToPlayersMapping.get(game.id).players.length
         ) {
-            this.gameToPlayersMapping
-                .get(game.id)
-                .players.forEach(player =>
-                    this.server.to(player.id).emit("start")
-                );
+            this.server.to(game.id.toString()).emit("start");
         }
     }
 }
