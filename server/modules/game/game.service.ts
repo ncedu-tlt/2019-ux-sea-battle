@@ -39,13 +39,13 @@ export class GameService {
         const game: GameDAO = await this.gameRepository.save(gameInfo);
         Logger.debug("game.service - creating participants");
         if (players) {
-            for (const value of [...players.participants.values()].slice(
+            for (const player of [...players.participants.values()].slice(
                 0,
                 players.limit
             )) {
-                const p: ParticipantDAO = await this.participantService.create(
-                    game,
-                    value.id
+                await this.participantService.create(game, player.id);
+                const p: ParticipantDAO = await this.participantService.getParticipantByUserId(
+                    player.id
                 );
                 Logger.debug(p);
             }
