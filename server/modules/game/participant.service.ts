@@ -18,16 +18,14 @@ export class ParticipantService {
         Logger.debug("save participant");
         const user: UserDAO = await this.usersService.findById(userId);
         const participant = {
-            user: Promise.resolve(user),
-            game: Promise.resolve(game)
+            user,
+            game
         };
         return await this.participantRepository.save(participant);
     }
 
     async getParticipantByUserId(userId: number): Promise<ParticipantDAO> {
         const user: UserDAO = await this.usersService.findById(userId);
-        Logger.debug("participant.service - user");
-        Logger.debug(user);
         return await this.participantRepository.findOne({
             where: {
                 user: user.id

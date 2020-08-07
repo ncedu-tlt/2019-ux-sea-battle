@@ -66,7 +66,7 @@ export class GameService {
         if (!participant) {
             Logger.debug("returned undefined");
         }
-        return await this.gameRepository.findOne(await participant.game);
+        return await this.gameRepository.findOne(participant.game);
     }
 
     async createGame(createDTO: CreateGameDto): Promise<GameDAO> {
