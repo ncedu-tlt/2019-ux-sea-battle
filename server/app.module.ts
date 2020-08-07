@@ -24,7 +24,8 @@ import { WaitingForPlacementModule } from "./modules/waitng-for-placement/waitin
                 type: "postgres",
                 url: configService.get<string>("dbUrl"),
                 synchronize: true,
-                autoLoadEntities: true
+                autoLoadEntities: true,
+                logging: true
             })
         }),
         ServeStaticModule.forRoot({
