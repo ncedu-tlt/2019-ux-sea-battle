@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ParticipantDAO } from "../db/domain/participant.dao";
 import { Repository } from "typeorm";
@@ -20,8 +20,6 @@ export class ParticipantService {
             user,
             ...game
         };
-        Logger.debug("participant.service - creating participant:");
-        Logger.debug(participant);
         return await this.participantRepository.save(participant);
     }
 

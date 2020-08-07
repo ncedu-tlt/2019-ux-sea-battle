@@ -59,6 +59,9 @@ export class GameService {
         );
         Logger.debug("game.service - getting participant:");
         Logger.debug(participant);
+        if (!participant) {
+            Logger.debug("returned undefined");
+        }
         return await this.gameRepository.findOne(await participant.game, {
             where: { status: GameStatusEnum.STARTED }
         });
