@@ -35,6 +35,8 @@ export class WaitingForPlacementGateway
         if (!user) {
             socket.disconnect();
         }
+        Logger.debug("waiting-for-placement.gateway - user");
+        Logger.debug(user);
         Logger.debug("waiting-for-placement.gateway - getting the game");
         const game: GameDAO = await this.gameService.getGameByUserId(user.id);
         socket.join(game.id.toString());
