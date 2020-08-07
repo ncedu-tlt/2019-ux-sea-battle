@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ParticipantDAO } from "../db/domain/participant.dao";
 import { Repository } from "typeorm";
@@ -25,6 +25,8 @@ export class ParticipantService {
 
     async getParticipantByUserId(userId: number): Promise<ParticipantDAO> {
         const user: UserDAO = await this.usersService.findById(userId);
+        Logger.debug("participant.service - user");
+        Logger.debug(user);
         return await this.participantRepository.findOne({
             where: {
                 user: user.id
