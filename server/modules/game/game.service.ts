@@ -66,9 +66,7 @@ export class GameService {
         if (!participant) {
             Logger.debug("returned undefined");
         }
-        return await this.gameRepository.findOne(await participant.game, {
-            where: { status: GameStatusEnum.STARTED }
-        });
+        return await this.gameRepository.findOne(await participant.game);
     }
 
     async createGame(createDTO: CreateGameDto): Promise<GameDAO> {
