@@ -18,8 +18,8 @@ export class ParticipantService {
         Logger.debug("save participant");
         const user: UserDAO = await this.usersService.findById(userId);
         const participant = {
-            ...user,
-            ...game
+            user: Promise.resolve(user),
+            game: Promise.resolve(game)
         };
         return await this.participantRepository.save(participant);
     }
