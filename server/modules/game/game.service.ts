@@ -43,7 +43,11 @@ export class GameService {
                 0,
                 players.limit
             )) {
-                await this.participantService.create(game, value.id);
+                const p: ParticipantDAO = await this.participantService.create(
+                    game,
+                    value.id
+                );
+                Logger.debug(p);
             }
         }
         return game;
