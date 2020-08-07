@@ -41,7 +41,7 @@
     "@nestjs/serve-static": "^2.1.0",
     "@nestjs/typeorm": "^7.0.0",
     "@nestjs/websockets": "^7.0.3",
-    "class-transformer": "^0.2.3",
+    "class-transformer": "^0.3.1",
     "class-validator": "^0.12.0-rc.0",
     "ng-inline-svg": "^10.1.0",
     "ng-sidebar": "^9.4.2",
