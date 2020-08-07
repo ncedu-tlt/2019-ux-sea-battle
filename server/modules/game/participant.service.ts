@@ -14,7 +14,7 @@ export class ParticipantService {
         private usersService: UsersService
     ) {}
 
-    async create(game: GameDAO, userId: number): Promise<void> {
+    async create(game: GameDAO, userId: number): Promise<ParticipantDAO> {
         const user: UserDAO = await this.usersService.findById(userId);
         const participant = {
             user,
@@ -22,7 +22,7 @@ export class ParticipantService {
         };
         Logger.debug("participant.service - creating participant:");
         Logger.debug(participant);
-        await this.participantRepository.save(participant);
+        return await this.participantRepository.save(participant);
     }
 
     async getParticipantByUserId(userId: number): Promise<ParticipantDAO> {
