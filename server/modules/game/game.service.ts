@@ -39,7 +39,7 @@ export class GameService {
         const game: GameDAO = await this.gameRepository.save(gameInfo);
         Logger.debug("game.service - creating participants");
         if (players) {
-            for (const player of [...players.participants.values()].slice(
+            for await (const player of [...players.participants.values()].slice(
                 0,
                 players.limit
             )) {
