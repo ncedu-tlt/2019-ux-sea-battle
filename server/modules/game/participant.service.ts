@@ -17,10 +17,9 @@ export class ParticipantService {
     async create(game: GameDAO, userId: number): Promise<ParticipantDAO> {
         Logger.debug("save participant");
         const user: UserDAO = await this.usersService.findById(userId);
-        const participant = {
-            user,
-            game
-        };
+        const participant: ParticipantDAO = new ParticipantDAO();
+        participant.user = Promise.resolve(user);
+        participant.game = Promise.resolve(game);
         return await this.participantRepository.save(participant);
     }
 

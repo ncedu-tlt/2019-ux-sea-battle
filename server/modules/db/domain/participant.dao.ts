@@ -17,14 +17,14 @@ export class ParticipantDAO {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "user_id" })
-    user: UserDAO;
+    user: Promise<UserDAO>;
 
     @ManyToOne(() => GameDAO, {
         cascade: true,
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "game_id" })
-    game: GameDAO;
+    game: Promise<GameDAO>;
 
     @Column({
         name: "is_host",
