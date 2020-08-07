@@ -25,7 +25,7 @@ export class ParticipantService {
 
     async getParticipantByUserId(userId: number): Promise<ParticipantDAO> {
         const user: UserDAO = await this.usersService.findById(userId);
-        return this.participantRepository.findOne({
+        return await this.participantRepository.findOne({
             where: {
                 user: user.id
             }
