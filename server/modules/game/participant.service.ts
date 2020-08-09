@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ParticipantDAO } from "../db/domain/participant.dao";
 import { Repository } from "typeorm";
@@ -14,18 +14,18 @@ export class ParticipantService {
         private usersService: UsersService
     ) {}
 
-    async create(game: GameDAO, userId: number): Promise<void> {
+    async create(game: GameDAO, userId: number): Promise<ParticipantDAO> {
+        Logger.debug("save participant");
         const user: UserDAO = await this.usersService.findById(userId);
-        const participant = {
-            user,
-            ...game
-        };
-        await this.participantRepository.save(participant);
+        const participant: ParticipantDAO = new ParticipantDAO();
+        participant.user = Promise.resolve(user);
+        participant.game = Promise.resolve(game);
+        return await this.participantRepository.save(participant);
     }
 
     async getParticipantByUserId(userId: number): Promise<ParticipantDAO> {
         const user: UserDAO = await this.usersService.findById(userId);
-        return this.participantRepository.findOne({
+        return await this.participantRepository.findOne({
             where: {
                 user: user.id
             }

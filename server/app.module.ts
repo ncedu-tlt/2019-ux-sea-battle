@@ -10,6 +10,7 @@ import { AuthModule } from "./modules/auth/auth.module";
 import { UsersModule } from "./modules/users/users.module";
 import { MatchmakingModule } from "./modules/matchmaking/matchmaking.module";
 import { GameModule } from "./modules/game/game.module";
+import { WaitingForPlacementModule } from "./modules/waitng-for-placement/waiting-for-placement.module";
 
 @Module({
     imports: [
@@ -23,7 +24,8 @@ import { GameModule } from "./modules/game/game.module";
                 type: "postgres",
                 url: configService.get<string>("dbUrl"),
                 synchronize: true,
-                autoLoadEntities: true
+                autoLoadEntities: true,
+                logging: true
             })
         }),
         ServeStaticModule.forRoot({
@@ -35,7 +37,8 @@ import { GameModule } from "./modules/game/game.module";
         MatchmakingModule,
         GameModule,
         PostsModule,
-        SharedModule
+        SharedModule,
+        WaitingForPlacementModule
     ]
 })
 export class AppModule {}

@@ -3,11 +3,8 @@
   display: inline-block;
 
   &__row {
-    display: flex;
-  }
-
-  &__row:not(:last-child) {
     margin-bottom: 5px;
+    display: flex;
   }
 
   &__column {
@@ -22,7 +19,9 @@
     position: absolute;
     width: 36px;
     height: 36px;
-    pointer-events:none;
+    cursor: pointer;
+    user-select: none;
+    z-index: 3;
   }
 
   &__move-icon._horizontal {
@@ -104,8 +103,19 @@
   &__ship {
     width: 22px;
     height: 22px;
-
     border-radius: 4px;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  &__ship:after {
+    position: absolute;
+    display: block;
+    width: 35px;
+    height: 24px;
+    content: "";
+    background: transparent;
+    cursor: pointer;
   }
 
   &__ship._green {

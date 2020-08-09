@@ -75,7 +75,7 @@ export class MatchmakingGateway
 
         if (room) {
             room.players.forEach(id => {
-                this.server.sockets[id].emit("search", room.id);
+                this.server.to(id).emit("search", room.id);
             });
             room.players.forEach(id => {
                 this.server.sockets[id].disconnect();

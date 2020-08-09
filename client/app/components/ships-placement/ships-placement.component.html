@@ -1,0 +1,98 @@
+<div class="ships-placement">
+    <div class="ships-placement__top-bar">
+        <span class="ships-placement__timer">{{timer || 90}}</span>
+        <button class="sb-img-button" (click)="onQuickPlacement()" [disabled]="isReady || leaving">
+            <span class="ships-placement__dice-icon" [inlineSVG]="'dice.svg'"></span>
+        </button>
+    </div>
+    <sb-battlefield [ngClass]="['ships-placement__battlefield', isReady ? '_ready' : '']"
+                    [size]="size" [fieldCells]="cells" [ships]="ships"
+                    (cellSelection)="onClickCell($event)" (changeOrientation)="onIconClick($event)"></sb-battlefield>
+    <div *ngIf="!leaving" [ngClass]="['ships-placement__ships-layout', shipsLayout[0].count < 1
+                && shipsLayout[1].count < 1
+                && shipsLayout[2].count < 1
+                && shipsLayout[3].count < 1 ? 'ships-placement__ships-layout_hidden' : '']">
+        <div
+                *ngFor="let ship of shipsLayout"
+                [ngSwitch]="ship.type"
+                [ngClass]="[
+                     'ships-placement__ship-container',
+                     ship.count < 1 ? '_disable' : '',
+                     ship.type === 1 ? 'ships-placement__battleship' :
+                     ship.type === 2 ? 'ships-placement__cruiser' :
+                     ship.type === 3 ? 'ships-placement__destroyer' : 'ships-placement__boat'
+                     ]">
+                    <span
+                            *ngSwitchCase="1"
+                            class="ships-placement__ship"
+                            (click)="onClickShip(ship.type)">
+                        <span [ngClass]="['sb-cell', 'ships-placement__cell', '_is-selected']">
+                            <span *ngIf="ship.count > 0" [ngClass]="['ships-placement__ship-cell', !ship.isSelected ? ship.color : '_saffron']"></span>
+                        </span>
+                        <span [ngClass]="['sb-cell', 'ships-placement__cell', '_is-selected']">
+                            <span *ngIf="ship.count > 0" [ngClass]="['ships-placement__ship-cell', !ship.isSelected ? ship.color : '_saffron']"></span>
+                        </span>
+                        <span [ngClass]="['sb-cell', 'ships-placement__cell', '_is-selected']">
+                            <span *ngIf="ship.count > 0" [ngClass]="['ships-placement__ship-cell', !ship.isSelected ? ship.color : '_saffron']"></span>
+                        </span>
+                        <span [ngClass]="['sb-cell', 'ships-placement__cell', '_is-selected']">
+                            <span *ngIf="ship.count > 0" [ngClass]="['ships-placement__ship-cell', !ship.isSelected ? ship.color : '_saffron']"></span>
+                        </span>
+                    </span>
+            <span
+                    *ngSwitchCase="2"
+                    class="ships-placement__ship"
+                    (click)="onClickShip(ship.type)">
+                        <span [ngClass]="['sb-cell', 'ships-placement__cell','_is-selected']">
+                            <span *ngIf="ship.count > 0" [ngClass]="['ships-placement__ship-cell', !ship.isSelected ? ship.color : '_saffron']"></span>
+                        </span>
+                        <span [ngClass]="['sb-cell', 'ships-placement__cell', '_is-selected']">
+                            <span *ngIf="ship.count > 0" [ngClass]="['ships-placement__ship-cell', !ship.isSelected ? ship.color : '_saffron']"></span>
+                        </span>
+                        <span [ngClass]="['sb-cell', 'ships-placement__cell', '_is-selected']">
+                            <span *ngIf="ship.count > 0" [ngClass]="['ships-placement__ship-cell', !ship.isSelected ? ship.color : '_saffron']"></span>
+                        </span>
+                    </span>
+            <span
+                    *ngSwitchCase="3"
+                    class="ships-placement__ship"
+                    (click)="onClickShip(ship.type)">
+                        <span [ngClass]="['sb-cell', 'ships-placement__cell', '_is-selected']">
+                            <span *ngIf="ship.count > 0" [ngClass]="['ships-placement__ship-cell', !ship.isSelected ? ship.color : '_saffron']"></span>
+                        </span>
+                        <span [ngClass]="['sb-cell', 'ships-placement__cell', '_is-selected']">
+                            <span *ngIf="ship.count > 0" [ngClass]="['ships-placement__ship-cell', !ship.isSelected ? ship.color : '_saffron']"></span>
+                        </span>
+                    </span>
+            <span
+                    *ngSwitchCase="4"
+                    class="ships-placement__ship"
+                    (click)="onClickShip(ship.type)">
+                        <span [ngClass]="['sb-cell', 'ships-placement__cell', '_is-selected']">
+                            <span *ngIf="ship.count > 0" [ngClass]="['ships-placement__ship-cell', !ship.isSelected ? ship.color : '_saffron']"></span>
+                        </span>
+                    </span>
+            <span class="ships-placement__ships-count">&#215; {{ship.count}}</span>
+        </div>
+    </div>
+    <div class="ships-placement__button" *ngIf="shipsLayout[0].count < 1
+                && shipsLayout[1].count < 1
+                && shipsLayout[2].count < 1
+                && shipsLayout[3].count < 1
+                && !leaving">
+        <button class="sb-button"
+                [disabled]="(shipsLayout[0].count > 0
+                && shipsLayout[1].count > 0
+                && shipsLayout[2].count > 0
+                && shipsLayout[3].count > 0) || timer === 0"
+                (click)="ready()"
+                [ngSwitch]="isReady">
+            <span *ngSwitchCase="false">Готово</span>
+            <span *ngSwitchCase="true">Отмена</span>
+        </button>
+    </div>
+    <span *ngIf="leaving" class="ships-placement__message">
+        Кто-то из игроков отключился. <br> Возврат через
+        <span class="ships-placement__leaving-timer">{{leavingTimer}}</span>
+    </span>
+</div>

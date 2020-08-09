@@ -1,15 +1,16 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GameDAO } from "../db/domain/game.dao";
 import { DeleteResult, Repository } from "typeorm";
-import { GameStatusEnum } from "../db/domain/game-status.enum";
+import { GameStatusEnum } from "../../../common/game-status.enum";
 import { GameModeEnum } from "../../../common/game-mode.enum";
 import { GameDto } from "../../../common/dto/game.dto";
-import { SearchDto } from "../../../common/dto/search.dto";
 import { ParticipantService } from "./participant.service";
 import { ParticipantDAO } from "../db/domain/participant.dao";
 import { CreateGameDto } from "../../../common/dto/create-game.dto";
 import { UpdateGameDto } from "../../../common/dto/update-game.dto";
+import { UpdateGameStatusDto } from "../../../common/dto/update-game-status.dto";
+import { CreateParticipantsDto } from "../../../common/dto/create-participants.dto";
 
 @Injectable()
 export class GameService {
@@ -26,7 +27,7 @@ export class GameService {
     async create(
         gameMode: GameModeEnum,
         isPrivate?: boolean,
-        participants?: Map<string, SearchDto>
+        players?: CreateParticipantsDto
     ): Promise<GameDAO> {
         const gameInfo: GameDto = {
             gameMode,
@@ -34,10 +35,19 @@ export class GameService {
             isPrivate,
             createdAt: new Date()
         };
+        Logger.debug("game.service - creating game");
         const game: GameDAO = await this.gameRepository.save(gameInfo);
-        if (participants) {
-            for (const value of [...participants.values()].slice(0, 2)) {
-                await this.participantService.create(game, value.id);
+        Logger.debug("game.service - creating participants");
+        if (players) {
+            for (const player of [...players.participants.values()].slice(
+                0,
+                players.limit
+            )) {
+                await this.participantService.create(game, player.id);
+                const p: ParticipantDAO = await this.participantService.getParticipantByUserId(
+                    player.id
+                );
+                Logger.debug(p);
             }
         }
         return game;
@@ -51,9 +61,12 @@ export class GameService {
         const participant: ParticipantDAO = await this.participantService.getParticipantByUserId(
             id
         );
-        return await this.gameRepository.findOne(await participant.game, {
-            where: { status: GameStatusEnum.STARTED }
-        });
+        Logger.debug("game.service - getting participant:");
+        Logger.debug(participant);
+        if (!participant) {
+            Logger.debug("returned undefined");
+        }
+        return await this.gameRepository.findOne(await participant.game);
     }
 
     async createGame(createDTO: CreateGameDto): Promise<GameDAO> {
@@ -76,5 +89,10 @@ export class GameService {
             }
         }
         return await this.gameRepository.delete(id);
+    }
+
+    async updateGameState(updateDTO: UpdateGameStatusDto): Promise<GameDAO> {
+        await this.gameRepository.update(updateDTO.id, updateDTO);
+        return await this.gameRepository.findOne(updateDTO.id);
     }
 }

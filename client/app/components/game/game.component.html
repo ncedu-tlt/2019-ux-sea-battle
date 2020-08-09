@@ -1,0 +1,6 @@
+<div class="game">
+    <sb-ships-placement *ngIf="!ships && game else battle" [size]="size" (shipsOnField)="onReady($event)"></sb-ships-placement>
+    <ng-template #battle>
+        {{ game | async | json }}
+    </ng-template>
+</div>

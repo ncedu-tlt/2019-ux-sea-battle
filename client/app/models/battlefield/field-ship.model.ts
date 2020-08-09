@@ -1,9 +1,9 @@
-import { ShipCellModel } from "./ship-cell.model";
-import { ShipColorEnum } from "./styles/ship-color.enum";
+import { ShipCellModel } from "../../../../common/models/ship/ship-cell.model";
+import { TeamEnum } from "../../../../common/models/ship/team.enum";
 
 export interface FieldShipModel {
     cellParams: ShipCellModel;
-    team: ShipColorEnum;
+    team: TeamEnum;
     isSelected: boolean;
     movingIconLocation?: string;
 }

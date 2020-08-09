@@ -1,4 +1,4 @@
-export enum ShipColorEnum {
+export enum TeamEnum {
     GREEN = "_green",
     REDDISH = "_reddish",
     RED = "_red",

@@ -1,15 +1,13 @@
 import { Injectable } from "@angular/core";
-import { MatchmakingSocket } from "../../sockets/matchmaking.socket";
-import { Observable } from "rxjs";
 import { TokenService } from "../token.service";
-import { GameModeEnum } from "../../../../common/game-mode.enum";
+import { GameSocket } from "../../sockets/game.socket";
+import { ShipModel } from "../../../../common/models/ship/ship.model";
+import { Observable } from "rxjs";
 
-@Injectable({
-    providedIn: "root"
-})
-export class MatchmakingService {
+@Injectable({ providedIn: "root" })
+export class GameWsService {
     constructor(
-        private socket: MatchmakingSocket,
+        private socket: GameSocket,
         private tokenService: TokenService
     ) {}
 
@@ -24,20 +22,24 @@ export class MatchmakingService {
         this.socket.disconnect();
     }
 
-    search(gameMode: GameModeEnum): void {
-        this.socket.emit("search", gameMode);
+    getShips(): void {
+        this.socket.emit("get-ships");
     }
 
-    onSearch(): Observable<number> {
-        return this.socket.fromEvent<number>("search");
+    start(ships: ShipModel[]): void {
+        this.socket.emit("start", ships);
     }
 
     onConnection(): Observable<number> {
         return this.socket.fromEvent<number>("connect");
     }
 
-    onDisconnect(): Observable<any> {
-        return this.socket.fromEvent<any>("disconnect");
+    onGettingShips(): Observable<ShipModel[]> {
+        return this.socket.fromEvent<ShipModel[]>("getting-ships");
+    }
+
+    onStart(): Observable<any> {
+        return this.socket.fromEvent("start");
     }
 
     onConnectionError(): Observable<string> {

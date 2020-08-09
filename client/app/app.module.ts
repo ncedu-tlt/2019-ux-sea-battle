@@ -23,6 +23,9 @@ import { BattlefieldComponent } from "./components/battlefield/battlefield.compo
 import { EditProfileComponent } from "./components/edit-profile/edit-profile.component";
 import { EditProfileDetailsComponent } from "./components/edit-profile-details/edit-profile-details.component";
 import { AvatarInputComponent } from "./components/avatar-input/avatar-input.component";
+import { WaitingForPlacementSocket } from "./sockets/waiting-for-placement.socket";
+import { GameSocket } from "./sockets/game.socket";
+import { ShipsPlacementComponent } from "./components/ships-placement/ships-placement.component";
 
 @NgModule({
     declarations: [
@@ -38,7 +41,8 @@ import { AvatarInputComponent } from "./components/avatar-input/avatar-input.com
         BattlefieldComponent,
         EditProfileComponent,
         EditProfileDetailsComponent,
-        AvatarInputComponent
+        AvatarInputComponent,
+        ShipsPlacementComponent
     ],
     imports: [
         BrowserModule,
@@ -56,7 +60,9 @@ import { AvatarInputComponent } from "./components/avatar-input/avatar-input.com
             useClass: AuthHttpInterceptor,
             multi: true
         },
-        MatchmakingSocket
+        MatchmakingSocket,
+        WaitingForPlacementSocket,
+        GameSocket
     ],
     bootstrap: [AppComponent]
 })

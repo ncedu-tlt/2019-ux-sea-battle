@@ -5,10 +5,10 @@ import {
     OnChanges,
     Output
 } from "@angular/core";
-import { ShipModel } from "../../models/battlefield/ship.model";
+import { ShipModel } from "../../../../common/models/ship/ship.model";
 import { MoveIconDirectionEnum } from "../../models/battlefield/styles/move-icon-direction.enum";
 import { ShipOrientationEnum } from "../../models/battlefield/styles/ship-orientation.enum";
-import { CoordinatesModel } from "../../models/battlefield/coordinates.model";
+import { CoordinatesModel } from "../../../../common/models/ship/coordinates.model";
 import { MoveIconPositionEnum } from "../../models/battlefield/styles/move-icon-position.enum";
 import { CellModel } from "../../models/battlefield/cell.model";
 import { FieldModel } from "../../models/battlefield/field.model";
@@ -30,6 +30,9 @@ export class BattlefieldComponent implements OnChanges {
 
     @Output()
     cellSelection = new EventEmitter<CoordinatesModel>();
+
+    @Output()
+    changeOrientation = new EventEmitter<CoordinatesModel>();
 
     field: FieldModel[][];
 
@@ -62,6 +65,11 @@ export class BattlefieldComponent implements OnChanges {
     onClick(x: number, y: number): void {
         const coordinates: CoordinatesModel = { x, y };
         this.cellSelection.emit(coordinates);
+    }
+
+    orientationChange(x: number, y: number): void {
+        const coordinates: CoordinatesModel = { x, y };
+        this.changeOrientation.emit(coordinates);
     }
 
     private shipMovingIconStyles(ship: ShipModel): string {

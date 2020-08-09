@@ -1,0 +1,183 @@
+@import "../../../styles/colors.less";
+
+.ships-placement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__top-bar {
+    margin-top: 10px;
+    width: 95vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__timer {
+    min-width: 35px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    letter-spacing: 2px;
+    text-align: center;
+    color: #FFFFFF;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &__quick-placement {
+    user-select: none;
+  }
+
+  &__quick-placement._ready {
+    pointer-events: none;
+  }
+
+  &__dice-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  &__battlefield {
+    margin-top: 24px;
+  }
+
+  &__battlefield._ready {
+    pointer-events: none;
+  }
+
+  &__ships-layout {
+    display: inline-grid;
+    margin: 20px auto 0 auto;
+    grid-template-areas: "battleship boat" "cruiser destroyer";
+    user-select: none;
+
+    &_hidden {
+      display: none;
+    }
+  }
+
+  &__battleship {
+    grid-area: battleship;
+  }
+
+  &__cruiser {
+    grid-area: cruiser;
+  }
+
+  &__destroyer {
+    grid-area: destroyer;
+  }
+
+  &__boat {
+    justify-content: flex-end;
+    grid-area: boat;
+  }
+
+  &__ship-container {
+    margin-top: 20px;
+    display: flex;
+  }
+
+  &__ship-container._disable {
+    pointer-events: none;
+  }
+
+  &__ship {
+    position: relative;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+  }
+
+  &__ships-count {
+    width: 26px;
+    height: 26px;
+    margin-left: 7px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 140%;
+    color: #FFFFFF;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &__ship-move-icon {
+    position: absolute;
+    transform: scale(0.6);
+    margin: auto;
+    top: -28px;
+  }
+
+  &__ship-move-icon._red {
+    fill: @ship-red;
+  }
+
+  &__ship-move-icon._reddish {
+    fill: @ship-reddish;
+  }
+
+  &__ship-move-icon._green {
+    fill: @ship-green;
+  }
+
+  &__ship-move-icon._saffron {
+    fill: @ship-saffron;
+  }
+
+  &__cell:not(:last-of-type) {
+    margin-right: 5px;
+  }
+
+  &__ship-cell {
+    width: 22px;
+    height: 22px;
+
+    border-radius: 4px;
+  }
+
+  &__ship-cell._green {
+    border-color: @ship-green;
+    background-color: @ship-green;
+  }
+
+  &__ship-cell._reddish {
+    border-color: @ship-reddish;
+    background-color: @ship-reddish;
+  }
+
+  &__ship-cell._red {
+    border-color: @ship-red;
+    background-color: @ship-red;
+  }
+
+  &__ship-cell._saffron {
+    border-color: @ship-saffron;
+    background-color: @ship-saffron;
+  }
+
+  &__button {
+    margin-top: 40px;
+    justify-self: center;
+  }
+
+  &__message {
+    margin-top: 25px;
+    text-align: center;
+    color: @form-warning;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &__leaving-timer {
+    display: inline-block;
+    text-align: center;
+    min-width: 20px;
+  }
+}
+
+
+
+
