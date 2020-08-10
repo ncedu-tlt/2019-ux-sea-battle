@@ -1,0 +1,13 @@
+@import "./colors.less";
+
+.sb-text {
+    &._light,
+    ._light & {
+        color: @text-dark;
+    }
+
+    &._dark,
+    ._dark & {
+        color: @text-light;
+    }
+}
