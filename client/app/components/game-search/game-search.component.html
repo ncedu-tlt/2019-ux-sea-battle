@@ -1,7 +1,14 @@
 <div class="game-search">
-    <div class="game-search__title" [ngSwitch]="gameMode">
-        <h3 *ngSwitchCase="'classic'">Классика</h3>
+    <div class="game-search__title sb-text" [ngSwitch]="gameMode">
+        <span *ngSwitchCase="'classic'">Классика</span>
     </div>
-    {{timer | async}}
-    <button type="button" (click)="onLeave()">Отмена</button>
+    <div class="sb-game-search-loader">
+        <div class="sb-game-search-loader__dot-1"></div>
+        <div class="sb-game-search-loader__dot-2"></div>
+        <div class="sb-game-search-loader__circle"></div>
+    </div>
+    <button type="button" class="sb-button" (click)="onLeave()">Отмена</button>
+    <span class="game-search__timer sb-text">
+        Время ожидания: {{ timer | async }} сек.
+    </span>
 </div>

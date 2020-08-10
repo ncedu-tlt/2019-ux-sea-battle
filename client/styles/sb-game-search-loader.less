@@ -1,0 +1,109 @@
+@import "./colors.less";
+
+@dot1: 60px, 60px, 1.4s;
+@dot2: 170px, 150px, 3.6s;
+@dots: @dot1 @dot2;
+
+.sb-game-search-loader {
+    position: relative;
+    width: 220px;
+    height: 220px;
+
+    margin: 20px 0 100px 0;
+
+    each(@dots, {
+        @props: extract(@dots, @index);
+    
+        @top: extract(@props, 1);
+        @left: extract(@props, 2);
+        @delay: extract(@props, 3);
+    
+        &__dot-@{index} {
+            position: absolute;
+            top: @top;
+            left: @left;
+    
+            width: 6px;
+            height: 6px;
+    
+            border-radius: 50%;
+    
+            &._light,
+            ._light & {
+                animation: 4.5s linear @delay pulse-dark;
+                animation-iteration-count: infinite;
+            }
+    
+            &._dark,
+            ._dark & {
+                animation: 4.5s linear @delay pulse-light;
+                animation-iteration-count: infinite;
+            }
+        }
+    });
+
+    &__circle {
+        width: inherit;
+        height: inherit;
+
+        border-radius: 50%;
+
+        animation: 1.5s linear 0s rotate;
+        animation-iteration-count: infinite;
+
+        &._light,
+        ._light & {
+            background: conic-gradient(
+                from 0deg,
+                fade(@text-dark, 0%) 50deg,
+                fade(@text-dark, 30%) 350deg,
+                fade(@text-dark, 80%) 358deg,
+                fade(@text-dark, 90%) 360deg
+            );
+        }
+
+        &._dark,
+        ._dark & {
+            background: conic-gradient(
+                from 0deg,
+                fade(@text-light, 0%) 50deg,
+                fade(@text-light, 30%) 350deg,
+                fade(@text-light, 80%) 358deg,
+                fade(@text-light, 90%) 360deg
+            );
+        }
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.keyframes(@name, @color) {
+    @keyframes @name {
+        0% {
+            background-color: fade(@color, 30%);
+            box-shadow: 0 0 4px 4px fade(@color, 30%), 0 0 0 0 fade(@color, 30%);
+        }
+        5% {
+            background-color: @color;
+        }
+        20% {
+            background-color: fade(@color, 0%);
+            box-shadow: 0 0 4px 4px fade(@color, 0%),
+                0 0 0px 15px fade(@color, 0%);
+        }
+        100% {
+            background-color: fade(@color, 0%);
+            box-shadow: none;
+        }
+    }
+}
+
+.keyframes(pulse-light, @text-light);
+.keyframes(pulse-dark, @text-dark);
