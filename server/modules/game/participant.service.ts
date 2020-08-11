@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ParticipantDAO } from "../db/domain/participant.dao";
 import { Repository } from "typeorm";
@@ -15,7 +15,6 @@ export class ParticipantService {
     ) {}
 
     async create(game: GameDAO, userId: number): Promise<ParticipantDAO> {
-        Logger.debug("save participant");
         const user: UserDAO = await this.usersService.findById(userId);
         const participant: ParticipantDAO = new ParticipantDAO();
         participant.user = Promise.resolve(user);
