@@ -55,7 +55,11 @@ export class GameService {
         const participant: ParticipantDAO = await this.participantService.getParticipantByUserId(
             id
         );
-        return await this.gameRepository.findOne(await participant.game);
+        return await this.gameRepository.findOne(await participant.game, {
+            where: {
+                status: GameStatusEnum.STARTED
+            }
+        });
     }
 
     async createGame(createDTO: CreateGameDto): Promise<GameDAO> {
