@@ -6,6 +6,8 @@ import { Observable, Unsubscribable } from "rxjs";
 import { ShipModel } from "../../../../common/models/ship/ship.model";
 import { TokenService } from "../../services/token.service";
 import { GameWsService } from "../../services/ws/game.ws.service";
+import { CellModel } from "../../../../common/models/cell.model";
+import { PlayerFieldDto } from "../../../../common/dto/player-field.dto";
 
 @Component({
     selector: "sb-game",
@@ -16,6 +18,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     size = 10;
     ships: ShipModel[];
+    cells: CellModel[] = [];
 
     private subscriptions: Unsubscribable[] = [];
 
@@ -35,6 +38,15 @@ export class GameComponent implements OnInit, OnDestroy {
         if (!this.game) {
             this.router.navigate(["/"]);
         }
+        for (let i = 0; i < this.size; i++) {
+            for (let j = 0; j < this.size; j++) {
+                this.cells.push({
+                    x: i,
+                    y: j,
+                    hit: false
+                });
+            }
+        }
     }
 
     ngOnDestroy(): void {
@@ -43,16 +55,16 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     onReady(ships: ShipModel[]): void {
-        this.ships = [...ships];
+        this.ships = ships;
         this.gameWsService.connect();
     }
 
-    getShips(): void {
-        this.gameWsService.getShips();
-    }
-
     start(): void {
-        this.gameWsService.start(this.ships);
+        const field: PlayerFieldDto = {
+            ships: this.ships,
+            cells: this.cells
+        };
+        this.gameWsService.start(field);
     }
 
     onLeave(): void {
