@@ -28,6 +28,16 @@
     box-shadow: inset 4px 4px 10px fade(#000, 30%), inset -2px -2px 5px fade(#fff, 30%);
   }
 
+  &._selected-to-fire._dark:after,
+  ._dark &._selected-to-fire:after {
+    width: 20px;
+    height: 20px;
+    content: "";
+    position: absolute;
+    border: @text-light solid 3px;
+    border-radius: 6px;
+  }
+
   &._light,
   ._light & {
     background: @background-light;
@@ -44,6 +54,16 @@
   ._light &._hit {
     background: @background-light;
     box-shadow: inset 4px 4px 10px fade(#000, 25%), inset -2px -2px 10px fade(#fff, 80%);
+  }
+
+  &._selected-to-fire._light:after,
+  ._light &._selected-to-fire:after {
+    width: 20px;
+    height: 20px;
+    content: "";
+    position: absolute;
+    border: @text-dark solid 3px;
+    border-radius: 6px;
   }
 
 }

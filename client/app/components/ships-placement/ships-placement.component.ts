@@ -88,7 +88,8 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
                 this.cells.push({
                     x: i,
                     y: j,
-                    hit: false
+                    hit: false,
+                    selectedToFire: false
                 });
             }
         }
@@ -147,7 +148,8 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
                         ship.cells.push({
                             x: cell.x,
                             y: cell.y,
-                            state: ShipStateEnum.NORMAL
+                            state: ShipStateEnum.NORMAL,
+                            selectedToFire: false
                         });
                     });
                     this.ships = [...this.ships, ship];
@@ -186,7 +188,8 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
                         selectedShip.cells.push({
                             x: cell.x,
                             y: cell.y,
-                            state: ShipStateEnum.NORMAL
+                            state: ShipStateEnum.NORMAL,
+                            selectedToFire: false
                         });
                     });
                     selectedShip.isSelected = false;

@@ -2,7 +2,11 @@
     <div class="battlefield__row" *ngFor="let row of field; let i = index;">
         <div class="battlefield__column" *ngFor="let cell of row; let j = index;">
                     <div *ngIf="cell.team else empty"
-                         [ngClass]="['sb-cell', cell.isSelected ? '_is-selected' : '']">
+                         [ngClass]="[
+                         'sb-cell',
+                         cell.isSelected ? '_is-selected' : '',
+                         cell.cellParams.state === '_hidden' && cell.cellParams.selectedToFire ? '_selected-to-fire' : ''
+                         ]">
                         <span
                                 *ngIf="cell.isSelected &&
                                 cell.movingIconLocation"
@@ -26,7 +30,11 @@
                         </div>
                     </div>
                     <ng-template #empty [ngSwitch]="cell.hit">
-                        <div *ngSwitchCase="false" class="sb-cell" (click)="onClick(j, i)"></div>
+                        <div *ngSwitchCase="false"
+                             [ngClass]="['sb-cell', cell.selectedToFire ? '_selected-to-fire' : '']"
+                             (click)="onClick(j, i)">
+
+                        </div>
                         <div *ngSwitchCase="true" class="sb-cell _hit"></div>
                     </ng-template>
         </div>

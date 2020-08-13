@@ -43,7 +43,8 @@ export class GameComponent implements OnInit, OnDestroy {
                 this.cells.push({
                     x: i,
                     y: j,
-                    hit: false
+                    hit: false,
+                    selectedToFire: false
                 });
             }
         }
