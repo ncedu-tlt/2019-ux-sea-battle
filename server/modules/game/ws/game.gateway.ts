@@ -22,7 +22,7 @@ import { PlayerFieldDto } from "../../../../common/dto/player-field.dto";
 import { TurnDto } from "../../../../common/dto/turn.dto";
 import { TeamEnum } from "../../../../common/models/ship/team.enum";
 import { ShipModel } from "../../../../common/models/ship/ship.model";
-import { PlayerDataModel } from "../../../../common/models/game/player-data.model";
+import { PlayerDataModel } from "./player-data.model";
 import { CellModel } from "../../../../common/models/cell.model";
 import { ShipCellModel } from "../../../../common/models/ship/ship-cell.model";
 
