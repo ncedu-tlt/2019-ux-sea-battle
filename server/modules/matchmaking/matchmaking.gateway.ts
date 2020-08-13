@@ -34,6 +34,7 @@ export class MatchmakingGateway
         const user: UserDAO = await this.wsAuthService.getUser(socket);
         if (!user) {
             socket.disconnect();
+            return;
         }
     }
 
