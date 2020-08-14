@@ -6,7 +6,7 @@ import {
     OnInit,
     Output
 } from "@angular/core";
-import { CellModel } from "../../models/battlefield/cell.model";
+import { CellModel } from "../../../../common/models/cell.model";
 import { CoordinatesModel } from "../../../../common/models/ship/coordinates.model";
 import { ShipModel } from "../../../../common/models/ship/ship.model";
 import { ShipLayoutModel } from "../../models/ships-placement/ship-layout.model";
@@ -83,12 +83,13 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        for (let i = 0; i < 10; i++) {
-            for (let j = 0; j < 10; j++) {
+        for (let i = 0; i < this.size; i++) {
+            for (let j = 0; j < this.size; j++) {
                 this.cells.push({
                     x: i,
                     y: j,
-                    hit: false
+                    hit: false,
+                    selectedToFire: false
                 });
             }
         }
@@ -147,7 +148,8 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
                         ship.cells.push({
                             x: cell.x,
                             y: cell.y,
-                            state: ShipStateEnum.NORMAL
+                            state: ShipStateEnum.NORMAL,
+                            selectedToFire: false
                         });
                     });
                     this.ships = [...this.ships, ship];
@@ -186,7 +188,8 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
                         selectedShip.cells.push({
                             x: cell.x,
                             y: cell.y,
-                            state: ShipStateEnum.NORMAL
+                            state: ShipStateEnum.NORMAL,
+                            selectedToFire: false
                         });
                     });
                     selectedShip.isSelected = false;

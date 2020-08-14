@@ -10,7 +10,7 @@ import { MoveIconDirectionEnum } from "../../models/battlefield/styles/move-icon
 import { ShipOrientationEnum } from "../../models/battlefield/styles/ship-orientation.enum";
 import { CoordinatesModel } from "../../../../common/models/ship/coordinates.model";
 import { MoveIconPositionEnum } from "../../models/battlefield/styles/move-icon-position.enum";
-import { CellModel } from "../../models/battlefield/cell.model";
+import { CellModel } from "../../../../common/models/cell.model";
 import { FieldModel } from "../../models/battlefield/field.model";
 
 @Component({

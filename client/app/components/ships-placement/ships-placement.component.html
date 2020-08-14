@@ -1,6 +1,6 @@
 <div class="ships-placement">
     <div class="ships-placement__top-bar">
-        <span class="ships-placement__timer">{{timer || 90}}</span>
+        <span class="sb-text ships-placement__timer">{{timer || 90}}</span>
         <button class="sb-img-button" (click)="onQuickPlacement()" [disabled]="isReady || leaving">
             <span class="ships-placement__dice-icon" [inlineSVG]="'dice.svg'"></span>
         </button>
@@ -72,7 +72,7 @@
                             <span *ngIf="ship.count > 0" [ngClass]="['ships-placement__ship-cell', !ship.isSelected ? ship.color : '_saffron']"></span>
                         </span>
                     </span>
-            <span class="ships-placement__ships-count">&#215; {{ship.count}}</span>
+            <span class="sb-text ships-placement__ships-count">&#215; {{ship.count}}</span>
         </div>
     </div>
     <div class="ships-placement__button" *ngIf="shipsLayout[0].count < 1

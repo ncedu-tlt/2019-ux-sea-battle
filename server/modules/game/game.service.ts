@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GameDAO } from "../db/domain/game.dao";
 import { DeleteResult, Repository } from "typeorm";
@@ -35,19 +35,13 @@ export class GameService {
             isPrivate,
             createdAt: new Date()
         };
-        Logger.debug("game.service - creating game");
         const game: GameDAO = await this.gameRepository.save(gameInfo);
-        Logger.debug("game.service - creating participants");
         if (players) {
             for (const player of [...players.participants.values()].slice(
                 0,
                 players.limit
             )) {
                 await this.participantService.create(game, player.id);
-                const p: ParticipantDAO = await this.participantService.getParticipantByUserId(
-                    player.id
-                );
-                Logger.debug(p);
             }
         }
         return game;
@@ -61,12 +55,13 @@ export class GameService {
         const participant: ParticipantDAO = await this.participantService.getParticipantByUserId(
             id
         );
-        Logger.debug("game.service - getting participant:");
-        Logger.debug(participant);
-        if (!participant) {
-            Logger.debug("returned undefined");
-        }
-        return await this.gameRepository.findOne(await participant.game);
+        const game: GameDAO = await participant.game;
+        return await this.gameRepository.findOne({
+            where: {
+                id: game.id,
+                status: GameStatusEnum.STARTED
+            }
+        });
     }
 
     async createGame(createDTO: CreateGameDto): Promise<GameDAO> {

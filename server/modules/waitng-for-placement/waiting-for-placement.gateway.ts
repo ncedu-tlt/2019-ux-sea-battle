@@ -14,7 +14,6 @@ import { GameDAO } from "../db/domain/game.dao";
 import { PreparingForGameDto } from "../../../common/dto/preparing-for-game.dto";
 import { WaitingForPlayerDto } from "../../../common/dto/waiting-for-player.dto";
 import { GameModeEnum } from "../../../common/game-mode.enum";
-import { Logger } from "@nestjs/common";
 
 @WebSocketGateway({ namespace: "placement" })
 export class WaitingForPlacementGateway
@@ -30,14 +29,10 @@ export class WaitingForPlacementGateway
     ) {}
 
     async handleConnection(socket: Socket): Promise<void> {
-        Logger.debug("waiting-for-placement.gateway - CONNECTION\n");
         const user: UserDAO = await this.wsAuthService.getUser(socket);
         if (!user) {
             socket.disconnect();
         }
-        Logger.debug("waiting-for-placement.gateway - user");
-        Logger.debug(user);
-        Logger.debug("waiting-for-placement.gateway - getting the game");
         const game: GameDAO = await this.gameService.getGameByUserId(user.id);
         socket.join(game.id.toString());
         let playersLimit: number;
@@ -61,7 +56,6 @@ export class WaitingForPlacementGateway
     }
 
     async handleDisconnect(socket: Socket): Promise<void> {
-        Logger.debug("waiting-for-placement.gateway - DISCONNECT\n");
         const user: UserDAO = await this.wsAuthService.getUser(socket);
         const game: GameDAO = await this.gameService.getGameByUserId(user.id);
         socket.leave(game.id.toString());
@@ -73,7 +67,6 @@ export class WaitingForPlacementGateway
 
     @SubscribeMessage("timer")
     async getTimer(@ConnectedSocket() socket: Socket): Promise<void> {
-        Logger.debug("waiting-for-placement.gateway - TIMER\n");
         const user: UserDAO = await this.wsAuthService.getUser(socket);
         const game: GameDAO = await this.gameService.getGameByUserId(user.id);
         if (
@@ -88,7 +81,6 @@ export class WaitingForPlacementGateway
 
     @SubscribeMessage("ready")
     async ready(@ConnectedSocket() socket: Socket): Promise<void> {
-        Logger.debug("waiting-for-placement.gateway - READY\n");
         const user: UserDAO = await this.wsAuthService.getUser(socket);
         const game: GameDAO = await this.gameService.getGameByUserId(user.id);
         this.gameToPlayersMapping

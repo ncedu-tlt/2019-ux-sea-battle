@@ -203,7 +203,8 @@ export class ShipsPlacementService {
                 ship.cells.push({
                     x: cell.x,
                     y: cell.y,
-                    state: ShipStateEnum.NORMAL
+                    state: ShipStateEnum.NORMAL,
+                    selectedToFire: false
                 });
             });
         }
@@ -390,7 +391,8 @@ export class ShipsPlacementService {
             ship.cells.push({
                 x: cell.x,
                 y: cell.y,
-                state: ShipStateEnum.NORMAL
+                state: ShipStateEnum.NORMAL,
+                selectedToFire: false
             });
         });
         return ship;

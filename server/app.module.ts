@@ -25,7 +25,7 @@ import { WaitingForPlacementModule } from "./modules/waitng-for-placement/waitin
                 url: configService.get<string>("dbUrl"),
                 synchronize: true,
                 autoLoadEntities: true,
-                logging: true
+                logging: false
             })
         }),
         ServeStaticModule.forRoot({
