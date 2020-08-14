@@ -44,10 +44,12 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         const playerData: PlayerDataModel = await this.getPlayerData(socket);
         if (!playerData.user) {
             socket.disconnect();
+            return;
         }
         if (!playerData.game) {
             socket.emit("game-error");
             socket.disconnect();
+            return;
         }
         socket.join(playerData.game.id.toString());
     }
