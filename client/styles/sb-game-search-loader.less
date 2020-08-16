@@ -60,6 +60,16 @@
                 fade(@text-dark, 80%) 358deg,
                 fade(@text-dark, 90%) 360deg
             );
+
+            @-moz-document url-prefix() {
+                background: conic-gradient(
+                    from 0deg,
+                    fade(@text-dark, 0%) 50deg,
+                    fade(@text-dark, 10%) 350deg,
+                    fade(@text-dark, 40%) 358deg,
+                    fade(@text-dark, 70%) 360deg
+                );
+            }
         }
 
         &._dark,
@@ -71,6 +81,16 @@
                 fade(@text-light, 80%) 358deg,
                 fade(@text-light, 90%) 360deg
             );
+
+            @-moz-document url-prefix() {
+                background: conic-gradient(
+                    from 0deg,
+                    fade(@text-light, 0%) 50deg,
+                    fade(@text-light, 10%) 350deg,
+                    fade(@text-light, 40%) 358deg,
+                    fade(@text-light, 70%) 360deg
+                );
+            }
         }
     }
 }

@@ -54,7 +54,10 @@
             "styles": [
               "client/styles.less"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/prefixfree/prefixfree.min.js",
+              "node_modules/conic-gradient/conic-gradient.js"
+            ]
           },
           "configurations": {
             "production": {
