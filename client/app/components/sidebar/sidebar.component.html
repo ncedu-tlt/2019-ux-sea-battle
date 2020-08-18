@@ -32,7 +32,7 @@
         </div>
     </section>
 
-    <section class="sb-sidebar__section">
+    <section *ngIf="!game; else battle" class="sb-sidebar__section">
         <sb-sidebar-element
             [itemImageLink]="'friends-icon.svg'"
             [itemLabel]="'Друзья'"
@@ -61,3 +61,14 @@
         ></sb-sidebar-element>
     </section>
 </div>
+
+<ng-template #battle>
+    <section class="sb-sidebar__section">
+        <sb-sidebar-element
+            [itemImageLink]="'flag-icon.svg'"
+            [itemLabel]="'Сдаться'"
+            [isLink]="true"
+            [itemLink]="'/'"
+        ></sb-sidebar-element>
+    </section>
+</ng-template>
