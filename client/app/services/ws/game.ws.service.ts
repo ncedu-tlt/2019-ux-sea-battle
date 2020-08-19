@@ -42,10 +42,6 @@ export class GameWsService {
         return this.socket.fromEvent<number>("connect");
     }
 
-    onStart(): Observable<any> {
-        return this.socket.fromEvent("start");
-    }
-
     onWaiting(): Observable<TurnDto> {
         return this.socket.fromEvent<TurnDto>("waiting");
     }
@@ -62,8 +58,12 @@ export class GameWsService {
         return this.socket.fromEvent<CellModel[]>("miss");
     }
 
-    onWinner(): Observable<string> {
-        return this.socket.fromEvent<string>("winner");
+    onWin(): Observable<TurnDto> {
+        return this.socket.fromEvent<TurnDto>("win");
+    }
+
+    onLose(): Observable<TurnDto> {
+        return this.socket.fromEvent<TurnDto>("lose");
     }
 
     onGameError(): Observable<any> {
@@ -72,5 +72,9 @@ export class GameWsService {
 
     onConnectionError(): Observable<string> {
         return this.socket.fromEvent<string>("tokenExpired");
+    }
+
+    onLeave(): Observable<any> {
+        return this.socket.fromEvent("leave");
     }
 }

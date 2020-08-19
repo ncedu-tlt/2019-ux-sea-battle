@@ -26,6 +26,7 @@ import { AvatarInputComponent } from "./components/avatar-input/avatar-input.com
 import { WaitingForPlacementSocket } from "./sockets/waiting-for-placement.socket";
 import { GameSocket } from "./sockets/game.socket";
 import { ShipsPlacementComponent } from "./components/ships-placement/ships-placement.component";
+import { LeavingMessageComponent } from "./components/leaving-message/leaving-message.component";
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import { ShipsPlacementComponent } from "./components/ships-placement/ships-plac
         EditProfileComponent,
         EditProfileDetailsComponent,
         AvatarInputComponent,
-        ShipsPlacementComponent
+        ShipsPlacementComponent,
+        LeavingMessageComponent
     ],
     imports: [
         BrowserModule,
