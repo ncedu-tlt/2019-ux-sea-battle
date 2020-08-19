@@ -3,8 +3,6 @@ import { TokenService } from "../token.service";
 import { GameSocket } from "../../sockets/game.socket";
 import { Observable } from "rxjs";
 import { PlayerFieldDto } from "../../../../common/dto/player-field.dto";
-import { ShipModel } from "../../../../common/models/ship/ship.model";
-import { CellModel } from "../../../../common/models/cell.model";
 import { TurnDto } from "../../../../common/dto/turn.dto";
 import { CoordinatesModel } from "../../../../common/models/ship/coordinates.model";
 
@@ -50,12 +48,12 @@ export class GameWsService {
         return this.socket.fromEvent<TurnDto>("turn");
     }
 
-    onHit(): Observable<ShipModel[]> {
-        return this.socket.fromEvent<ShipModel[]>("hit");
+    onHit(): Observable<TurnDto> {
+        return this.socket.fromEvent<TurnDto>("hit");
     }
 
-    onMiss(): Observable<CellModel[]> {
-        return this.socket.fromEvent<CellModel[]>("miss");
+    onMiss(): Observable<TurnDto> {
+        return this.socket.fromEvent<TurnDto>("miss");
     }
 
     onWin(): Observable<TurnDto> {

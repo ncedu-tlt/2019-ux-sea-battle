@@ -30,6 +30,7 @@ export class GameComponent implements OnInit, OnDestroy {
     leaving = false;
     leavingTimer = 10;
     playerStatus = PlayerStatusEnum.NONE;
+    missTimer = false;
 
     private subscriptions: Unsubscribable[] = [];
     private timerSubscription: Unsubscribable;
@@ -63,7 +64,13 @@ export class GameComponent implements OnInit, OnDestroy {
                 .subscribe((turn: TurnDto) => this.turn(turn)),
             this.gameWsService
                 .onWaiting()
-                .subscribe((turn: TurnDto) => this.waiting(turn))
+                .subscribe((turn: TurnDto) => this.waiting(turn)),
+            this.gameWsService
+                .onHit()
+                .subscribe((turn: TurnDto) => this.turn(turn)),
+            this.gameWsService
+                .onMiss()
+                .subscribe((turn: TurnDto) => this.onMiss(turn))
         );
     }
 
@@ -181,6 +188,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     private timeUp(): void {
         if (this.timer === 0) {
+            this.missTimer = false;
             this.gameWsService.skip();
         }
     }
@@ -197,7 +205,9 @@ export class GameComponent implements OnInit, OnDestroy {
         this.ships = turnDto.ships;
         this.playerNickname = turnDto.name;
         this.timer = turnDto.timer;
-        this.isPlayerTurn = turnDto.isWaiting;
+        if (!this.missTimer) {
+            this.isPlayerTurn = turnDto.isWaiting;
+        }
         this.cells.forEach(cell => (cell.selectedToFire = false));
         this.ships.forEach(ship =>
             ship.cells.forEach(cell => (cell.selectedToFire = false))
@@ -209,6 +219,19 @@ export class GameComponent implements OnInit, OnDestroy {
         this.cells.forEach(cell => (cell.selectedToFire = false));
         this.ships.forEach(ship =>
             ship.cells.forEach(cell => (cell.selectedToFire = false))
+        );
+    }
+
+    private onMiss(turnDto: TurnDto): void {
+        this.missTimer = true;
+        this.isPlayerTurn = false;
+        this.turnInit(turnDto);
+        this.timerSubscription = timer(0, 1000).subscribe(() =>
+            this.timer > 0 && !this.leaving
+                ? this.timer--
+                : this.leaving
+                ? this.timer
+                : this.timeUp()
         );
     }
 }
