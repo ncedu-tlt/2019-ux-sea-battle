@@ -91,8 +91,5 @@
             <span *ngSwitchCase="true">Отмена</span>
         </button>
     </div>
-    <span *ngIf="leaving" class="ships-placement__message">
-        Кто-то из игроков отключился. <br> Возврат через
-        <span class="ships-placement__leaving-timer">{{leavingTimer}}</span>
-    </span>
+    <sb-leaving-message *ngIf="leaving" [leavingTimer]="leavingTimer"></sb-leaving-message>
 </div>
