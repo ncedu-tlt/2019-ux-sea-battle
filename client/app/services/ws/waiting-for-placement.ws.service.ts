@@ -54,4 +54,8 @@ export class WaitingForPlacementWsService {
     onGameError(): Observable<any> {
         return this.socket.fromEvent("game-error");
     }
+
+    onDisconnect(): Observable<any> {
+        return this.socket.fromEvent("disconnect");
+    }
 }

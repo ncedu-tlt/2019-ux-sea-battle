@@ -94,6 +94,9 @@ export class GameComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.subscriptions.forEach(s => s.unsubscribe());
         this.gameWsService.disconnect();
+        if (this.timerSubscription) {
+            this.timerSubscription.unsubscribe();
+        }
     }
 
     onSelectCell(battlefieldCell: CoordinatesModel): void {
