@@ -75,4 +75,8 @@ export class GameWsService {
     onLeave(): Observable<any> {
         return this.socket.fromEvent("leave");
     }
+
+    onDisconnect(): Observable<any> {
+        return this.socket.fromEvent("disconnect");
+    }
 }

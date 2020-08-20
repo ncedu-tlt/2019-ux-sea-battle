@@ -5,6 +5,8 @@ import { CurrentUserService } from "./../../services/current-user.service";
 import { TokenService } from "./../../services/token.service";
 import { GameApiService } from "./../../services/api/game.api.service";
 import { MatchmakingWsService } from "client/app/services/ws/matchmaking.ws.service";
+import { WaitingForPlacementWsService } from "client/app/services/ws/waiting-for-placement.ws.service";
+import { GameWsService } from "./../../services/ws/game.ws.service";
 import { CurrentUserDTO } from "./../../../../dist/server/common/dto/current-user.dto.d";
 import { GameDto } from "./../../../../dist/server/common/dto/game.dto.d";
 
@@ -22,10 +24,18 @@ export class SidebarComponent implements OnInit, OnDestroy {
         private router: Router,
         private currentUserService: CurrentUserService,
         private gameService: GameApiService,
-        private matchmakingService: MatchmakingWsService
+        private matchmakingService: MatchmakingWsService,
+        private waitingForPlacementService: WaitingForPlacementWsService,
+        private gameWsService: GameWsService
     ) {
         this.subscriptions.push(
-            matchmakingService.onSearch().subscribe(() => this.updateGame())
+            matchmakingService.onSearch().subscribe(() => this.updateGame()),
+            gameWsService.onWin().subscribe(() => this.updateGame()),
+            gameWsService.onLose().subscribe(() => this.updateGame()),
+            gameWsService.onDisconnect().subscribe(() => this.updateGame()),
+            waitingForPlacementService
+                .onDisconnect()
+                .subscribe(() => this.updateGame())
         );
     }
 
@@ -44,6 +54,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
         this.tokenService.deleteToken();
         this.currentUserService.deleteCurrentUser();
         this.router.navigate(["/login"]);
+    }
+
+    surrender(): void {
+        this.gameWsService.disconnect();
+        this.updateGame();
     }
 
     updateGame(): void {
