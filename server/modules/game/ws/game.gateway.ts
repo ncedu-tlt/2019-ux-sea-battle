@@ -33,7 +33,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     gameToPlayersMapping = new Map<number, GameWsDto>();
 
-    private turnExpirationTimer = 45;
+    private turnExpirationTimer = 30;
 
     constructor(
         private wsAuthService: WsAuthService,
@@ -42,10 +42,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     async handleConnection(socket: Socket): Promise<void> {
         const playerData: PlayerDataModel = await this.getPlayerData(socket);
-        if (!playerData.user) {
-            socket.disconnect();
-            return;
-        }
         if (!playerData.game) {
             socket.emit("game-error");
             socket.disconnect();
@@ -56,23 +52,25 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     async handleDisconnect(socket: Socket): Promise<void> {
         const playerData: PlayerDataModel = await this.getPlayerData(socket);
-        socket.leave(playerData.game.id.toString());
-        const gameState: GameWsDto = this.gameToPlayersMapping.get(
-            playerData.game.id
-        );
-        if (playerData.game.status !== GameStatusEnum.FINISHED) {
-            const i = gameState.queue.findIndex(
-                player => player.id === socket.id
+        if (playerData.game) {
+            socket.leave(playerData.game.id.toString());
+            const gameState: GameWsDto = this.gameToPlayersMapping.get(
+                playerData.game.id
             );
-            gameState.queue.splice(i, 1);
-            this.gameToPlayersMapping.set(playerData.game.id, gameState);
-            this.server.to(playerData.game.id.toString()).emit("leave");
-            if (gameState.queue.length < 1) {
-                this.gameToPlayersMapping.delete(playerData.game.id);
-                await this.gameService.updateGameState({
-                    id: playerData.game.id,
-                    status: GameStatusEnum.FINISHED
-                });
+            if (playerData.game.status !== GameStatusEnum.FINISHED) {
+                const i = gameState.queue.findIndex(
+                    player => player.id === socket.id
+                );
+                gameState.queue.splice(i, 1);
+                this.gameToPlayersMapping.set(playerData.game.id, gameState);
+                this.server.to(playerData.game.id.toString()).emit("leave");
+                if (gameState.queue.length < 1) {
+                    this.gameToPlayersMapping.delete(playerData.game.id);
+                    await this.gameService.updateGameState({
+                        id: playerData.game.id,
+                        status: GameStatusEnum.FINISHED
+                    });
+                }
             }
         }
     }
@@ -85,6 +83,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         const playerData: PlayerDataModel = await this.getPlayerData(socket);
         const player: PlayerDto = {
             id: socket.id,
+            name: playerData.user.nickname,
             ships: field.ships,
             cells: field.cells
         };
@@ -123,8 +122,10 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
             socket.disconnect();
             return;
         }
-        const player: PlayerDto = gameState.queue.find(
-            player => player.id !== socket.id
+        const player: PlayerDto = JSON.parse(
+            JSON.stringify(
+                gameState.queue.find(player => player.id !== socket.id)
+            )
         );
         const playerIndex: number = gameState.queue.findIndex(
             player => player.id !== socket.id
@@ -135,13 +136,12 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         const shipIndex: number = player.ships.findIndex(ship =>
             ship.cells.find(cell => this.coordinatesCheck(cell, coordinates))
         );
-
         if (ship) {
             this.onHit(ship, shipIndex, coordinates, player, socket);
         } else {
             this.onMiss(player, coordinates, socket);
         }
-        gameState.queue[playerIndex] = player;
+        gameState.queue[playerIndex] = JSON.parse(JSON.stringify(player));
         this.gameToPlayersMapping.set(playerData.game.id, gameState);
         const opponents: PlayerDto[] = gameState.queue.filter(
             player => player.id !== socket.id
@@ -152,18 +152,25 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
             )
         );
         if (allDestroyed) {
-            this.server
-                .to(playerData.game.id.toString())
-                .emit("winner", playerData.user.nickname);
+            this.server.to(gameState.queue[0].id).emit("win", {
+                timer: this.turnExpirationTimer,
+                name: gameState.queue[0].name,
+                ships: gameState.queue[0].ships,
+                cells: gameState.queue[0].cells,
+                isWaiting: false
+            } as TurnDto);
+            this.server.to(player.id).emit("lose", {
+                timer: this.turnExpirationTimer,
+                name: player.name,
+                ships: player.ships,
+                cells: player.cells,
+                isWaiting: false
+            } as TurnDto);
             await this.gameService.updateGameState({
                 id: playerData.game.id,
                 status: GameStatusEnum.FINISHED
             });
-        } else {
-            const currentPlayer: PlayerDto = gameState.queue.shift();
-            gameState.queue.push(currentPlayer);
-            this.gameToPlayersMapping.set(playerData.game.id, gameState);
-            this.playerTurnPreparation(playerData.game);
+            this.gameToPlayersMapping.delete(playerData.game.id);
         }
     }
 
@@ -181,40 +188,55 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     private playerTurnPreparation(game: GameDAO): void {
         const gameState: GameWsDto = this.gameToPlayersMapping.get(game.id);
-        const opponent: PlayerDto = gameState.queue.find(
-            player => player.id !== gameState.queue[0].id
+
+        const waitingPlayer: PlayerDto = JSON.parse(
+            JSON.stringify(gameState.queue[1])
+        );
+        waitingPlayer.ships.forEach(ship => {
+            ship.team = TeamEnum.GREEN;
+            ship.cells.forEach(cell => {
+                if (cell.state === ShipStateEnum.HIDDEN) {
+                    cell.state = ShipStateEnum.NORMAL;
+                }
+            });
+        });
+
+        const opponent: PlayerDto = JSON.parse(
+            JSON.stringify(gameState.queue[1])
         );
         opponent.ships.forEach(ship => {
             ship.team = TeamEnum.RED;
-            ship.cells.find(cell => cell.state === ShipStateEnum.NORMAL).state =
-                ShipStateEnum.HIDDEN;
+            ship.cells.forEach(cell => {
+                if (cell.state === ShipStateEnum.NORMAL) {
+                    cell.state = ShipStateEnum.HIDDEN;
+                }
+            });
         });
-        gameState.queue.forEach(player => {
-            if (player.id !== gameState.queue[0].id) {
-                const waitingPlayer: PlayerDto = player;
-                waitingPlayer.ships.forEach(ship => {
-                    ship.team = TeamEnum.GREEN;
-                    ship.cells.find(
-                        cell => cell.state === ShipStateEnum.HIDDEN
-                    ).state = ShipStateEnum.NORMAL;
-                });
-                this.server.to(player.id).emit("waiting", {
-                    timer: this.turnExpirationTimer,
-                    ships: waitingPlayer.ships,
-                    cells: waitingPlayer.cells
-                } as TurnDto);
-            }
-        });
+
         this.server.to(gameState.queue[0].id).emit("turn", {
             timer: this.turnExpirationTimer,
+            name: opponent.name,
             ships: opponent.ships,
-            cells: opponent.cells
+            cells: opponent.cells,
+            isWaiting: true
+        } as TurnDto);
+
+        this.server.to(waitingPlayer.id).emit("waiting", {
+            timer: this.turnExpirationTimer,
+            name: waitingPlayer.name,
+            ships: waitingPlayer.ships,
+            cells: waitingPlayer.cells,
+            isWaiting: false
         } as TurnDto);
         this.gameToPlayersMapping.set(game.id, gameState);
     }
 
     private async getPlayerData(socket: Socket): Promise<PlayerDataModel> {
         const user: UserDAO = await this.wsAuthService.getUser(socket);
+        if (!user) {
+            socket.disconnect();
+            return;
+        }
         const game: GameDAO = await this.gameService.getGameByUserId(user.id);
         return { user, game };
     }
@@ -239,8 +261,38 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         if (ship.cells.every(cell => cell.state === ShipStateEnum.HIT)) {
             ship.cells.forEach(cell => (cell.state = ShipStateEnum.DESTROYED));
         }
+        const waitingPlayer: PlayerDto = JSON.parse(JSON.stringify(player));
         player.ships[shipIndex] = ship;
-        socket.emit("hit", player.ships);
+        player.ships.forEach(ship => {
+            ship.team = TeamEnum.RED;
+            ship.cells.forEach(cell => {
+                if (cell.state === ShipStateEnum.NORMAL) {
+                    cell.state = ShipStateEnum.HIDDEN;
+                }
+            });
+        });
+        socket.emit("hit", {
+            timer: this.turnExpirationTimer,
+            name: player.name,
+            ships: player.ships,
+            cells: player.cells,
+            isWaiting: true
+        } as TurnDto);
+        waitingPlayer.ships.forEach(ship => {
+            ship.team = TeamEnum.GREEN;
+            ship.cells.forEach(cell => {
+                if (cell.state === ShipStateEnum.HIDDEN) {
+                    cell.state = ShipStateEnum.NORMAL;
+                }
+            });
+        });
+        this.server.to(waitingPlayer.id).emit("waiting", {
+            timer: this.turnExpirationTimer,
+            name: waitingPlayer.name,
+            ships: waitingPlayer.ships,
+            cells: waitingPlayer.cells,
+            isWaiting: false
+        } as TurnDto);
     }
 
     private onMiss(
@@ -251,6 +303,20 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         player.cells.find(cell =>
             this.coordinatesCheck(cell, coordinates)
         ).hit = true;
-        socket.emit("miss", player.cells);
+        player.ships.forEach(ship => {
+            ship.team = TeamEnum.RED;
+            ship.cells.forEach(cell => {
+                if (cell.state === ShipStateEnum.NORMAL) {
+                    cell.state = ShipStateEnum.HIDDEN;
+                }
+            });
+        });
+        socket.emit("miss", {
+            timer: 2,
+            name: player.name,
+            ships: player.ships,
+            cells: player.cells,
+            isWaiting: true
+        } as TurnDto);
     }
 }

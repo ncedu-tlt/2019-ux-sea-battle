@@ -52,9 +52,6 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
         private tokenService: TokenService
     ) {
         this.subscriptions.push(
-            this.waitingForPlacementService
-                .onConnection()
-                .subscribe(() => this.waitingForPlacementService.getTimer()),
             this.waitingForPlacementService.onTimer().subscribe(time => {
                 if (!this.timer) {
                     this.timer = time;
@@ -78,7 +75,10 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
                 .subscribe(() => {
                     this.tokenService.deleteToken();
                     this.router.navigate(["/login"]);
-                })
+                }),
+            this.waitingForPlacementService
+                .onGameError()
+                .subscribe(() => this.leave())
         );
     }
 
@@ -98,7 +98,9 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscriptions.forEach(s => s.unsubscribe());
-        this.timerSubscription.unsubscribe();
+        if (this.timerSubscription) {
+            this.timerSubscription.unsubscribe();
+        }
         this.waitingForPlacementService.disconnect();
     }
 
@@ -271,11 +273,7 @@ export class ShipsPlacementComponent implements OnInit, OnDestroy {
 
     onLeave(): void {
         this.leaving = true;
-        this.subscriptions.push(
-            timer(0, 1000).subscribe(() =>
-                this.leavingTimer > 0 ? this.leavingTimer-- : this.leave()
-            )
-        );
+        this.waitingForPlacementService.disconnect();
     }
 
     onReady(): void {

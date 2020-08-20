@@ -3,8 +3,6 @@ import { TokenService } from "../token.service";
 import { GameSocket } from "../../sockets/game.socket";
 import { Observable } from "rxjs";
 import { PlayerFieldDto } from "../../../../common/dto/player-field.dto";
-import { ShipModel } from "../../../../common/models/ship/ship.model";
-import { CellModel } from "../../../../common/models/cell.model";
 import { TurnDto } from "../../../../common/dto/turn.dto";
 import { CoordinatesModel } from "../../../../common/models/ship/coordinates.model";
 
@@ -42,10 +40,6 @@ export class GameWsService {
         return this.socket.fromEvent<number>("connect");
     }
 
-    onStart(): Observable<any> {
-        return this.socket.fromEvent("start");
-    }
-
     onWaiting(): Observable<TurnDto> {
         return this.socket.fromEvent<TurnDto>("waiting");
     }
@@ -54,16 +48,20 @@ export class GameWsService {
         return this.socket.fromEvent<TurnDto>("turn");
     }
 
-    onHit(): Observable<ShipModel[]> {
-        return this.socket.fromEvent<ShipModel[]>("hit");
+    onHit(): Observable<TurnDto> {
+        return this.socket.fromEvent<TurnDto>("hit");
     }
 
-    onMiss(): Observable<CellModel[]> {
-        return this.socket.fromEvent<CellModel[]>("miss");
+    onMiss(): Observable<TurnDto> {
+        return this.socket.fromEvent<TurnDto>("miss");
     }
 
-    onWinner(): Observable<string> {
-        return this.socket.fromEvent<string>("winner");
+    onWin(): Observable<TurnDto> {
+        return this.socket.fromEvent<TurnDto>("win");
+    }
+
+    onLose(): Observable<TurnDto> {
+        return this.socket.fromEvent<TurnDto>("lose");
     }
 
     onGameError(): Observable<any> {
@@ -72,5 +70,9 @@ export class GameWsService {
 
     onConnectionError(): Observable<string> {
         return this.socket.fromEvent<string>("tokenExpired");
+    }
+
+    onLeave(): Observable<any> {
+        return this.socket.fromEvent("leave");
     }
 }

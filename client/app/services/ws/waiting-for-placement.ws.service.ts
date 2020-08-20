@@ -31,10 +31,6 @@ export class WaitingForPlacementWsService {
         this.socket.emit("cancel");
     }
 
-    getTimer(): void {
-        this.socket.emit("timer");
-    }
-
     onConnection(): Observable<any> {
         return this.socket.fromEvent<any>("connect");
     }
@@ -53,5 +49,9 @@ export class WaitingForPlacementWsService {
 
     onLeave(): Observable<any> {
         return this.socket.fromEvent("leave");
+    }
+
+    onGameError(): Observable<any> {
+        return this.socket.fromEvent("game-error");
     }
 }
