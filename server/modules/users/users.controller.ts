@@ -49,9 +49,12 @@ export class UsersController {
         @Body() body: UpdateCurrentUserDto,
         @UploadedFile() image
     ): Promise<CurrentUserDTO> {
-        const user: UpdateCurrentUserDto = {
-            ...body
-        };
+        const user: UpdateCurrentUserDto = {};
+        Object.entries(body).forEach(([key]) => {
+            if (key !== "image") {
+                user[key] = body[key];
+            }
+        });
         user.id = req.user.id;
 
         const updatedUser = await this.userService.update(user, image);
