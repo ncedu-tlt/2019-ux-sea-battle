@@ -312,7 +312,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
             });
         });
         socket.emit("miss", {
-            timer: 5,
+            timer: 2,
             name: player.name,
             ships: player.ships,
             cells: player.cells,
