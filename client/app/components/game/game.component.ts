@@ -2,16 +2,20 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { GameDto } from "../../../../common/dto/game.dto";
 import { GameApiService } from "../../services/api/game.api.service";
-import { Observable, Unsubscribable } from "rxjs";
+import { Observable, timer, Unsubscribable } from "rxjs";
 import { ShipModel } from "../../../../common/models/ship/ship.model";
 import { TokenService } from "../../services/token.service";
 import { GameWsService } from "../../services/ws/game.ws.service";
 import { CellModel } from "../../../../common/models/cell.model";
 import { PlayerFieldDto } from "../../../../common/dto/player-field.dto";
+import { TurnDto } from "../../../../common/dto/turn.dto";
+import { CoordinatesModel } from "../../../../common/models/ship/coordinates.model";
+import { PlayerStatusEnum } from "../../models/game/player-status.enum";
 
 @Component({
     selector: "sb-game",
-    templateUrl: "game.component.html"
+    templateUrl: "game.component.html",
+    styleUrls: ["./game.component.less"]
 })
 export class GameComponent implements OnInit, OnDestroy {
     game: Observable<GameDto>;
@@ -20,7 +24,16 @@ export class GameComponent implements OnInit, OnDestroy {
     ships: ShipModel[];
     cells: CellModel[] = [];
 
+    isPlayerTurn = false;
+    playerNickname: string;
+    timer: number;
+    leaving = false;
+    leavingTimer = 10;
+    playerStatus = PlayerStatusEnum.NONE;
+    missTimer = false;
+
     private subscriptions: Unsubscribable[] = [];
+    private timerSubscription: Unsubscribable;
 
     constructor(
         private gameService: GameApiService,
@@ -29,7 +42,35 @@ export class GameComponent implements OnInit, OnDestroy {
         private gameWsService: GameWsService
     ) {
         this.subscriptions.push(
-            this.gameWsService.onConnection().subscribe(() => this.start())
+            this.gameWsService.onConnection().subscribe(() => this.start()),
+            this.gameWsService.onConnectionError().subscribe(() => {
+                this.tokenService.deleteToken();
+                this.router.navigate(["/login"]);
+            }),
+            this.gameWsService.onGameError().subscribe(() => this.leave()),
+            this.gameWsService.onLeave().subscribe(() => this.onLeave()),
+            this.gameWsService.onWin().subscribe((turn: TurnDto) => {
+                this.playerStatus = PlayerStatusEnum.WINNER;
+                this.turnInit(turn);
+                this.onEndGame();
+            }),
+            this.gameWsService.onLose().subscribe((turn: TurnDto) => {
+                this.playerStatus = PlayerStatusEnum.LOSER;
+                this.turnInit(turn);
+                this.onEndGame();
+            }),
+            this.gameWsService
+                .onTurn()
+                .subscribe((turn: TurnDto) => this.turn(turn)),
+            this.gameWsService
+                .onWaiting()
+                .subscribe((turn: TurnDto) => this.waiting(turn)),
+            this.gameWsService
+                .onHit()
+                .subscribe((turn: TurnDto) => this.turn(turn)),
+            this.gameWsService
+                .onMiss()
+                .subscribe((turn: TurnDto) => this.onMiss(turn))
         );
     }
 
@@ -55,6 +96,55 @@ export class GameComponent implements OnInit, OnDestroy {
         this.gameWsService.disconnect();
     }
 
+    onSelectCell(battlefieldCell: CoordinatesModel): void {
+        this.cells.forEach(cell => (cell.selectedToFire = false));
+        this.ships.forEach(ship =>
+            ship.cells.forEach(cell => (cell.selectedToFire = false))
+        );
+        const cell: CellModel = this.cells.find(
+            cell => cell.x === battlefieldCell.x && cell.y === battlefieldCell.y
+        );
+        const ship: ShipModel = this.ships.find(ship =>
+            ship.cells.find(
+                cell =>
+                    cell.x === battlefieldCell.x && cell.y === battlefieldCell.y
+            )
+        );
+        if (ship) {
+            ship.cells.find(
+                cell =>
+                    cell.x === battlefieldCell.x && cell.y === battlefieldCell.y
+            ).selectedToFire = true;
+            this.ships = [...this.ships];
+        } else {
+            cell.selectedToFire = true;
+        }
+    }
+
+    onFire(): void {
+        const cell: CellModel = this.cells.find(cell => cell.selectedToFire);
+        const ship: ShipModel = this.ships.find(ship =>
+            ship.cells.find(cell => cell.selectedToFire)
+        );
+        let coordinates: CoordinatesModel;
+        if (cell) {
+            coordinates = { x: cell.x, y: cell.y };
+        } else {
+            if (ship) {
+                const shipCellIndex: number = ship.cells.findIndex(
+                    cell => cell.selectedToFire
+                );
+                coordinates = {
+                    x: ship.cells[shipCellIndex].x,
+                    y: ship.cells[shipCellIndex].y
+                };
+            }
+        }
+        if (this.isPlayerTurn && (cell || ship)) {
+            this.gameWsService.turn(coordinates);
+        }
+    }
+
     onReady(ships: ShipModel[]): void {
         this.ships = ships;
         this.gameWsService.connect();
@@ -68,7 +158,80 @@ export class GameComponent implements OnInit, OnDestroy {
         this.gameWsService.start(field);
     }
 
-    onLeave(): void {
+    continue(): void {
+        this.gameWsService.disconnect();
         this.router.navigate(["/"]);
+    }
+
+    private onLeave(): void {
+        this.leaving = true;
+        this.gameWsService.disconnect();
+    }
+
+    private waiting(turnDto: TurnDto): void {
+        this.turnInit(turnDto);
+        this.timerSubscription = timer(0, 1000).subscribe(() =>
+            this.timer > 0 && !this.leaving ? this.timer-- : this.timer
+        );
+    }
+
+    private turn(turnDto: TurnDto): void {
+        this.turnInit(turnDto);
+        this.timerSubscription = timer(0, 1000).subscribe(() =>
+            this.timer > 0 && !this.leaving
+                ? this.timer--
+                : this.leaving
+                ? this.timer
+                : this.timeUp()
+        );
+    }
+
+    private timeUp(): void {
+        if (this.timer === 0) {
+            this.missTimer = false;
+            this.gameWsService.skip();
+        }
+    }
+
+    private leave(): void {
+        this.router.navigate(["/"]);
+    }
+
+    private turnInit(turnDto: TurnDto): void {
+        if (this.timerSubscription) {
+            this.timerSubscription.unsubscribe();
+        }
+        this.cells = turnDto.cells;
+        this.ships = turnDto.ships;
+        this.playerNickname = turnDto.name;
+        this.timer = turnDto.timer;
+        if (!this.missTimer) {
+            this.isPlayerTurn = turnDto.isWaiting;
+        }
+        this.cells.forEach(cell => (cell.selectedToFire = false));
+        this.ships.forEach(ship =>
+            ship.cells.forEach(cell => (cell.selectedToFire = false))
+        );
+    }
+
+    private onEndGame(): void {
+        this.timerSubscription.unsubscribe();
+        this.cells.forEach(cell => (cell.selectedToFire = false));
+        this.ships.forEach(ship =>
+            ship.cells.forEach(cell => (cell.selectedToFire = false))
+        );
+    }
+
+    private onMiss(turnDto: TurnDto): void {
+        this.missTimer = true;
+        this.isPlayerTurn = false;
+        this.turnInit(turnDto);
+        this.timerSubscription = timer(0, 1000).subscribe(() =>
+            this.timer > 0 && !this.leaving
+                ? this.timer--
+                : this.leaving
+                ? this.timer
+                : this.timeUp()
+        );
     }
 }

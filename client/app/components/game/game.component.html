@@ -1,6 +1,39 @@
 <div class="game">
     <sb-ships-placement *ngIf="!ships && game else battle" [size]="size" (shipsOnField)="onReady($event)"></sb-ships-placement>
     <ng-template #battle>
-        {{ game | async | json }}
+<!--        {{ game | async | json }}-->
+        <div [ngSwitch]="playerStatus">
+            <div *ngSwitchCase="2" class="game__timer-area">
+                <span class="sb-timer" [inlineSVG]="'timer.svg'"></span>
+                <span class="sb-text game__timer">{{timer || 30}}</span>
+            </div>
+            <div *ngSwitchCase="0" class="sb-text game__status">Победа</div>
+            <div *ngSwitchCase="1" class="sb-text game__status">Поражение</div>
+        </div>
+        <span class="sb-text game__name" [ngSwitch]="isPlayerTurn">
+            <span *ngSwitchCase="true">Поле {{playerNickname}}</span>
+            <span *ngSwitchCase="false" >
+                <span [ngSwitch]="missTimer">
+                    <span *ngSwitchCase="true">Промах!</span>
+                    <span *ngSwitchCase="false">Ваше поле</span>
+                </span>
+            </span>
+        </span>
+        <sb-battlefield
+                [ngClass]="['game__battlefield', !isPlayerTurn || missTimer ? '_waiting' : '', playerStatus!==2 ? '_finished' : '']"
+                [size]="size"
+                [ships]="ships"
+                [fieldCells]="cells"
+                (cellSelection)="onSelectCell($event)"></sb-battlefield>
+        <span class="game__button" *ngIf="!leaving && playerStatus==2">
+            <button class="sb-button" [disabled]="!isPlayerTurn || missTimer === true" [ngSwitch]="isPlayerTurn" (click)="onFire()">
+                <span *ngSwitchCase="false">Ход противника</span>
+                <span *ngSwitchCase="true">Сделать выстрел</span>
+            </button>
+        </span>
+        <span class="game__button" *ngIf="playerStatus!==2">
+            <button class="sb-button" (click)="continue()">Продолжить</button>
+        </span>
+        <sb-leaving-message *ngIf="leaving" [leavingTimer]="leavingTimer"></sb-leaving-message>
     </ng-template>
 </div>

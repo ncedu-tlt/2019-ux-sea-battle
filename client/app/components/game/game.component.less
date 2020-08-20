@@ -1,0 +1,51 @@
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__timer-area {
+    display: flex;
+    align-items: center;
+    margin-top: 22px;
+  }
+
+  &__timer {
+    margin-left: 7px;
+    min-width: 35px;
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    user-select: none;
+  }
+
+  &__status {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  &__name {
+    margin-top: 11px;
+    font-size: 20px;
+    line-height: 26px;
+    text-align: center;
+    user-select: none;
+  }
+
+  &__battlefield {
+    margin-top: 15px;
+  }
+
+  &__battlefield._waiting {
+    pointer-events: none;
+  }
+
+  &__battlefield._finished {
+    pointer-events: none;
+  }
+
+  &__button {
+    margin-top: 40px;
+  }
+}
