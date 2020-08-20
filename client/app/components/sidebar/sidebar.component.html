@@ -34,6 +34,12 @@
 
     <section *ngIf="!game; else battle" class="sb-sidebar__section">
         <sb-sidebar-element
+            [itemImageLink]="'main-menu-icon.svg'"
+            [itemLabel]="'Главное меню'"
+            [isLink]="true"
+            [itemLink]="'/'"
+        ></sb-sidebar-element>
+        <sb-sidebar-element
             [itemImageLink]="'friends-icon.svg'"
             [itemLabel]="'Друзья'"
             [isLink]="true"
